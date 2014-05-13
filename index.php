@@ -4,6 +4,23 @@ include_once 'router.php';
 include_once 'models/image.php';
 include_once 'models/album.php';
 
+$router = new Router();
+$title = '';
+
+switch ($router->pageType) {
+	case Router::TYPE_TOUR:
+		$title = $router->pageName;
+	break;
+
+	case Router::TYPE_ALBUM:
+		$title = $router->pageName;
+	break;
+
+	case null:
+		$title = 'Наши экскурсии';
+	break;
+}
+
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
@@ -19,7 +36,12 @@ include_once 'models/album.php';
 			<div id="header">
 				<h1>Шапка</h1>
 			</div>
-			<div id="container">2</div>
+			<div id="container">
+				<h3><?=$title?></h3>
+				<div id="albums-block">
+					
+				</div>
+			</div>
 			<div id="footer">
 				Подвал
 			</div>
