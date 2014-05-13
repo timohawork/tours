@@ -7,17 +7,21 @@ include_once 'models/album.php';
 $router = new Router();
 $title = '';
 
-switch ($router->pageType) {
+switch ($router->type) {
 	case Router::TYPE_TOUR:
-		$title = $router->pageName;
+		$title = $router->tour;
+		$album = new Album($router->tour);
+		$album->getList();
 	break;
 
 	case Router::TYPE_ALBUM:
-		$title = $router->pageName;
+		$title = $router->album;
 	break;
 
 	case null:
 		$title = 'Наши экскурсии';
+		$album = new Album('');
+		$album->getList();
 	break;
 }
 
