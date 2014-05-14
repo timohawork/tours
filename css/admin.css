@@ -4,8 +4,7 @@
 
 img.preview {
 	margin: 5px;
-	width: 200px;
-	height: 130px;
+	max-width: 200px;
 }
 
 .buttons {

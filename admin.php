@@ -7,10 +7,19 @@ $errors = '';
 $success = '';
 //var_dump($admin);
 
-if (isset($_POST['albumTitle']) && !empty($_FILES)) {
+if (isset($_POST['albumOrigTitle']) && !empty($_FILES)) {
 	$editAlbum = Album::edit();
 	if (true !== $editAlbum) {
 		$errors = $editAlbum;
+	}
+	else {
+		$success = 'Данные успешно сохранены!';
+	}
+}
+else if (isset($_POST['albumTitle']) && !empty($_FILES)) {
+	$newAlbum = Album::add();
+	if (true !== $newAlbum) {
+		$errors = $newAlbum;
 	}
 	else {
 		$success = 'Данные успешно сохранены!';
@@ -60,14 +69,14 @@ if (isset($_POST['albumTitle']) && !empty($_FILES)) {
 						</div>
 					<?php endif; ?>
 					
-					<h2>Экскурсии <a class="btn add newTour" href="#">Добавить</a></h2>
+					<h2>Экскурсии <a class="btn edit newTour" href="#">Добавить</a></h2>
 					<ul id="tours-block">
 						<?php foreach ($admin->getTours() as $tour => $albums) : ?>
 							<li class="tour-block">
 								<span class="title"><?=$tour?></span>
 								<div class="buttons">
-									<a class="btn add newAlbum" href="#">Добавить</a>
-									<a class="btn btn-info" href="#">Ред.</a>
+									<a class="btn edit newAlbum" href="#">Добавить</a>
+									<a class="btn btn-info edit editAlbum" href="#">Ред.</a>
 									<a class="btn btn-danger" href="#">Удал.</a>
 								</div>
 								<?php if (!empty($albums)) : ?>
@@ -76,7 +85,7 @@ if (isset($_POST['albumTitle']) && !empty($_FILES)) {
 											<li>
 												<span class="title"><?=$album?></span>
 												<div class="buttons">
-													<a class="btn add" href="#">Добавить</a>
+													<a class="btn edit" href="#">Добавить</a>
 													<a class="btn btn-info" href="#">Ред.</a>
 													<a class="btn btn-danger" href="#">Удал.</a>
 												</div>
@@ -85,7 +94,7 @@ if (isset($_POST['albumTitle']) && !empty($_FILES)) {
 														<?php foreach ($dir[Album::IMAGES_DIR] as $image) : ?>
 															<li>
 																<?=Image::render(null, Router::DIR_NAME.'/'.$tour.'/'.$album.'/'.Album::IMAGES_DIR.'/'.$image, $image, true, true)?>
-																<div class="buttons"><a class="btn btn-danger" href="#">Удал.</a></div>
+																<div class="buttons"><a class="btn btn-danger edit" href="#">Удал.</a></div>
 															</li>
 														<?php endforeach; ?>
 													</ol>
@@ -119,6 +128,7 @@ if (isset($_POST['albumTitle']) && !empty($_FILES)) {
 						<label class="control-label" for="albumCover">Обложка</label>
 						<div class="controls">
 							<input type="file" name="albumCover" id="albumCover">
+							<div id="coverImg"></div>
 							<p class="text-error"></p>
 						</div>
 					</div>

@@ -55,18 +55,18 @@ class Album
 		return $list;
 	}
 	
-	public static function edit()
+	public static function add()
 	{
-		if (!isset($_POST['albumTitle']) || empty($_FILES) || (isset($_POST['tourTitle']) && empty($_POST['tourTitle']))) {
+		if (!isset($_POST['albumTitle']) || empty($_FILES) || (isset($_POST['newTour']) && empty($_POST['newTour']))) {
 			return false;
 		}
 		if (6 > strlen($_POST['albumTitle'])) {
 			return 'Неверно введено название!';
 		}
-		if (isset($_POST['tourTitle']) && !is_dir(Router::DIR_NAME.'/'.$_POST['tourTitle'])) {
-			return 'Альбома с названием "'.$_POST['tourTitle'].'" не существует!';
+		if (isset($_POST['newTour']) && !is_dir(Router::DIR_NAME.'/'.$_POST['newTour'])) {
+			return 'Альбома с названием "'.$_POST['newTour'].'" не существует!';
 		}
-		$path = Router::DIR_NAME.'/'.(isset($_POST['tourTitle']) ? $_POST['tourTitle'].'/' : '').$_POST['albumTitle'];
+		$path = Router::DIR_NAME.'/'.(isset($_POST['newTour']) ? $_POST['newTour'].'/' : '').$_POST['albumTitle'];
 		if (is_dir($path)) {
 			return 'Альбом с названием "'.$_POST['albumTitle'].'" уже существует!';
 		}
@@ -78,6 +78,29 @@ class Album
 		}
 		if (!move_uploaded_file($_FILES['albumCover']['tmp_name'], dirname(__FILE__).'/../'.$path.'/'.self::COVER_NAME)) {
 			return 'Ошибка сохранения изображения!';
+		}
+		return true;
+	}
+	
+	public static function edit()
+	{
+		$path = Router::DIR_NAME.'/'.$_POST['albumOrigTitle'];
+		if (!isset($_POST['albumTitle']) || !isset($_POST['albumOrigTitle']) || !is_dir($path)) {
+			return false;
+		}
+		if (6 > strlen($_POST['albumTitle'])) {
+			return 'Неверно введено название!';
+		}
+		if (!empty($_FILES['albumCover']['name'])) {
+			if (self::COVER_TYPE !== $_FILES['albumCover']['type']) {
+				return 'Неверный тип файла. Можно загружать только jpg-файлы.';
+			}
+			if (!move_uploaded_file($_FILES['albumCover']['tmp_name'], dirname(__FILE__).'/../'.$path.'/'.self::COVER_NAME)) {
+				return 'Ошибка сохранения изображения!';
+			}
+		}
+		if (!rename(dirname(__FILE__).'/../'.$path, dirname(__FILE__).'/../'.Router::DIR_NAME.'/'.$_POST['albumTitle'])) {
+			return 'Ошибка переименования альбома!';
 		}
 		return true;
 	}

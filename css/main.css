@@ -34,6 +34,10 @@ body {
 	margin: 50px;
 }
 
+#albums-block img {
+	max-width: 200px;
+}
+
 .album-block {
 	float: left;
 	margin: 20px;
