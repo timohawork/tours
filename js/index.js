@@ -1,6 +1,13 @@
 (function($) {
     $(function() {
-        $('.jcarousel').jcarousel();
+        $('.jcarousel')
+			.on('jcarousel:create jcarousel:scrollend', function() {
+				var visible = $('.jcarousel').jcarousel('visible');
+				if (visible) {
+					$('#description').html(visible.find('img').attr('data-desc'));
+				}
+			})
+			.jcarousel();
 
         $('.jcarousel-control-prev')
             .on('jcarouselcontrol:active', function() {

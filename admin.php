@@ -148,7 +148,7 @@ else if (isset($_POST['newImageDir'])) {
 													<ol class="images-block">
 														<?php foreach ($dir[Album::IMAGES_DIR] as $image) : ?>
 															<li class="image-block">
-																<?=Image::render(null, Router::DIR_NAME.'/'.$tour.'/'.$album.'/'.Album::IMAGES_DIR.'/'.$image, $image, true, true)?>
+																<?=Image::renderBlock(null, Router::DIR_NAME.'/'.$tour.'/'.$album.'/'.Album::IMAGES_DIR.'/'.$image, $image, true, true)?>
 																<div class="buttons"><a class="btn btn-danger delete" href="#" rel="<?=$image?>">Удал.</a></div>
 															</li>
 														<?php endforeach; ?>

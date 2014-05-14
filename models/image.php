@@ -6,14 +6,25 @@ class Image
 	
 	public $url;
 	public $title;
+	public $desc;
 	
 	public function __construct($url, $title)
 	{
 		$this->url = $url;
 		$this->title = $title;
+		$path = explode("/", $this->url);
+		$descFile = str_replace(".jpg", "_desc.txt", array_pop($path));
+		$path[] = $descFile;
+		$path = implode("/", $path);
+		$this->desc = is_file($path) ? file_get_contents($path) : '';
 	}
 	
-	public static function render($router, $url, $title, $withTitle = true, $isPreview = false)
+	public function render()
+	{
+		return '<img src="'.$this->url.'" alt="'.$this->title.'" data-desc="'.$this->desc.'">';
+	}
+	
+	public static function renderBlock($router, $url, $title, $withTitle = true, $isPreview = false)
 	{
 		if (empty($url)) {
 			return false;

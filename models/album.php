@@ -39,6 +39,10 @@ class Album
 				);
 			}
 			else if (self::TYPE_IMAGES == $this->type) {
+				$fileName = explode(".", $file);
+				if ('jpg' !== $fileName[1]) {
+					continue;
+				}
 				$list[] = array(
 					'name' => $file,
 					'url' => $this->dir.'/'.$file

@@ -56,7 +56,7 @@ $list = $album->getList();
 							<?php 
 							if (!empty($list)) {
 								foreach ($list as $block) {
-									Image::render($router, $block['url'], $block['name'], Album::TYPE_COVERS == $album->type);
+									Image::renderBlock($router, $block['url'], $block['name'], Album::TYPE_COVERS == $album->type);
 								}
 							}
 							?>
@@ -67,7 +67,8 @@ $list = $album->getList();
 								<div class="jcarousel">
 									<ul>
 										<?php foreach ($list as $block) : ?>
-											<li><img src="<?=$block['url']?>" alt="<?=$block['name']?>"></li>
+											<?php $image = new Image($block['url'], $block['name']); ?>
+											<li><?=$image->render()?></li>
 										<?php endforeach; ?>
 									</ul>
 								</div>
@@ -75,6 +76,7 @@ $list = $album->getList();
 								<a href="#" class="jcarousel-control-next">&rsaquo;</a>
 								<p class="jcarousel-pagination"></p>
 							</div>
+							<div id="description"></div>
 						<?php endif; ?>
 					<?php endif; ?>
 				</div>
