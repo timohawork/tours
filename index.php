@@ -6,24 +6,27 @@ include_once 'models/album.php';
 
 $router = new Router();
 $title = '';
+$albumUrl = '';
 
 switch ($router->type) {
 	case Router::TYPE_TOUR:
 		$title = $router->tour;
-		$album = new Album($router->tour);
-		$list = $album->getList();
+		$albumUrl = $router->tour;
 	break;
 
 	case Router::TYPE_ALBUM:
 		$title = $router->album;
+		$albumUrl = $router->tour.'/'.$router->album.'/'.Album::IMAGES_DIR;
 	break;
 
 	case null:
 		$title = 'Наши экскурсии';
-		$album = new Album('');
-		$list = $album->getList();
 	break;
 }
+
+$album = new Album($albumUrl);
+$list = $album->getList();
+//var_dump($album);
 
 ?>
 <!DOCTYPE html>
@@ -42,11 +45,14 @@ switch ($router->type) {
 			</div>
 			<div id="container">
 				<h3><?=$title?></h3>
+				<?php if (!empty($album->desc)) : ?>
+					<div class="description"><?=$album->desc?></div>
+				<?php endif; ?>
 				<div id="albums-block">
 					<?php 
 					if (!empty($list)) {
 						foreach ($list as $block) {
-							Image::render($router, $block['cover'], $block['name']);
+							Image::render($router, $block['url'], $block['name'], Album::TYPE_COVERS == $album->type);
 						}
 					}
 					?>
