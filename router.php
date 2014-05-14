@@ -36,14 +36,16 @@ class Router
 	
 	public function getBreadCrumbs()
 	{
-		$html = null !== $this->type ? '<div id="bread-crumbs"><a href="/">Главная</a>' : '';
+		$links = $backUrl = '';
 		if (self::TYPE_TOUR === $this->type) {
-			$html .= '&nbsp;>&nbsp;<span>'.$this->tour.'</span>';
+			$links = '&nbsp;>&nbsp;<span>'.$this->tour.'</span>';
+			$backUrl = '/';
 		}
 		else if (self::TYPE_ALBUM === $this->type) {
-			$html .= '&nbsp;>&nbsp;<a href="index.php?tour='.$this->tour.'">'.$this->tour.'</a>&nbsp;>&nbsp;<span>'.$this->album.'</span>';
+			$links = '&nbsp;>&nbsp;<a href="index.php?tour='.$this->tour.'">'.$this->tour.'</a>&nbsp;>&nbsp;<span>'.$this->album.'</span>';
+			$backUrl = 'index.php?tour='.$this->tour;
 		}
-		$html .= !empty($html) ? '</div>' : '';
+		$html = null !== $this->type ? '<div id="bread-crumbs"><a href="'.$backUrl.'">Назад</a>&nbsp;&nbsp;<a href="/">Главная</a>'.$links.'</div>' : '';
 		return $html;
 	}
 }

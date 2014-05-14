@@ -1,28 +1,22 @@
-body {
-	height: 100%;
-}
-
 #wrapper {
 	width: 100%;
-	height:100%;
+	height: 100%;
 	text-align: center;
 }
 
-#header {
-	margin: 50px 0;
-}
-
-#container {
-	
+#header img {
+	width: 603px;
+	height: 223px;
 }
 
 #footer {
 	margin: 20px 0;
+	font-size: 14px;
 }
 
 #bread-crumbs {
 	text-align: left;
-	margin: 10px 70px;
+	margin: 10px 20px;
 }
 
 #bread-crumbs span {
@@ -31,16 +25,18 @@ body {
 
 #albums-block {
 	overflow: hidden;
-	margin: 50px;
 }
 
 #albums-block img {
-	max-width: 200px;
+	width: 200px;
+	height: 130px;
 }
 
 .album-block {
 	float: left;
-	margin: 20px;
+	margin: 25px;
+	width: 200px;
+	min-height: 180px;
 }
 
 .album-block a {
@@ -52,4 +48,9 @@ body {
 .album-block a .title {
 	display: block;
 	margin: 10px 0;
+}
+
+.centered {
+	margin: 0 auto;
+	width: 1000px;
 }

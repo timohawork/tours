@@ -1,5 +1,7 @@
 <?php 
 
+$siteName = 'Title';
+
 include_once 'router.php';
 include_once 'models/image.php';
 include_once 'models/album.php';
@@ -26,7 +28,6 @@ switch ($router->type) {
 
 $album = new Album($albumUrl);
 $list = $album->getList();
-//var_dump($album);
 
 ?>
 <!DOCTYPE html>
@@ -39,49 +40,49 @@ $list = $album->getList();
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
 		<script type="text/javascript" src="js/jquery.jcarousel.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>
-		<title>Title</title>
+		<title><?=$siteName?></title>
 	</head>
 	<body>
 		<div id="wrapper">
 			<div id="header">
-				<h1><a href="/">Шапка</a></h1>
+				<a href="/"><img src="/img/logo.png" alt="<?=$siteName?>"></a>
 			</div>
 			<div id="container">
 				<h3><?=$title?></h3>
-				<?=$router->getBreadCrumbs()?>
-				<?php if (!empty($album->desc)) : ?>
-					<div class="description"><?=$album->desc?></div>
-				<?php endif; ?>
-				<?php if (Album::TYPE_COVERS == $album->type) : ?>
-					<div id="albums-block">
-						<?php 
-						if (!empty($list)) {
-							foreach ($list as $block) {
-								Image::render($router, $block['url'], $block['name'], Album::TYPE_COVERS == $album->type);
-							}
-						}
-						?>
-					</div>
-				<?php else : ?>
-					<?php if (!empty($list)) : ?>
-						<div class="jcarousel-wrapper">
-							<div class="jcarousel">
-								<ul>
-									<?php foreach ($list as $block) : ?>
-										<li><img src="<?=$block['url']?>" alt="<?=$block['name']?>"></li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
-							<a href="#" class="jcarousel-control-prev">&lsaquo;</a>
-							<a href="#" class="jcarousel-control-next">&rsaquo;</a>
-							<p class="jcarousel-pagination"></p>
-						</div>
+				<div class="centered">
+					<?=$router->getBreadCrumbs()?>
+					<?php if (!empty($album->desc)) : ?>
+						<div class="description"><?=$album->desc?></div>
 					<?php endif; ?>
-				<?php endif; ?>
+					<?php if (Album::TYPE_COVERS == $album->type) : ?>
+						<div id="albums-block">
+							<?php 
+							if (!empty($list)) {
+								foreach ($list as $block) {
+									Image::render($router, $block['url'], $block['name'], Album::TYPE_COVERS == $album->type);
+								}
+							}
+							?>
+						</div>
+					<?php else : ?>
+						<?php if (!empty($list)) : ?>
+							<div class="jcarousel-wrapper">
+								<div class="jcarousel">
+									<ul>
+										<?php foreach ($list as $block) : ?>
+											<li><img src="<?=$block['url']?>" alt="<?=$block['name']?>"></li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+								<a href="#" class="jcarousel-control-prev">&lsaquo;</a>
+								<a href="#" class="jcarousel-control-next">&rsaquo;</a>
+								<p class="jcarousel-pagination"></p>
+							</div>
+						<?php endif; ?>
+					<?php endif; ?>
+				</div>
 			</div>
-			<div id="footer">
-				Подвал
-			</div>
+			<div id="footer">&copy; <?=$siteName?>, 2014</div>
 		</div>
 	</body>
 </html>
