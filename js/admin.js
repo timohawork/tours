@@ -4,6 +4,15 @@ $(document).ready(function() {
 			$('#albumEdit .modal-header h3').text('Добавление экскурсии');
 			$('#albumEdit').modal('show');
 		}
+		if ($(this).hasClass('newAlbum')) {
+			var tourTitle = $(this).parents('.tour-block').find('.title').text();
+			$('#albumEdit .modal-header h3').text('Добавление альбома');
+			$('#albumEdit form').append('<input type="hidden" id="tourTitle" name="tourTitle" value="'+tourTitle+'">');
+			$('#albumEdit').modal('show');
+		}
+		if ($(this).hasClass('editAlbum')) {
+			$('#albumEdit .file-block .controls').append('<img class="img-rounded preview" src="tours/'+tourTitle+'/cover.jpg" alt="'+tourTitle+'">');
+		}
 		return false;
 	});
 	

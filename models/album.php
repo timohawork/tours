@@ -57,15 +57,18 @@ class Album
 	
 	public static function edit()
 	{
-		if (!isset($_POST['albumTitle']) || empty($_FILES)) {
+		if (!isset($_POST['albumTitle']) || empty($_FILES) || (isset($_POST['tourTitle']) && empty($_POST['tourTitle']))) {
 			return false;
 		}
 		if (6 > strlen($_POST['albumTitle'])) {
 			return 'Неверно введено название!';
 		}
-		$path = Router::DIR_NAME.'/'.$_POST['albumTitle'];
+		if (isset($_POST['tourTitle']) && !is_dir(Router::DIR_NAME.'/'.$_POST['tourTitle'])) {
+			return 'Альбома с названием "'.$_POST['tourTitle'].'" не существует!';
+		}
+		$path = Router::DIR_NAME.'/'.(isset($_POST['tourTitle']) ? $_POST['tourTitle'].'/' : '').$_POST['albumTitle'];
 		if (is_dir($path)) {
-			return 'Альбом с таким названием уже существует!';
+			return 'Альбом с названием "'.$_POST['albumTitle'].'" уже существует!';
 		}
 		if (self::COVER_TYPE !== $_FILES['albumCover']['type']) {
 			return 'Неверный тип файла. Можно загружать только jpg-файлы.';

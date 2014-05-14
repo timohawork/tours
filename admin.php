@@ -66,7 +66,7 @@ if (isset($_POST['albumTitle']) && !empty($_FILES)) {
 							<li class="tour-block">
 								<span class="title"><?=$tour?></span>
 								<div class="buttons">
-									<a class="btn add" href="#">Добавить</a>
+									<a class="btn add newAlbum" href="#">Добавить</a>
 									<a class="btn btn-info" href="#">Ред.</a>
 									<a class="btn btn-danger" href="#">Удал.</a>
 								</div>
