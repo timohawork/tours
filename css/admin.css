@@ -1,0 +1,41 @@
+img.preview {
+	margin: 5px;
+	width: 200px;
+	height: 130px;
+}
+
+.buttons {
+	display: inline-block;
+	margin: 5px;
+}
+
+.tour-block .title {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.albums-block {
+	margin-left: 5px;
+}
+
+.albums-block li {
+	padding-left: 10px;
+	border: 1px solid #CCCCCC;
+	border-radius: 5px;
+	margin-bottom: 5px;
+}
+
+.albums-block .title {
+	font-size: 15px;
+	font-weight: normal;
+}
+
+.album-block {
+	display: inline-block;
+	margin: 5px;
+}
+
+.images-block li {
+	border: none;
+	padding-left: 0;
+}
