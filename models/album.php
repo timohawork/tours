@@ -2,6 +2,8 @@
 
 class Album
 {
+	const COVER_NAME = 'cover.jpg';
+	
 	public $dir;
 	
 	public function __construct($dir)
@@ -21,7 +23,10 @@ class Album
 		$list = array();
 		foreach (scandir($this->dir) as $file) {
 			if ("." !== $file && ".." !== $file && is_dir($this->dir.'/'.$file)) {
-				$list[] = $file;
+				$list[] = array(
+					'name' => $file,
+					'cover' => $this->dir.'/'.$file.'/'.self::COVER_NAME
+				);
 			}
 		}
 		return $list;

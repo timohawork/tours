@@ -19,3 +19,24 @@ body {
 #footer {
 	margin: 20px 0;
 }
+
+#albums-block {
+	overflow: hidden;
+	margin: 50px;
+}
+
+.album-block {
+	float: left;
+	margin: 20px;
+}
+
+.album-block a {
+	text-decoration: none;
+	color: #000000;
+	font-size: 18px;
+}
+
+.album-block a .title {
+	display: block;
+	margin: 10px 0;
+}

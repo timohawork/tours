@@ -11,7 +11,7 @@ switch ($router->type) {
 	case Router::TYPE_TOUR:
 		$title = $router->tour;
 		$album = new Album($router->tour);
-		$album->getList();
+		$list = $album->getList();
 	break;
 
 	case Router::TYPE_ALBUM:
@@ -21,7 +21,7 @@ switch ($router->type) {
 	case null:
 		$title = 'Наши экскурсии';
 		$album = new Album('');
-		$album->getList();
+		$list = $album->getList();
 	break;
 }
 
@@ -38,12 +38,18 @@ switch ($router->type) {
 	<body>
 		<div id="wrapper">
 			<div id="header">
-				<h1>Шапка</h1>
+				<h1><a href="/">Шапка</a></h1>
 			</div>
 			<div id="container">
 				<h3><?=$title?></h3>
 				<div id="albums-block">
-					
+					<?php 
+					if (!empty($list)) {
+						foreach ($list as $block) {
+							Image::render($router, $block['cover'], $block['name']);
+						}
+					}
+					?>
 				</div>
 			</div>
 			<div id="footer">
