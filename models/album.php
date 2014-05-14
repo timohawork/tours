@@ -104,6 +104,23 @@ class Album
 		}
 		return true;
 	}
+	
+	public static function delete($dir)
+	{
+		if (empty($dir) || !is_dir(Router::DIR_NAME.'/'.$dir)) {
+			return false;
+		}
+		return self::removeDir(Router::DIR_NAME.'/'.$dir);
+	}
+	
+	public static function removeDir($dir) {
+		if ($objs = glob($dir."/*")) {
+			foreach($objs as $obj) {
+				is_dir($obj) ? self::removeDir($obj) : unlink($obj);
+			}
+		}
+		return rmdir($dir);
+	}
 }
 
 ?>

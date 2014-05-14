@@ -3,6 +3,8 @@ $(document).ready(function() {
 		var albumTitle = $('#albumTitle'),
 			coverImg = $('#coverImg'),
 			tourTitle = $(this).parents('.tour-block').find('.title').text();
+		$('#newTour').remove();
+		$('#albumOrigTitle').remove();
 		albumTitle.val('');
 		coverImg.html('');
 		$('.title-block .text-error').text('');
@@ -45,6 +47,34 @@ $(document).ready(function() {
 		}
 		if (!hasError) {
 			$('#albumEdit form').submit();
+		}
+		return false;
+	});
+	
+	$('.delete').live('click', function() {
+		var tour = $(this).parents('.tour-block'),
+			album = $(this).parents('.album'),
+			image = $(this).parents('.image-block'),
+			data = {},
+			text = 'Вы уверены, что хотите удалить ';
+		
+		if (image.length) {
+			text += 'изображение?';
+		}
+		else if (album.length) {
+			text += 'альбом?';
+			data = {deleteAlbum: tour.find('.title').eq(0).text()+'/'+album.find('.title').eq(0).text()};
+		}
+		else if (tour.length) {
+			text += 'экскурсию?';
+			data = {deleteAlbum: tour.find('.title').eq(0).text()};
+		}
+		if (confirm(text)) {
+			$.post('admin.php', data, function(response) {
+				if (response) {
+					window.location.reload();
+				}
+			});
 		}
 		return false;
 	});

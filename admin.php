@@ -25,6 +25,10 @@ else if (isset($_POST['albumTitle']) && !empty($_FILES)) {
 		$success = 'Данные успешно сохранены!';
 	}
 }
+else if (isset($_POST['deleteAlbum'])) {
+	echo (int)Album::delete($_POST['deleteAlbum']);
+	die();
+}
 
 ?>
 <!DOCTYPE html>
@@ -77,24 +81,24 @@ else if (isset($_POST['albumTitle']) && !empty($_FILES)) {
 								<div class="buttons">
 									<a class="btn edit newAlbum" href="#">Добавить</a>
 									<a class="btn btn-info edit editAlbum" href="#">Ред.</a>
-									<a class="btn btn-danger" href="#">Удал.</a>
+									<a class="btn btn-danger delete" href="#">Удал.</a>
 								</div>
 								<?php if (!empty($albums)) : ?>
 									<ul class="albums-block">
 										<?php foreach ($albums as $album => $dir) : ?>
-											<li>
+											<li class="album">
 												<span class="title"><?=$album?></span>
 												<div class="buttons">
 													<a class="btn edit" href="#">Добавить</a>
-													<a class="btn btn-info" href="#">Ред.</a>
-													<a class="btn btn-danger" href="#">Удал.</a>
+													<a class="btn btn-info edit" href="#">Ред.</a>
+													<a class="btn btn-danger delete" href="#">Удал.</a>
 												</div>
 												<?php if (!empty($dir[Album::IMAGES_DIR])) : ?>
 													<ol class="images-block">
 														<?php foreach ($dir[Album::IMAGES_DIR] as $image) : ?>
-															<li>
+															<li class="image-block">
 																<?=Image::render(null, Router::DIR_NAME.'/'.$tour.'/'.$album.'/'.Album::IMAGES_DIR.'/'.$image, $image, true, true)?>
-																<div class="buttons"><a class="btn btn-danger edit" href="#">Удал.</a></div>
+																<div class="buttons"><a class="btn btn-danger delete" href="#">Удал.</a></div>
 															</li>
 														<?php endforeach; ?>
 													</ol>
