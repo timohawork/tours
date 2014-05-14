@@ -73,11 +73,14 @@ class Album
 		if (self::COVER_TYPE !== $_FILES['albumCover']['type']) {
 			return 'Неверный тип файла. Можно загружать только jpg-файлы.';
 		}
-		if (!mkdir($path) || !chmod($path, 0777)) {
+		if (!mkdir($path) || !chmod($path, 0777) || !mkdir($path.'/'.Album::IMAGES_DIR) || !chmod($path.'/'.Album::IMAGES_DIR, 0777)) {
 			return 'Ошибка создания директории!';
 		}
 		if (!move_uploaded_file($_FILES['albumCover']['tmp_name'], dirname(__FILE__).'/../'.$path.'/'.self::COVER_NAME)) {
 			return 'Ошибка сохранения изображения!';
+		}
+		if (isset($_POST['albumDesc']) && false === file_put_contents($path.'/'.Album::DESC_FILE, $_POST['albumDesc'])) {
+			return 'Ошибка сохранения описания!';
 		}
 		return true;
 	}
@@ -98,6 +101,9 @@ class Album
 			if (!move_uploaded_file($_FILES['albumCover']['tmp_name'], dirname(__FILE__).'/../'.$path.'/'.self::COVER_NAME)) {
 				return 'Ошибка сохранения изображения!';
 			}
+		}
+		if (isset($_POST['albumDesc']) && false === file_put_contents($path.'/'.Album::DESC_FILE, $_POST['albumDesc'])) {
+			return 'Ошибка сохранения описания!';
 		}
 		if (!rename(dirname(__FILE__).'/../'.$path, dirname(__FILE__).'/../'.Router::DIR_NAME.'/'.(isset($_POST['tourTitle']) ? $_POST['tourTitle'].'/' : '').$_POST['albumTitle'])) {
 			return 'Ошибка переименования альбома!';
