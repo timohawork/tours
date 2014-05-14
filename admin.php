@@ -179,13 +179,6 @@ else if (isset($_POST['newImageDir'])) {
 							<p class="text-error"></p>
 						</div>
 					</div>
-					<div class="control-group desc-block hide">
-						<label class="control-label" for="albumDesc">Описание</label>
-						<div class="controls">
-							<textarea class="span3" name="albumDesc" id="albumDesc"></textarea>
-							<p class="text-error"></p>
-						</div>
-					</div>
 					<div class="control-group file-block">
 						<label class="control-label" for="albumCover">Обложка</label>
 						<div class="controls">
@@ -212,6 +205,13 @@ else if (isset($_POST['newImageDir'])) {
 						<label class="control-label" for="image">Изображение</label>
 						<div class="controls">
 							<input type="file" name="image" id="image">
+							<p class="text-error"></p>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="imageDesc">Описание</label>
+						<div class="controls">
+							<textarea class="span3" name="imageDesc" id="imageDesc"></textarea>
 							<p class="text-error"></p>
 						</div>
 					</div>

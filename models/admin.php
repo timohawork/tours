@@ -43,7 +43,7 @@ class Admin
 	{
 		$files = array();
 		foreach (scandir($dir) as $file) {
-			if ("." === $file || ".." === $file || Album::COVER_NAME === $file || Album::DESC_FILE === $file) {
+			if ("." === $file || ".." === $file || Album::COVER_NAME === $file) {
 				continue;
 			}
 			if (is_dir($dir.'/'.$file)) {

@@ -5,14 +5,12 @@ class Album
 	const COVER_TYPE = 'image/jpeg';
 	const COVER_NAME = 'cover.jpg';
 	const IMAGES_DIR = 'images';
-	const DESC_FILE = 'desc.txt';
 	
 	const TYPE_COVERS = 1;
 	const TYPE_IMAGES = 2;
 	
 	public $dir;
 	public $type;
-	public $desc;
 	
 	public function __construct($dir)
 	{
@@ -22,11 +20,6 @@ class Album
 		}
 		$this->dir = $dir;
 		$this->type = false === strpos($this->dir, self::IMAGES_DIR) ? self::TYPE_COVERS : self::TYPE_IMAGES;
-		
-		if (self::TYPE_IMAGES == $this->type) {
-			$descUrl = str_replace(self::IMAGES_DIR, self::DESC_FILE, $this->dir);
-			$this->desc = file_get_contents($descUrl);
-		}
 	}
 	
 	public function getList()
@@ -79,9 +72,6 @@ class Album
 		if (!move_uploaded_file($_FILES['albumCover']['tmp_name'], dirname(__FILE__).'/../'.$path.'/'.self::COVER_NAME)) {
 			return 'Ошибка сохранения изображения!';
 		}
-		if (isset($_POST['albumDesc']) && false === file_put_contents($path.'/'.Album::DESC_FILE, $_POST['albumDesc'])) {
-			return 'Ошибка сохранения описания!';
-		}
 		return true;
 	}
 	
@@ -101,9 +91,6 @@ class Album
 			if (!move_uploaded_file($_FILES['albumCover']['tmp_name'], dirname(__FILE__).'/../'.$path.'/'.self::COVER_NAME)) {
 				return 'Ошибка сохранения изображения!';
 			}
-		}
-		if (isset($_POST['albumDesc']) && false === file_put_contents($path.'/'.Album::DESC_FILE, $_POST['albumDesc'])) {
-			return 'Ошибка сохранения описания!';
 		}
 		if (!rename(dirname(__FILE__).'/../'.$path, dirname(__FILE__).'/../'.Router::DIR_NAME.'/'.(isset($_POST['tourTitle']) ? $_POST['tourTitle'].'/' : '').$_POST['albumTitle'])) {
 			return 'Ошибка переименования альбома!';

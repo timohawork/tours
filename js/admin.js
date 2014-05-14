@@ -1,14 +1,12 @@
 $(document).ready(function() {
 	$('.edit').live('click', function() {
 		var albumTitle = $('#albumTitle'),
-			desc = $('#albumEdit .desc-block'),
 			coverImg = $('#coverImg'),
 			tourTitle = $(this).parents('.tour-block').find('.title').eq(0).text();
 		$('#newTour').remove();
 		$('#albumOrigTitle').remove();
 		albumTitle.val('');
 		coverImg.html('');
-		desc.addClass('hide');
 		$('.title-block .text-error').text('');
 		$('.file-block .text-error').text('');
 		
@@ -17,7 +15,6 @@ $(document).ready(function() {
 		}
 		if ($(this).hasClass('newAlbum')) {
 			$('#albumEdit .modal-header h3').text('Добавление альбома');
-			desc.removeClass('hide');
 			$('#albumEdit form').append('<input type="hidden" id="newTour" name="newTour" value="'+tourTitle+'">');
 		}
 		if ($(this).hasClass('editTour')) {
@@ -29,10 +26,6 @@ $(document).ready(function() {
 		if ($(this).hasClass('editAlbum')) {
 			var albumOrigTitle = $(this).parents('.album').find('.title').eq(0).text();
 			$('#albumEdit .modal-header h3').text('Редактирование альбома');
-			desc.removeClass('hide');
-			$.get('tours/'+tourTitle+'/'+albumOrigTitle+'/desc.txt', function(response) {
-				$('#albumDesc').val(response);
-			});
 			albumTitle.val(albumOrigTitle);
 			$('#albumEdit form').append('<input type="hidden" id="albumOrigTitle" name="albumOrigTitle" value="'+albumOrigTitle+'"><input type="hidden" id="tourTitle" name="tourTitle" value="'+tourTitle+'">');
 			coverImg.html('<img class="img-rounded preview" src="tours/'+tourTitle+'/'+albumOrigTitle+'/cover.jpg" alt="'+albumOrigTitle+'">');

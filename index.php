@@ -51,9 +51,6 @@ $list = $album->getList();
 				<h3><?=$title?></h3>
 				<div class="centered">
 					<?=$router->getBreadCrumbs()?>
-					<?php if (!empty($album->desc)) : ?>
-						<div class="description"><?=$album->desc?></div>
-					<?php endif; ?>
 					<?php if (Album::TYPE_COVERS == $album->type) : ?>
 						<div id="albums-block">
 							<?php 
