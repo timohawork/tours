@@ -66,17 +66,25 @@ $list = $album->getList();
 							<div class="jcarousel-wrapper">
 								<div class="jcarousel">
 									<ul>
-										<?php foreach ($list as $block) : ?>
-											<?php $image = new Image($block['url'], $block['name']); ?>
-											<li><?=$image->render()?></li>
-										<?php endforeach; ?>
+										<?php 
+											$activeDesc = '';
+											$isFirst = true;
+											foreach ($list as $block) {
+												$image = new Image($block['url'], $block['name']);
+												echo '<li>'.$image->render().'</li>';
+												if ($isFirst) {
+													$activeDesc = $image->desc;
+													$isFirst = false;
+												}
+											}
+										?>
 									</ul>
 								</div>
 								<a href="#" class="jcarousel-control-prev">&lsaquo;</a>
 								<a href="#" class="jcarousel-control-next">&rsaquo;</a>
 								<p class="jcarousel-pagination"></p>
 							</div>
-							<div id="description"></div>
+							<div id="description"><?=$activeDesc?></div>
 						<?php endif; ?>
 					<?php endif; ?>
 				</div>
