@@ -3,7 +3,19 @@
 include_once 'models/admin.php';
 
 $admin = new Admin();
+$errors = '';
+$success = '';
 //var_dump($admin);
+
+if (isset($_POST['albumTitle']) && !empty($_FILES)) {
+	$editAlbum = Album::edit();
+	if (true !== $editAlbum) {
+		$errors = $editAlbum;
+	}
+	else {
+		$success = 'Данные успешно сохранены!';
+	}
+}
 
 ?>
 <!DOCTYPE html>
@@ -14,8 +26,9 @@ $admin = new Admin();
 		<link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="/css/bootstrap-responsive.css" />
 		<link rel="stylesheet" type="text/css" href="/css/admin.css" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
 		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="/js/admin.js"></script>
 		<title>Администраторская панель</title>
 	</head>
 	<body>
@@ -30,9 +43,26 @@ $admin = new Admin();
 					</ul>
 				</div>
 				<div id="container" class="span10">
-					<h2>Экскурсии <a class="btn add" href="#">Добавить</a></h2>
+					
+					<?php if (!empty($errors)) : ?>
+						<div class="alert alert-block alert-error fade in">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<h4 class="alert-heading">Ошибка</h4>
+							<p><?=$errors?></p>
+						</div>
+					<?php endif; ?>
+					
+					<?php if (!empty($success)) : ?>
+						<div class="alert alert-block alert-success fade in">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<h4 class="alert-heading">Сообщение</h4>
+							<p><?=$success?></p>
+						</div>
+					<?php endif; ?>
+					
+					<h2>Экскурсии <a class="btn add newTour" href="#">Добавить</a></h2>
 					<ul id="tours-block">
-						<?php foreach ($admin->tours as $tour => $albums) : ?>
+						<?php foreach ($admin->getTours() as $tour => $albums) : ?>
 							<li class="tour-block">
 								<span class="title"><?=$tour?></span>
 								<div class="buttons">
@@ -68,6 +98,47 @@ $admin = new Admin();
 						<?php endforeach; ?>
 					</ul>
 				</div>
+			</div>
+		</div>
+		
+		<div class="modal hide fade" id="albumEdit">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3></h3>
+			</div>
+			<div class="modal-body">
+				<form enctype="multipart/form-data" class="form-horizontal" action="admin.php" method="POST">
+					<div class="control-group title-block">
+						<label class="control-label" for="albumTitle">Название</label>
+						<div class="controls">
+							<input class="span3" type="text" name="albumTitle" id="albumTitle" placeholder="Введите название..">
+							<p class="text-error"></p>
+						</div>
+					</div>
+					<div class="control-group file-block">
+						<label class="control-label" for="albumCover">Обложка</label>
+						<div class="controls">
+							<input type="file" name="albumCover" id="albumCover">
+							<p class="text-error"></p>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-primary">Сохранить</a>
+			</div>
+		</div>
+		
+		<div class="modal hide fade" id="imageEdit">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h3>Добавить картинку</h3>
+			</div>
+			<div class="modal-body">
+				<p>One fine body…</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-primary">Сохранить</a>
 			</div>
 		</div>
 	</body>

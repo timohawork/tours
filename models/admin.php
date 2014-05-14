@@ -10,7 +10,12 @@ class Admin
 	
 	public function __construct()
 	{
-		$this->tours = $this->getDir(Router::DIR_NAME);
+		
+	}
+	
+	public function getTours()
+	{
+		return $this->tours = $this->getDir(Router::DIR_NAME);
 	}
 	
 	protected function getDir($dir)

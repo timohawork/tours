@@ -2,6 +2,7 @@
 
 class Album
 {
+	const COVER_TYPE = 'image/jpeg';
 	const COVER_NAME = 'cover.jpg';
 	const IMAGES_DIR = 'images';
 	const DESC_FILE = 'desc.txt';
@@ -52,6 +53,30 @@ class Album
 			}
 		}
 		return $list;
+	}
+	
+	public static function edit()
+	{
+		if (!isset($_POST['albumTitle']) || empty($_FILES)) {
+			return false;
+		}
+		if (6 > strlen($_POST['albumTitle'])) {
+			return 'Неверно введено название!';
+		}
+		$path = Router::DIR_NAME.'/'.$_POST['albumTitle'];
+		if (is_dir($path)) {
+			return 'Альбом с таким названием уже существует!';
+		}
+		if (self::COVER_TYPE !== $_FILES['albumCover']['type']) {
+			return 'Неверный тип файла. Можно загружать только jpg-файлы.';
+		}
+		if (!mkdir($path) || !chmod($path, 0777)) {
+			return 'Ошибка создания директории!';
+		}
+		if (!move_uploaded_file($_FILES['albumCover']['tmp_name'], dirname(__FILE__).'/../'.$path.'/'.self::COVER_NAME)) {
+			return 'Ошибка сохранения изображения!';
+		}
+		return true;
 	}
 }
 

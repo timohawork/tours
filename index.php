@@ -35,7 +35,7 @@ $list = $album->getList();
 		<meta charset="utf-8" />
 		<meta http-equiv="Content-Language" content="ru" />
 		<link rel="stylesheet" type="text/css" href="/css/main.css" />
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
 		<title>Title</title>
 	</head>
 	<body>
