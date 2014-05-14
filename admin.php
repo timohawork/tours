@@ -1,11 +1,49 @@
 <?php
 
+session_start();
 include_once 'models/admin.php';
-
 $admin = new Admin();
+
+if (isset($_POST['password'])) {
+	$isLogin = $admin->login();
+}
+
+if (!isset($_SESSION['login'])) {
+	?>
+	<!DOCTYPE html>
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
+		<head>
+			<meta charset="utf-8" />
+			<meta http-equiv="Content-Language" content="ru" />
+			<link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
+			<link rel="stylesheet" type="text/css" href="/css/bootstrap-responsive.css" />
+			<title>Администраторская панель</title>
+		</head>
+		<body>
+			<div class="container-fluid">
+				<div class="row-fluid">
+					<div class="span6 offset3 text-center">
+						<form class="form-inline" action="admin.php" method="POST">
+							<h3>Администраторская панель</h3>
+							<input type="password" name="password" class="input-small" placeholder="Пароль">
+							<button type="submit" class="btn">Войти</button>
+							<p class="text-error"><?=isset($_POST['password']) && !$isLogin ? 'Неверный пароль!' : ''?></p>
+						</form>
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>
+	<?php
+	die();
+}
+
+if (isset($_GET['logout'])) {
+	$admin->logout() && header('Location: admin.php');
+}
+
 $errors = '';
 $success = '';
-//var_dump($admin);
 
 if (isset($_POST['albumOrigTitle']) && !empty($_FILES)) {
 	$editAlbum = Album::edit();
@@ -65,7 +103,7 @@ else if (isset($_POST['newImageDir'])) {
 					<ul>
 						<li><a href="/">На сайт</a></li>
 						<li><a href="/admin.php">Главная</a></li>
-						<li><a href="#">Выход</a></li>
+						<li><a href="/admin.php?logout=1">Выход</a></li>
 					</ul>
 				</div>
 				<div id="container" class="span10">
