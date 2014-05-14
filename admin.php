@@ -29,6 +29,15 @@ else if (isset($_POST['deleteAlbum'])) {
 	echo (int)Album::delete($_POST['deleteAlbum']);
 	die();
 }
+else if (isset($_POST['newImageDir'])) {
+	$newImage = Image::add();
+	if (true !== $newImage) {
+		$errors = $newImage;
+	}
+	else {
+		$success = 'Данные успешно сохранены!';
+	}
+}
 
 ?>
 <!DOCTYPE html>
@@ -89,7 +98,7 @@ else if (isset($_POST['deleteAlbum'])) {
 											<li class="album">
 												<span class="title"><?=$album?></span>
 												<div class="buttons">
-													<a class="btn edit" href="#">Добавить</a>
+													<a class="btn newImage" href="#">Добавить</a>
 													<a class="btn btn-info edit editAlbum" href="#">Ред.</a>
 													<a class="btn btn-danger delete" href="#">Удал.</a>
 												</div>
@@ -143,13 +152,22 @@ else if (isset($_POST['deleteAlbum'])) {
 			</div>
 		</div>
 		
-		<div class="modal hide fade" id="imageEdit">
+		<div class="modal hide fade" id="imageAdd">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h3>Добавить картинку</h3>
+				<h3>Добавить изображение</h3>
 			</div>
 			<div class="modal-body">
-				<p>One fine body…</p>
+				<form enctype="multipart/form-data" class="form-horizontal" action="admin.php" method="POST">
+					<div class="control-group">
+						<label class="control-label" for="image">Изображение</label>
+						<div class="controls">
+							<input type="file" name="image" id="image">
+							<p class="text-error"></p>
+						</div>
+					</div>
+					<input type="hidden" id="newImageDir" name="newImageDir" value="">
+				</form>
 			</div>
 			<div class="modal-footer">
 				<a href="#" class="btn btn-primary">Сохранить</a>

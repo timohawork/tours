@@ -2,6 +2,8 @@
 
 class Image
 {
+	const TYPE = 'image/jpeg';
+	
 	public $url;
 	public $title;
 	
@@ -45,6 +47,24 @@ class Image
 		}
 		$html .= (!empty($href) ? '</a>' : '').'</div>';
 		echo $html;
+	}
+	
+	public static function add()
+	{
+		if (empty($_POST['newImageDir']) || empty($_FILES)) {
+			return false;
+		}
+		$path = Router::DIR_NAME.'/'.$_POST['newImageDir'];
+		if (!is_dir($path)) {
+			return false;
+		}
+		if (self::TYPE !== $_FILES['image']['type']) {
+			return 'Неверный тип файла. Можно загружать только jpg-файлы.';
+		}
+		if (!move_uploaded_file($_FILES['image']['tmp_name'], dirname(__FILE__).'/../'.$path.'/'.Album::IMAGES_DIR.'/'.basename($_FILES['image']['name']))) {
+			return 'Ошибка сохранения изображения!';
+		}
+		return true;
 	}
 }
 

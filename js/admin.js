@@ -83,4 +83,24 @@ $(document).ready(function() {
 		}
 		return false;
 	});
+	
+	$('.newImage').live('click', function() {
+		$('#newImageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album').find('.title').eq(0).text());
+		$('#imageAdd').modal('show');
+		return false;
+	});
+	
+	$('#imageAdd .modal-footer .btn-primary').live('click', function() {
+		var error = $('#imageAdd .text-error');
+		
+		error.text('');
+		
+		if (!$('#image').val().length) {
+			error.text('Не выбрано изоражение!');
+		}
+		else {
+			$('#imageAdd form').submit();
+		}
+		return false;
+	});
 });
