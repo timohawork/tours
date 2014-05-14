@@ -2,7 +2,7 @@ $(document).ready(function() {
 	$('.edit').live('click', function() {
 		var albumTitle = $('#albumTitle'),
 			coverImg = $('#coverImg'),
-			tourTitle = $(this).parents('.tour-block').find('.title').text();
+			tourTitle = $(this).parents('.tour-block').find('.title').eq(0).text();
 		$('#newTour').remove();
 		$('#albumOrigTitle').remove();
 		albumTitle.val('');
@@ -12,20 +12,25 @@ $(document).ready(function() {
 		
 		if ($(this).hasClass('newTour')) {
 			$('#albumEdit .modal-header h3').text('Добавление экскурсии');
-			$('#albumEdit').modal('show');
 		}
 		if ($(this).hasClass('newAlbum')) {
 			$('#albumEdit .modal-header h3').text('Добавление альбома');
 			$('#albumEdit form').append('<input type="hidden" id="newTour" name="newTour" value="'+tourTitle+'">');
-			$('#albumEdit').modal('show');
 		}
-		if ($(this).hasClass('editAlbum')) {
-			$('#albumEdit .modal-header h3').text('Редактирование альбома');
+		if ($(this).hasClass('editTour')) {
+			$('#albumEdit .modal-header h3').text('Редактирование экскурсии');
 			albumTitle.val(tourTitle);
 			$('#albumEdit form').append('<input type="hidden" id="albumOrigTitle" name="albumOrigTitle" value="'+tourTitle+'">');
 			coverImg.html('<img class="img-rounded preview" src="tours/'+tourTitle+'/cover.jpg" alt="'+tourTitle+'">');
-			$('#albumEdit').modal('show');
 		}
+		if ($(this).hasClass('editAlbum')) {
+			var albumOrigTitle = $(this).parents('.album').find('.title').eq(0).text();
+			$('#albumEdit .modal-header h3').text('Редактирование альбома');
+			albumTitle.val(albumOrigTitle);
+			$('#albumEdit form').append('<input type="hidden" id="albumOrigTitle" name="albumOrigTitle" value="'+albumOrigTitle+'"><input type="hidden" id="tourTitle" name="tourTitle" value="'+tourTitle+'">');
+			coverImg.html('<img class="img-rounded preview" src="tours/'+tourTitle+'/'+albumOrigTitle+'/cover.jpg" alt="'+albumOrigTitle+'">');
+		}
+		$('#albumEdit').modal('show');
 		return false;
 	});
 	

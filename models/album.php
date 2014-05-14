@@ -84,7 +84,7 @@ class Album
 	
 	public static function edit()
 	{
-		$path = Router::DIR_NAME.'/'.$_POST['albumOrigTitle'];
+		$path = Router::DIR_NAME.'/'.(isset($_POST['tourTitle']) ? $_POST['tourTitle'].'/' : '').$_POST['albumOrigTitle'];
 		if (!isset($_POST['albumTitle']) || !isset($_POST['albumOrigTitle']) || !is_dir($path)) {
 			return false;
 		}
@@ -99,7 +99,7 @@ class Album
 				return 'Ошибка сохранения изображения!';
 			}
 		}
-		if (!rename(dirname(__FILE__).'/../'.$path, dirname(__FILE__).'/../'.Router::DIR_NAME.'/'.$_POST['albumTitle'])) {
+		if (!rename(dirname(__FILE__).'/../'.$path, dirname(__FILE__).'/../'.Router::DIR_NAME.'/'.(isset($_POST['tourTitle']) ? $_POST['tourTitle'].'/' : '').$_POST['albumTitle'])) {
 			return 'Ошибка переименования альбома!';
 		}
 		return true;

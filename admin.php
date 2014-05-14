@@ -80,7 +80,7 @@ else if (isset($_POST['deleteAlbum'])) {
 								<span class="title"><?=$tour?></span>
 								<div class="buttons">
 									<a class="btn edit newAlbum" href="#">Добавить</a>
-									<a class="btn btn-info edit editAlbum" href="#">Ред.</a>
+									<a class="btn btn-info edit editTour" href="#">Ред.</a>
 									<a class="btn btn-danger delete" href="#">Удал.</a>
 								</div>
 								<?php if (!empty($albums)) : ?>
@@ -90,7 +90,7 @@ else if (isset($_POST['deleteAlbum'])) {
 												<span class="title"><?=$album?></span>
 												<div class="buttons">
 													<a class="btn edit" href="#">Добавить</a>
-													<a class="btn btn-info edit" href="#">Ред.</a>
+													<a class="btn btn-info edit editAlbum" href="#">Ред.</a>
 													<a class="btn btn-danger delete" href="#">Удал.</a>
 												</div>
 												<?php if (!empty($dir[Album::IMAGES_DIR])) : ?>
