@@ -35,7 +35,10 @@ $list = $album->getList();
 		<meta charset="utf-8" />
 		<meta http-equiv="Content-Language" content="ru" />
 		<link rel="stylesheet" type="text/css" href="/css/main.css" />
+		<link rel="stylesheet" type="text/css" href="/css/jcarousel.basic.css" />
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery.jcarousel.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
 		<title>Title</title>
 	</head>
 	<body>
@@ -49,15 +52,32 @@ $list = $album->getList();
 				<?php if (!empty($album->desc)) : ?>
 					<div class="description"><?=$album->desc?></div>
 				<?php endif; ?>
-				<div id="albums-block">
-					<?php 
-					if (!empty($list)) {
-						foreach ($list as $block) {
-							Image::render($router, $block['url'], $block['name'], Album::TYPE_COVERS == $album->type);
+				<?php if (Album::TYPE_COVERS == $album->type) : ?>
+					<div id="albums-block">
+						<?php 
+						if (!empty($list)) {
+							foreach ($list as $block) {
+								Image::render($router, $block['url'], $block['name'], Album::TYPE_COVERS == $album->type);
+							}
 						}
-					}
-					?>
-				</div>
+						?>
+					</div>
+				<?php else : ?>
+					<?php if (!empty($list)) : ?>
+						<div class="jcarousel-wrapper">
+							<div class="jcarousel">
+								<ul>
+									<?php foreach ($list as $block) : ?>
+										<li><img src="<?=$block['url']?>" alt="<?=$block['name']?>"></li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+							<a href="#" class="jcarousel-control-prev">&lsaquo;</a>
+							<a href="#" class="jcarousel-control-next">&rsaquo;</a>
+							<p class="jcarousel-pagination"></p>
+						</div>
+					<?php endif; ?>
+				<?php endif; ?>
 			</div>
 			<div id="footer">
 				Подвал
