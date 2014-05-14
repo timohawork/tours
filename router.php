@@ -33,6 +33,19 @@ class Router
 			$this->type = self::TYPE_TOUR;
 		}
 	}
+	
+	public function getBreadCrumbs()
+	{
+		$html = null !== $this->type ? '<div id="bread-crumbs"><a href="/">Главная</a>' : '';
+		if (self::TYPE_TOUR === $this->type) {
+			$html .= '&nbsp;>&nbsp;<span>'.$this->tour.'</span>';
+		}
+		else if (self::TYPE_ALBUM === $this->type) {
+			$html .= '&nbsp;>&nbsp;<a href="index.php?tour='.$this->tour.'">'.$this->tour.'</a>&nbsp;>&nbsp;<span>'.$this->album.'</span>';
+		}
+		$html .= !empty($html) ? '</div>' : '';
+		return $html;
+	}
 }
 
 ?>

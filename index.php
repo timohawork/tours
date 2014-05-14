@@ -45,6 +45,7 @@ $list = $album->getList();
 			</div>
 			<div id="container">
 				<h3><?=$title?></h3>
+				<?=$router->getBreadCrumbs()?>
 				<?php if (!empty($album->desc)) : ?>
 					<div class="description"><?=$album->desc?></div>
 				<?php endif; ?>

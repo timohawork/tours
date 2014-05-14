@@ -20,6 +20,15 @@ body {
 	margin: 20px 0;
 }
 
+#bread-crumbs {
+	text-align: left;
+	margin: 10px 70px;
+}
+
+#bread-crumbs span {
+	font-weight: bold;
+}
+
 #albums-block {
 	overflow: hidden;
 	margin: 50px;
