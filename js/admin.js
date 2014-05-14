@@ -65,6 +65,7 @@ $(document).ready(function() {
 		
 		if (image.length) {
 			text += 'изображение?';
+			data = {deleteImage: tour.find('.title').eq(0).text()+'/'+album.find('.title').eq(0).text()+'/images/'+$(this).attr('rel')};
 		}
 		else if (album.length) {
 			text += 'альбом?';

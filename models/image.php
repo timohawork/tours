@@ -66,6 +66,14 @@ class Image
 		}
 		return true;
 	}
+	
+	public static function delete($path)
+	{
+		if (empty($path) || !is_file(Router::DIR_NAME.'/'.$path)) {
+			return false;
+		}
+		return unlink(Router::DIR_NAME.'/'.$path);
+	}
 }
 
 ?>

@@ -29,6 +29,10 @@ else if (isset($_POST['deleteAlbum'])) {
 	echo (int)Album::delete($_POST['deleteAlbum']);
 	die();
 }
+else if (isset($_POST['deleteImage'])) {
+	echo (int)Image::delete($_POST['deleteImage']);
+	die();
+}
 else if (isset($_POST['newImageDir'])) {
 	$newImage = Image::add();
 	if (true !== $newImage) {
@@ -107,7 +111,7 @@ else if (isset($_POST['newImageDir'])) {
 														<?php foreach ($dir[Album::IMAGES_DIR] as $image) : ?>
 															<li class="image-block">
 																<?=Image::render(null, Router::DIR_NAME.'/'.$tour.'/'.$album.'/'.Album::IMAGES_DIR.'/'.$image, $image, true, true)?>
-																<div class="buttons"><a class="btn btn-danger delete" href="#">Удал.</a></div>
+																<div class="buttons"><a class="btn btn-danger delete" href="#" rel="<?=$image?>">Удал.</a></div>
 															</li>
 														<?php endforeach; ?>
 													</ol>
