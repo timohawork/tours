@@ -42,7 +42,7 @@ class Album
 				);
 			}
 			else if (self::TYPE_IMAGES == $this->type) {
-				if (false === strpos($file, '.jpg')) {
+				if (false === strpos($file, '.jpg') || strpos($file, Image::BIG_NAME_PART.".jpg")) {
 					continue;
 				}
 				$list[] = array(
