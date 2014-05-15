@@ -19,6 +19,10 @@
 	margin: 10px 20px;
 }
 
+#bread-crumbs.inalbum {
+	margin-left: 190px;
+}
+
 #bread-crumbs span {
 	font-weight: bold;
 }

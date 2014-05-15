@@ -49,7 +49,7 @@ class Router
 			$links = '&nbsp;>&nbsp;<a href="index.php?tour='.$this->tour.'">'.$this->tour.'</a>&nbsp;>&nbsp;<span>'.$this->album.'</span>';
 			$backUrl = 'index.php?tour='.$this->tour;
 		}
-		$html = null !== $this->type ? '<div id="bread-crumbs"><a href="'.$backUrl.'">Назад</a>&nbsp;&nbsp;<a href="/">Главная</a>'.$links.'</div>' : '';
+		$html = null !== $this->type ? '<div id="bread-crumbs"'.(self::TYPE_ALBUM === $this->type ? ' class="inalbum"' : '').'><a href="'.$backUrl.'">Назад</a>&nbsp;&nbsp;<a href="/">Главная</a>'.$links.'</div>' : '';
 		return $html;
 	}
 }
