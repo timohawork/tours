@@ -39,7 +39,7 @@
 		
 		$("a[rel^='prettyPhoto']").prettyPhoto({
 			animation_speed: 'normal',
-			show_title: false,
+			show_title: true,
 			allow_resize: false,
 			default_width: 800,
 			default_height: 600,
