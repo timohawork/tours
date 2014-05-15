@@ -94,7 +94,7 @@ class Image
 		if (empty($_POST['imageDir']) || !isset($_POST['imageDesc']) || !is_file(Router::DIR_NAME.'/'.$_POST['imageDir'])) {
 			return false;
 		}
-		if (false === file_put_contents(Router::DIR_NAME.'/'.self::getDescFile($_POST['imageDir']), $_POST['imageDesc'])) {
+		if (false === file_put_contents(self::getDescFile(Router::DIR_NAME.'/'.$_POST['imageDir']), $_POST['imageDesc'])) {
 			return 'Ошибка сохранения описания изображения!';
 		}
 		return true;
@@ -104,6 +104,10 @@ class Image
 	public static function delete($path)
 	{
 		if (empty($path) || !is_file(Router::DIR_NAME.'/'.$path)) {
+			return false;
+		}
+		$descFilePath = self::getDescFile(Router::DIR_NAME.'/'.$path);
+		if (is_file($descFilePath) && !unlink($descFilePath)) {
 			return false;
 		}
 		return unlink(Router::DIR_NAME.'/'.$path);
