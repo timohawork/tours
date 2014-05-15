@@ -10,14 +10,24 @@ $(document).ready(function() {
 		}
 	});
 	
+	$('.folding-caret').live('click', function() {
+		if ($(this).hasClass('fa-caret-right')) {
+			$(this).removeClass('fa-caret-right');
+			$(this).addClass('fa-caret-down');
+		}
+		else {
+			$(this).addClass('fa-caret-right');
+			$(this).removeClass('fa-caret-down');
+		}
+		$(this).closest('.folding-block').find('.folding-toggle').eq(0).toggleClass('hide');
+	});
+	
 	$('.edit').live('click', function() {
 		var albumTitle = $('#albumTitle'),
-			coverImg = $('#coverImg'),
-			tourTitle = $(this).parents('.tour-block').find('.title').eq(0).text();
+			tourTitle = $(this).closest('.tour-block').find('h4 .title').eq(0).text();
 		$('#newTour').remove();
 		$('#albumOrigTitle').remove();
 		albumTitle.val('');
-		coverImg.html('');
 		$('.title-block .text-error').text('');
 		$('.file-block .text-error').text('');
 		
@@ -32,14 +42,12 @@ $(document).ready(function() {
 			$('#albumEdit .modal-header h3').text('Редактирование экскурсии');
 			albumTitle.val(tourTitle);
 			$('#albumEdit form').append('<input type="hidden" id="albumOrigTitle" name="albumOrigTitle" value="'+tourTitle+'">');
-			coverImg.html('<img class="img-rounded preview" src="tours/'+tourTitle+'/cover.jpg" alt="'+tourTitle+'">');
 		}
 		if ($(this).hasClass('editAlbum')) {
-			var albumOrigTitle = $(this).parents('.album').find('.title').eq(0).text();
+			var albumOrigTitle = $(this).closest('.album-block').find('.title').eq(0).text();
 			$('#albumEdit .modal-header h3').text('Редактирование альбома');
 			albumTitle.val(albumOrigTitle);
 			$('#albumEdit form').append('<input type="hidden" id="albumOrigTitle" name="albumOrigTitle" value="'+albumOrigTitle+'"><input type="hidden" id="tourTitle" name="tourTitle" value="'+tourTitle+'">');
-			coverImg.html('<img class="img-rounded preview" src="tours/'+tourTitle+'/'+albumOrigTitle+'/cover.jpg" alt="'+albumOrigTitle+'">');
 		}
 		$('#albumEdit').modal('show');
 		return false;
@@ -69,18 +77,18 @@ $(document).ready(function() {
 	
 	$('.delete').live('click', function() {
 		var tour = $(this).parents('.tour-block'),
-			album = $(this).parents('.album'),
+			album = $(this).parents('.album-block'),
 			image = $(this).parents('.image-block'),
 			data = {},
 			text = 'Вы уверены, что хотите удалить ';
 		
 		if (image.length) {
 			text += 'изображение?';
-			data = {deleteImage: tour.find('.title').eq(0).text()+'/'+album.find('.title').eq(0).text()+'/images/'+$(this).attr('rel')};
+			data = {deleteImage: tour.find('.title').eq(0).text()+'/'+album.find('h4 .title').eq(0).text()+'/images/'+$(this).attr('rel')};
 		}
 		else if (album.length) {
 			text += 'альбом?';
-			data = {deleteAlbum: tour.find('.title').eq(0).text()+'/'+album.find('.title').eq(0).text()};
+			data = {deleteAlbum: tour.find('.title').eq(0).text()+'/'+album.find('h4 .title').eq(0).text()};
 		}
 		else if (tour.length) {
 			text += 'экскурсию?';
@@ -100,7 +108,7 @@ $(document).ready(function() {
 		$('#imageEdit .modal-header h3').text('Добавить изображение');
 		$('#imageEdit .file-block').removeClass('hide');
 		tinymce.activeEditor.setContent('');
-		$('#imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album').find('.title').eq(0).text());
+		$('#imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album-block').find('.title').eq(0).text());
 		$('#isEditImage').remove();
 		$('#imageEdit').modal('show');
 		return false;
@@ -110,7 +118,7 @@ $(document).ready(function() {
 		$('#imageEdit .modal-header h3').text('Редактирование изображения');
 		$('#imageEdit .file-block').addClass('hide');
 		tinymce.activeEditor.setContent($(this).parents('.image-block').find('img').next('.desc').html());
-		$('#imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album').find('.title').eq(0).text()+'/images/'+$(this).parents('.image-block').find('.title').text());
+		$('#imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album-block').find('.title').eq(0).text()+'/images/'+$(this).find('img').attr('alt'));
 		$('#imageEdit form').append('<input type="hidden" id="isEditImage" name="isEditImage" value="1">');
 		$('#imageEdit').modal('show');
 		return false;

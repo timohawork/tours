@@ -1,11 +1,13 @@
 <?php
 
 session_start();
+
 include_once 'config.php';
 include_once 'router.php';
 include_once 'models/admin.php';
 include_once 'models/image.php';
 include_once 'models/album.php';
+
 $admin = new Admin($config);
 
 if (isset($_POST['password'])) {
@@ -91,6 +93,7 @@ else if (isset($_POST['imageDir'])) {
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="Content-Language" content="ru" />
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="/css/bootstrap-responsive.css" />
 		<link rel="stylesheet" type="text/css" href="/css/admin.css" />
@@ -129,50 +132,63 @@ else if (isset($_POST['imageDir'])) {
 						</div>
 					<?php endif; ?>
 					
-					<h2>Экскурсии <a class="btn edit newTour" href="#">Добавить</a></h2>
-					<ul id="tours-block">
+					<h2><a class="btn edit newTour" href="#"><i class="fa fa-plus fa-lg"></i></a> Экскурсии:</h2>
+					<div id="tours-block">
 						<?php foreach ($admin->getTours() as $tour => $albums) : ?>
-							<li class="tour-block">
-								<span class="title"><?=$tour?></span>
-								<div class="buttons">
-									<a class="btn edit newAlbum" href="#">Добавить</a>
-									<a class="btn btn-info edit editTour" href="#">Ред.</a>
-									<a class="btn btn-danger delete" href="#">Удал.</a>
-								</div>
-								<?php if (!empty($albums)) : ?>
-									<ul class="albums-block">
-										<?php foreach ($albums as $album => $dir) : ?>
-											<li class="album">
-												<span class="title"><?=$album?></span>
-												<div class="buttons">
-													<a class="btn newImage" href="#">Добавить</a>
-													<a class="btn btn-info edit editAlbum" href="#">Ред.</a>
-													<a class="btn btn-danger delete" href="#">Удал.</a>
+							<div class="tour-block folding-block">
+								<i class="fa <?=!empty($albums) ? 'fa-caret-right folding-caret fa-2x' : 'empty'?>"></i>&nbsp;
+								<h4>
+									<a href="#" class="edit editTour"><img class="img-rounded" src="tours/<?=$tour?>/cover.jpg" alt="<?=$tour?>" title="Редактировать"></a>
+									<span class="title"><?=$tour?></span>
+									<a class="btn edit newAlbum" href="#"><i class="fa fa-plus fa-lg"></i></a>
+									<i class="fa fa-times-circle-o fa-lg delete" title="Удалить"></i>
+								</h4>
+								<div class="folding-toggle hide">
+									<?php if (!empty($albums)) : ?>
+										<div class="albums-block">
+											<?php foreach ($albums as $album => $dir) : ?>
+												<div class="album-block folding-block">
+													<i class="fa <?=!empty($dir[Album::IMAGES_DIR]) ? 'fa-caret-right folding-caret fa-2x' : 'empty'?>"></i>&nbsp;
+													<h4>
+														<a href="#" class="edit editAlbum"><img class="img-rounded" src="tours/<?=$tour?>/<?=$album?>/cover.jpg" alt="<?=$album?>" title="Редактировать"></a>
+														<span class="title"><?=$album?></span>
+														<a class="btn newImage" href="#"><i class="fa fa-plus fa-lg"></i></a>
+														<i class="fa fa-times-circle-o fa-lg delete" title="Удалить"></i>
+													</h4>
+													<div class="folding-toggle hide">
+														<?php if (!empty($dir[Album::IMAGES_DIR])) : ?>
+															<div class="images-block">
+																<?php foreach ($dir[Album::IMAGES_DIR] as $imageName) : ?>
+																	<div class="image-block">
+																		<?php $image = new Image(Router::DIR_NAME.'/'.$tour.'/'.$album.'/'.Album::IMAGES_DIR.'/'.$imageName, $imageName); ?>
+																		<a href="#" class="editImage">
+																			<?=$image->render(array('class' => 'img-rounded'))?>
+																			<i class="fa fa-times-circle-o fa-lg delete" title="Удалить" rel="<?=$imageName?>"></i>
+																		</a>
+																		<div class="imageDesc">
+																			<?php
+																				if (!empty($image->desc)) {
+																					$imageDesc = strip_tags($image->desc);
+																					echo 100 < strlen($imageDesc) ? substr($imageDesc, 0, 100).'...' : $imageDesc;
+																				}
+																				else {
+																					echo 'Нет описания';
+																				}
+																			?>
+																		</div>
+																	</div>
+																<?php endforeach; ?>
+															</div>
+														<?php endif; ?>
+													</div>
 												</div>
-												<?php if (!empty($dir[Album::IMAGES_DIR])) : ?>
-													<ol class="images-block">
-														<?php foreach ($dir[Album::IMAGES_DIR] as $imageName) : ?>
-															<li class="image-block">
-																<?php $image = new Image(Router::DIR_NAME.'/'.$tour.'/'.$album.'/'.Album::IMAGES_DIR.'/'.$imageName, $imageName); ?>
-																<div class="album-block">
-																	<?=$image->render(array('class' => 'img-rounded preview'))?>
-																	<span class="title"><?=$imageName?></span>
-																</div>
-																<div class="buttons">
-																	<a class="btn btn-info editImage" href="#">Ред.</a>
-																	<a class="btn btn-danger delete" href="#" rel="<?=$imageName?>">Удал.</a>
-																</div>
-															</li>
-														<?php endforeach; ?>
-													</ol>
-												<?php endif; ?>
-											</li>
-										<?php endforeach; ?>
-									</ul>
-								<?php endif; ?>
-							</li>
+											<?php endforeach; ?>
+										</div>
+									<?php endif; ?>
+								</div>
+							</div>
 						<?php endforeach; ?>
-					</ul>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -2,45 +2,130 @@
 	margin-top: 20px;
 }
 
-img.preview {
-	margin: 5px;
-	max-width: 200px;
-}
-
 .buttons {
 	display: inline-block;
 	margin: 5px;
 }
 
-.tour-block .title {
-	font-size: 18px;
-	font-weight: bold;
+.folding-caret {
+	width: 14px;
+	cursor: pointer;
 }
 
-.albums-block {
-	margin-left: 5px;
+.fa.empty {
+	width: 14px;
+	height: 25px;
 }
 
-.albums-block li {
-	padding-left: 10px;
+.fa.delete {
+	color: #F00;
+}
+
+.tour-block h4,
+.album-block h4 {
+	display: inline-block;
+	margin: 0;
+}
+
+.albums-block, .images-block {
+	margin-left: 50px;
+	padding: 10px;
+}
+
+.tour-block,
+.album-block {
+	position: relative;
+	margin-bottom: 20px;
+}
+
+.tour-block .folding-caret,
+.tour-block .fa.empty,
+.album-block .folding-caret,
+.album-block .fa.empty {
+	position: absolute;
+	top: 40px;
+	left: 1px;
+}
+
+.tour-block h4,
+.album-block h4 {
+	position: relative;
+	margin: 0 15px;
+	padding: 5px;
+	background-color: #E0E0DD;
+	border: 1px solid #F0F0EE;
+	border-radius: 5px;
+}
+
+.tour-block .edit,
+.album-block .edit {
+	display: inline-block;
+}
+
+.tour-block .edit img,
+.album-block .edit img {
+	width: 100px;
+}
+
+.tour-block h4 .delete,
+.album-block h4 .delete {
+	position: absolute;
+	top: 5px;
+	right: 3px;
+	opacity: .8;
+	cursor: pointer;
+	display: none;
+}
+
+.tour-block h4:hover .delete,
+.album-block h4:hover .delete {
+	display: block;
+}
+
+.tour-block .newAlbum,
+.album-block .newImage {
+	display: block;
+	margin-top: 10px;
+}
+
+.images-block {
+	overflow: hidden;
+	max-width: 726px;
+}
+
+.image-block {
+	float: left;
+	padding: 10px;
+	margin: 10px;
+	max-width: 200px;
+	height: 250px;
 	border: 1px solid #CCCCCC;
 	border-radius: 5px;
-	margin-bottom: 5px;
 }
 
-.albums-block .title {
-	font-size: 15px;
-	font-weight: normal;
+.image-block img {
+	width: 200px;
 }
 
-.album-block {
+.image-block .editImage {
+	position: relative;
 	display: inline-block;
-	margin: 5px;
 }
 
-.images-block li {
-	border: none;
-	padding-left: 0;
+.image-block .editImage .delete {
+	position: absolute;
+	top: 5px;
+	right: 3px;
+	opacity: .8;
+	display: none;
+}
+
+.image-block .editImage:hover .delete {
+	display: block;
+}
+
+.image-block .imageDesc {
+	margin: 5px;
 }
 
 #imageEdit {
