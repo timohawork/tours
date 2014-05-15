@@ -9,6 +9,9 @@ class Album
 	const TYPE_COVERS = 1;
 	const TYPE_IMAGES = 2;
 	
+	const COVER_WIDTH = 200;
+	const COVER_HEIGHT = 130;
+	
 	public $dir;
 	public $type;
 	
@@ -69,10 +72,15 @@ class Album
 		if (self::COVER_TYPE !== $_FILES['albumCover']['type']) {
 			return 'Неверный тип файла. Можно загружать только jpg-файлы.';
 		}
-		if (!mkdir($path) || !chmod($path, 0755) || !mkdir($path.'/'.Album::IMAGES_DIR) || !chmod($path.'/'.Album::IMAGES_DIR, 0755)) {
+		if (!mkdir($path) || !chmod($path, 0755)) {
 			return 'Ошибка создания директории!';
 		}
-		if (!move_uploaded_file($_FILES['albumCover']['tmp_name'], dirname(__FILE__).'/../'.$path.'/'.self::COVER_NAME)) {
+		if (isset($_POST['newTour']) && (!mkdir($path.'/'.Album::IMAGES_DIR) || !chmod($path.'/'.Album::IMAGES_DIR, 0755))) {
+			return 'Ошибка создания директории!';
+		}
+		$cover = new Imagick($_FILES['albumCover']['tmp_name']);
+		$cover->cropthumbnailimage(self::COVER_WIDTH, self::COVER_HEIGHT);
+		if (true !== $cover->writeimage($path.'/'.self::COVER_NAME)) {
 			return 'Ошибка сохранения изображения!';
 		}
 		return true;

@@ -4,6 +4,9 @@ class Image
 {
 	const TYPE = 'image/jpeg';
 	
+	const PREVIEW_WIDTH = 600;
+	const PREVIEW_HEIGHT = 400;
+	
 	public $url;
 	public $title;
 	public $desc;
