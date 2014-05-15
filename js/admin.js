@@ -86,21 +86,33 @@ $(document).ready(function() {
 	});
 	
 	$('.newImage').live('click', function() {
-		$('#newImageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album').find('.title').eq(0).text());
-		$('#imageAdd').modal('show');
+		$('#imageEdit .file-block').removeClass('hide');
+		$('#imageDesc').val('');
+		$('#imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album').find('.title').eq(0).text());
+		$('#isEditImage').remove();
+		$('#imageEdit').modal('show');
 		return false;
 	});
 	
-	$('#imageAdd .modal-footer .btn-primary').live('click', function() {
-		var error = $('#imageAdd .text-error');
+	$('.editImage').live('click', function() {
+		$('#imageEdit .file-block').addClass('hide');
+		$('#imageDesc').val($(this).parents('.image-block').find('img').attr('data-desc'));
+		$('#imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album').find('.title').eq(0).text()+'/images/'+$(this).parents('.image-block').find('.title').text());
+		$('#imageEdit form').append('<input type="hidden" id="isEditImage" name="isEditImage" value="1">');
+		$('#imageEdit').modal('show');
+		return false;
+	});
+	
+	$('#imageEdit .modal-footer .btn-primary').live('click', function() {
+		var error = $('#imageEdit .text-error');
 		
 		error.text('');
 		
-		if (!$('#image').val().length) {
+		if (!$('#isEditImage').length && !$('#image').val().length) {
 			error.text('Не выбрано изоражение!');
 		}
 		else {
-			$('#imageAdd form').submit();
+			$('#imageEdit form').submit();
 		}
 		return false;
 	});

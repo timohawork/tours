@@ -1,11 +1,8 @@
 (function($) {
     $(function() {
         $('.jcarousel')
-			.on('jcarousel:create jcarousel:scrollend', function() {
-				var visible = $('.jcarousel').jcarousel('visible');
-				if (visible) {
-					$('#description').html(visible.find('img').attr('data-desc'));
-				}
+			.on('jcarousel:scrollend', function() {
+				$('#description').html($('.jcarousel').jcarousel('visible').find('img').attr('data-desc'));
 			})
 			.jcarousel();
 

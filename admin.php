@@ -71,10 +71,10 @@ else if (isset($_POST['deleteImage'])) {
 	echo (int)Image::delete($_POST['deleteImage']);
 	die();
 }
-else if (isset($_POST['newImageDir'])) {
-	$newImage = Image::add();
-	if (true !== $newImage) {
-		$errors = $newImage;
+else if (isset($_POST['imageDir'])) {
+	$imageError = !isset($_POST['isEditImage']) ? Image::add() : Image::edit();
+	if (true !== $imageError) {
+		$errors = $imageError;
 	}
 	else {
 		$success = 'Данные успешно сохранены!';
@@ -146,10 +146,17 @@ else if (isset($_POST['newImageDir'])) {
 												</div>
 												<?php if (!empty($dir[Album::IMAGES_DIR])) : ?>
 													<ol class="images-block">
-														<?php foreach ($dir[Album::IMAGES_DIR] as $image) : ?>
+														<?php foreach ($dir[Album::IMAGES_DIR] as $imageName) : ?>
 															<li class="image-block">
-																<?=Image::renderBlock(null, Router::DIR_NAME.'/'.$tour.'/'.$album.'/'.Album::IMAGES_DIR.'/'.$image, $image, true, true)?>
-																<div class="buttons"><a class="btn btn-danger delete" href="#" rel="<?=$image?>">Удал.</a></div>
+																<?php $image = new Image(Router::DIR_NAME.'/'.$tour.'/'.$album.'/'.Album::IMAGES_DIR.'/'.$imageName, $imageName); ?>
+																<div class="album-block">
+																	<?=$image->render(array('class' => 'img-rounded preview'))?>
+																	<span class="title"><?=$imageName?></span>
+																</div>
+																<div class="buttons">
+																	<a class="btn btn-info editImage" href="#">Ред.</a>
+																	<a class="btn btn-danger delete" href="#" rel="<?=$imageName?>">Удал.</a>
+																</div>
 															</li>
 														<?php endforeach; ?>
 													</ol>
@@ -194,14 +201,14 @@ else if (isset($_POST['newImageDir'])) {
 			</div>
 		</div>
 		
-		<div class="modal hide fade" id="imageAdd">
+		<div class="modal hide fade" id="imageEdit">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h3>Добавить изображение</h3>
 			</div>
 			<div class="modal-body">
 				<form enctype="multipart/form-data" class="form-horizontal" action="admin.php" method="POST">
-					<div class="control-group">
+					<div class="control-group file-block">
 						<label class="control-label" for="image">Изображение</label>
 						<div class="controls">
 							<input type="file" name="image" id="image">
@@ -212,10 +219,9 @@ else if (isset($_POST['newImageDir'])) {
 						<label class="control-label" for="imageDesc">Описание</label>
 						<div class="controls">
 							<textarea class="span3" name="imageDesc" id="imageDesc"></textarea>
-							<p class="text-error"></p>
 						</div>
 					</div>
-					<input type="hidden" id="newImageDir" name="newImageDir" value="">
+					<input type="hidden" id="imageDir" name="imageDir" value="">
 				</form>
 			</div>
 			<div class="modal-footer">

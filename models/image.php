@@ -12,16 +12,21 @@ class Image
 	{
 		$this->url = $url;
 		$this->title = $title;
-		$path = explode("/", $this->url);
-		$descFile = str_replace(".jpg", "_desc.txt", array_pop($path));
-		$path[] = $descFile;
-		$path = implode("/", $path);
+		$path = self::getDescFile($this->url);
 		$this->desc = is_file($path) ? file_get_contents($path) : '';
 	}
 	
-	public function render()
+	public static function getDescFile($imageUrl)
 	{
-		return '<img src="'.$this->url.'" alt="'.$this->title.'" data-desc="'.$this->desc.'">';
+		$path = explode("/", $imageUrl);
+		$descFile = str_replace(".jpg", "_desc.txt", array_pop($path));
+		$path[] = $descFile;
+		return implode("/", $path);
+	}
+	
+	public function render($options)
+	{
+		return '<img class="'.(!empty($options['class']) ? $options['class'] : '').'" src="'.$this->url.'" alt="'.$this->title.'" data-desc="'.$this->desc.'">';
 	}
 	
 	public static function renderBlock($router, $url, $title, $withTitle = true, $isPreview = false)
@@ -62,10 +67,10 @@ class Image
 	
 	public static function add()
 	{
-		if (empty($_POST['newImageDir']) || empty($_FILES)) {
+		if (empty($_POST['imageDir']) || empty($_FILES)) {
 			return false;
 		}
-		$path = Router::DIR_NAME.'/'.$_POST['newImageDir'];
+		$path = Router::DIR_NAME.'/'.$_POST['imageDir'];
 		if (!is_dir($path)) {
 			return false;
 		}
@@ -75,9 +80,27 @@ class Image
 		if (!move_uploaded_file($_FILES['image']['tmp_name'], dirname(__FILE__).'/../'.$path.'/'.Album::IMAGES_DIR.'/'.basename($_FILES['image']['name']))) {
 			return 'Ошибка сохранения изображения!';
 		}
+		if (isset($_POST['imageDesc'])) {
+			$name = str_replace(".jpg", "_desc.txt", $_FILES['image']['name']);
+			if (false === file_put_contents($path.'/'.Album::IMAGES_DIR.'/'.$name, $_POST['imageDesc'])) {
+				return 'Ошибка сохранения описания изображения!';
+			}
+		}
 		return true;
 	}
 	
+	public static function edit()
+	{
+		if (empty($_POST['imageDir']) || !isset($_POST['imageDesc']) || !is_file(Router::DIR_NAME.'/'.$_POST['imageDir'])) {
+			return false;
+		}
+		if (false === file_put_contents(Router::DIR_NAME.'/'.self::getDescFile($_POST['imageDir']), $_POST['imageDesc'])) {
+			return 'Ошибка сохранения описания изображения!';
+		}
+		return true;
+	}
+
+
 	public static function delete($path)
 	{
 		if (empty($path) || !is_file(Router::DIR_NAME.'/'.$path)) {

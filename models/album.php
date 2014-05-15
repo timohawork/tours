@@ -39,8 +39,7 @@ class Album
 				);
 			}
 			else if (self::TYPE_IMAGES == $this->type) {
-				$fileName = explode(".", $file);
-				if ('jpg' !== $fileName[1]) {
+				if (false === strpos($file, '.jpg')) {
 					continue;
 				}
 				$list[] = array(

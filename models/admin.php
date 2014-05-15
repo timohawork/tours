@@ -50,6 +50,9 @@ class Admin
 				$files[$file] = $this->getDir($dir.'/'.$file);
 			}
 			else {
+				if (false === strpos($file, '.jpg')) {
+					continue;
+				}
 				$files[] = $file;
 			}
 		}
