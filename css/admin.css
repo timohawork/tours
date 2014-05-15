@@ -42,3 +42,16 @@ img.preview {
 	border: none;
 	padding-left: 0;
 }
+
+#imageEdit {
+	left: 44%;
+	width: 700px;
+}
+
+#imageEdit .form-horizontal .control-label {
+	width: 90px;
+}
+
+#imageEdit .form-horizontal .controls {
+	margin-left: 100px;
+}

@@ -96,6 +96,7 @@ else if (isset($_POST['imageDir'])) {
 		<link rel="stylesheet" type="text/css" href="/css/admin.css" />
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
 		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/tinymce/tinymce.min.js"></script>
 		<script type="text/javascript" src="/js/admin.js"></script>
 		<title>Администраторская панель - <?=$config['title']?></title>
 	</head>
@@ -208,7 +209,7 @@ else if (isset($_POST['imageDir'])) {
 		<div class="modal hide fade" id="imageEdit">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h3>Добавить изображение</h3>
+				<h3></h3>
 			</div>
 			<div class="modal-body">
 				<form enctype="multipart/form-data" class="form-horizontal" action="admin.php" method="POST">

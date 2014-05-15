@@ -1,4 +1,10 @@
 $(document).ready(function() {
+	
+	tinymce.init({
+		selector: "#imageDesc",
+		height: 200
+	});
+	
 	$('.edit').live('click', function() {
 		var albumTitle = $('#albumTitle'),
 			coverImg = $('#coverImg'),
@@ -86,8 +92,9 @@ $(document).ready(function() {
 	});
 	
 	$('.newImage').live('click', function() {
+		$('#imageEdit .modal-header h3').text('Добавить изображение');
 		$('#imageEdit .file-block').removeClass('hide');
-		$('#imageDesc').val('');
+		tinymce.activeEditor.setContent('');
 		$('#imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album').find('.title').eq(0).text());
 		$('#isEditImage').remove();
 		$('#imageEdit').modal('show');
@@ -95,8 +102,9 @@ $(document).ready(function() {
 	});
 	
 	$('.editImage').live('click', function() {
+		$('#imageEdit .modal-header h3').text('Редактирование изображения');
 		$('#imageEdit .file-block').addClass('hide');
-		$('#imageDesc').val($(this).parents('.image-block').find('img').attr('data-desc'));
+		tinymce.activeEditor.setContent($(this).parents('.image-block').find('img').attr('data-desc'));
 		$('#imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album').find('.title').eq(0).text()+'/images/'+$(this).parents('.image-block').find('.title').text());
 		$('#imageEdit form').append('<input type="hidden" id="isEditImage" name="isEditImage" value="1">');
 		$('#imageEdit').modal('show');
