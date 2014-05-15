@@ -99,7 +99,9 @@ class Album
 			if (self::COVER_TYPE !== $_FILES['albumCover']['type']) {
 				return 'Неверный тип файла. Можно загружать только jpg-файлы.';
 			}
-			if (!move_uploaded_file($_FILES['albumCover']['tmp_name'], dirname(__FILE__).'/../'.$path.'/'.self::COVER_NAME)) {
+			$cover = new Imagick($_FILES['albumCover']['tmp_name']);
+			$cover->cropthumbnailimage(self::COVER_WIDTH, self::COVER_HEIGHT);
+			if (true !== $cover->writeimage($path.'/'.self::COVER_NAME)) {
 				return 'Ошибка сохранения изображения!';
 			}
 		}
