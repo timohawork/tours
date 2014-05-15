@@ -51,9 +51,10 @@ $list = $album->getList();
 			</div>
 			<div id="container">
 				<h2 id="pageTitle">
-					<?=$title?>
 					<a href="/">Главная</a>
 					<a href="/">О нас</a>
+					<br /><br />
+					<?=$title?>
 				</h2>
 				<div class="centered">
 					<?=$router->getBreadCrumbs()?>
