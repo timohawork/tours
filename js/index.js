@@ -2,7 +2,7 @@
     $(function() {
         $('.jcarousel')
 			.on('jcarousel:scrollend', function() {
-				$('#description').html($('.jcarousel').jcarousel('visible').find('img').attr('data-desc'));
+				$('#description').html($('.jcarousel').jcarousel('visible').find('img').next('.desc').html());
 			})
 			.jcarousel();
 

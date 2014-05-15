@@ -69,7 +69,7 @@ class Album
 		if (self::COVER_TYPE !== $_FILES['albumCover']['type']) {
 			return 'Неверный тип файла. Можно загружать только jpg-файлы.';
 		}
-		if (!mkdir($path) || !chmod($path, 0777) || !mkdir($path.'/'.Album::IMAGES_DIR) || !chmod($path.'/'.Album::IMAGES_DIR, 0777)) {
+		if (!mkdir($path) || !chmod($path, 0755) || !mkdir($path.'/'.Album::IMAGES_DIR) || !chmod($path.'/'.Album::IMAGES_DIR, 0755)) {
 			return 'Ошибка создания директории!';
 		}
 		if (!move_uploaded_file($_FILES['albumCover']['tmp_name'], dirname(__FILE__).'/../'.$path.'/'.self::COVER_NAME)) {

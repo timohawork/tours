@@ -54,3 +54,9 @@
 	margin: 0 auto;
 	width: 1000px;
 }
+
+#description {
+	text-align: left;
+	width: 620px;
+	margin: auto;
+}

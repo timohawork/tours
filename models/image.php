@@ -26,7 +26,7 @@ class Image
 	
 	public function render($options = array())
 	{
-		return '<img class="'.(!empty($options['class']) ? $options['class'] : '').'" src="'.$this->url.'" alt="'.$this->title.'" data-desc="'.$this->desc.'">';
+		return '<img class="'.(!empty($options['class']) ? $options['class'] : '').'" src="'.$this->url.'" alt="'.$this->title.'"><div class="desc hidden" class="hidden">'.$this->desc.'</div>';
 	}
 	
 	public static function renderBlock($router, $url, $title, $withTitle = true, $isPreview = false)

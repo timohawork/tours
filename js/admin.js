@@ -104,7 +104,7 @@ $(document).ready(function() {
 	$('.editImage').live('click', function() {
 		$('#imageEdit .modal-header h3').text('Редактирование изображения');
 		$('#imageEdit .file-block').addClass('hide');
-		tinymce.activeEditor.setContent($(this).parents('.image-block').find('img').attr('data-desc'));
+		tinymce.activeEditor.setContent($(this).parents('.image-block').find('img').next('.desc').html());
 		$('#imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album').find('.title').eq(0).text()+'/images/'+$(this).parents('.image-block').find('.title').text());
 		$('#imageEdit form').append('<input type="hidden" id="isEditImage" name="isEditImage" value="1">');
 		$('#imageEdit').modal('show');
