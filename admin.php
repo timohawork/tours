@@ -21,7 +21,7 @@ if (!isset($_SESSION['login'])) {
 			<meta http-equiv="Content-Language" content="ru" />
 			<link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
 			<link rel="stylesheet" type="text/css" href="/css/bootstrap-responsive.css" />
-			<title>Администраторская панель</title>
+			<title>Администраторская панель - <?=$config['title']?></title>
 		</head>
 		<body>
 			<div class="container-fluid">
@@ -97,7 +97,7 @@ else if (isset($_POST['imageDir'])) {
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
 		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="/js/admin.js"></script>
-		<title>Администраторская панель</title>
+		<title>Администраторская панель - <?=$config['title']?></title>
 	</head>
 	<body>
 		<div class="container-fluid">

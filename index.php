@@ -5,7 +5,7 @@ include_once 'router.php';
 include_once 'models/image.php';
 include_once 'models/album.php';
 
-$router = new Router();
+$router = new Router($config['title']);
 $title = '';
 $albumUrl = '';
 
@@ -39,7 +39,7 @@ $list = $album->getList();
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
 		<script type="text/javascript" src="js/jquery.jcarousel.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>
-		<title><?=$config['title']?></title>
+		<title><?=$router->title?></title>
 	</head>
 	<body>
 		<div id="wrapper">

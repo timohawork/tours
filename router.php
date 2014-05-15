@@ -10,10 +10,12 @@ class Router
 	public $type;
 	public $tour;
 	public $album;
+	public $title;
 	
-	public function __construct() {
+	public function __construct($title) {
 		$query = explode("&", $_SERVER['QUERY_STRING']);
 		if (empty($query[0])) {
+			$this->title = $title;
 			return;
 		}
 		$tour = explode("=", $query[0]);
@@ -28,9 +30,11 @@ class Router
 			}
 			$this->type = self::TYPE_ALBUM;
 			$this->album = urldecode($album[1]);
+			$this->title = $this->album.' - '.$title;
 		}
 		else {
 			$this->type = self::TYPE_TOUR;
+			$this->title = $this->tour.' - '.$title;
 		}
 	}
 	
