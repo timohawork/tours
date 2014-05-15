@@ -42,14 +42,14 @@ class Router
 	{
 		$links = $backUrl = '';
 		if (self::TYPE_TOUR === $this->type) {
-			$links = '&nbsp;>&nbsp;<span>'.$this->tour.'</span>';
+			$links = '<i class="fa fa-angle-right"></i><span>'.$this->tour.'</span>';
 			$backUrl = '/';
 		}
 		else if (self::TYPE_ALBUM === $this->type) {
-			$links = '&nbsp;>&nbsp;<a href="index.php?tour='.$this->tour.'">'.$this->tour.'</a>&nbsp;>&nbsp;<span>'.$this->album.'</span>';
+			$links = '<i class="fa fa-angle-right"></i><a href="index.php?tour='.$this->tour.'">'.$this->tour.'</a><i class="fa fa-angle-right"></i><span>'.$this->album.'</span>';
 			$backUrl = 'index.php?tour='.$this->tour;
 		}
-		$html = null !== $this->type ? '<div id="bread-crumbs"'.(self::TYPE_ALBUM === $this->type ? ' class="inalbum"' : '').'><a href="'.$backUrl.'">Назад</a>&nbsp;&nbsp;<a href="/">Главная</a>'.$links.'</div>' : '';
+		$html = null !== $this->type ? '<div id="bread-crumbs"'.(self::TYPE_ALBUM === $this->type ? ' class="inalbum"' : '').'><a href="'.$backUrl.'" title="Назад"><i class="fa fa-arrow-left fa-lg"></i></a><a href="/" title="На главную"><i class="fa fa-home fa-lg"></i></a>'.$links.'</div>' : '';
 		return $html;
 	}
 }

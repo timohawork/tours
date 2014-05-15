@@ -36,5 +36,14 @@
                 $(this).removeClass('active');
             })
             .jcarouselPagination();
+		
+		$("a[rel^='prettyPhoto']").prettyPhoto({
+			animation_speed: 'normal',
+			show_title: false,
+			allow_resize: false,
+			default_width: 800,
+			default_height: 600,
+			social_tools: false
+		});
     });
 })(jQuery);

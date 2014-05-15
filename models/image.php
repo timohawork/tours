@@ -27,20 +27,21 @@ class Image
 	
 	protected static function getBitTitle($title)
 	{
-		return str_replace(".jpg", self::BIG_NAME_PART.".jpg", $title);
+		return str_replace(".jpg", self::BIG_NAME_PART.".jpg", strtolower($title));
 	}
 
 	public static function getDescFile($imageUrl)
 	{
 		$path = explode("/", $imageUrl);
-		$descFile = str_replace(".jpg", "_desc.txt", array_pop($path));
+		$descFile = str_replace(".jpg", "_desc.txt", strtolower(array_pop($path)));
 		$path[] = $descFile;
 		return implode("/", $path);
 	}
 	
 	public function render($options = array())
 	{
-		return '<img class="'.(!empty($options['class']) ? $options['class'] : '').'" src="'.$this->url.'" alt="'.$this->title.'"><div class="desc hidden" class="hidden">'.$this->desc.'</div>';
+		$html = '<img class="'.(!empty($options['class']) ? $options['class'] : '').'" src="'.$this->url.'" alt="'.$this->title.'"><div class="desc hidden" class="hidden">'.$this->desc.'</div>';
+		return !empty($options['withViewLink']) ? '<a href="'.str_replace($this->title, $this->bigTitle, $this->url).'" rel="prettyPhoto" title="'.(!empty($options['title']) ? $options['title'] : '').'">'.$html.'</a>' : $html;
 	}
 	
 	public static function renderBlock($router, $url, $title, $withTitle = true, $isPreview = false)
@@ -95,11 +96,12 @@ class Image
 		$bigImage = clone $image;
 		$image->cropthumbnailimage(self::IMG_WIDTH, self::IMG_HEIGHT);
 		$bigImage->cropthumbnailimage(self::BIG_WIDTH, self::BIG_HEIGHT);
-		if (!self::save($_FILES['image']['tmp_name'], $path.'/'.Album::IMAGES_DIR.'/'.basename($_FILES['image']['name'])) || !self::save($_FILES['image']['tmp_name'], $path.'/'.Album::IMAGES_DIR.'/'.self::getBitTitle(basename($_FILES['image']['name'])), true)) {
+		$fileName = strtolower(basename($_FILES['image']['name']));
+		if (!self::save($_FILES['image']['tmp_name'], $path.'/'.Album::IMAGES_DIR.'/'.$fileName) || !self::save($_FILES['image']['tmp_name'], $path.'/'.Album::IMAGES_DIR.'/'.self::getBitTitle($fileName), true)) {
 			return 'Ошибка сохранения изображения!';
 		}
 		if (isset($_POST['imageDesc'])) {
-			$name = str_replace(".jpg", "_desc.txt", $_FILES['image']['name']);
+			$name = str_replace(".jpg", "_desc.txt", strtolower($_FILES['image']['name']));
 			if (false === file_put_contents($path.'/'.Album::IMAGES_DIR.'/'.$name, $_POST['imageDesc'])) {
 				return 'Ошибка сохранения описания изображения!';
 			}
@@ -135,7 +137,7 @@ class Image
 		if (is_file($descFilePath) && !unlink($descFilePath)) {
 			return false;
 		}
-		return unlink(Router::DIR_NAME.'/'.$path);
+		return unlink(Router::DIR_NAME.'/'.$path) && unlink(Router::DIR_NAME.'/'.self::getBitTitle($path));
 	}
 }
 

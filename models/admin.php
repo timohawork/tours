@@ -46,6 +46,7 @@ class Admin
 				$files[$file] = $this->getDir($dir.'/'.$file);
 			}
 			else {
+				$file = strtolower($file);
 				if (false === strpos($file, '.jpg') || strpos($file, Image::BIG_NAME_PART.".jpg")) {
 					continue;
 				}

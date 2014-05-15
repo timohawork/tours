@@ -2,7 +2,12 @@ $(document).ready(function() {
 	
 	tinymce.init({
 		selector: "#imageDesc",
-		height: 200
+		height: 200,
+		setup : function(ed) {
+			ed.on('init', function() {
+				this.getDoc().body.style.fontSize = '16px';
+			});
+		}
 	});
 	
 	$('.edit').live('click', function() {

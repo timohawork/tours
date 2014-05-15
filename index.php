@@ -34,10 +34,13 @@ $list = $album->getList();
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="Content-Language" content="ru" />
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="/css/main.css" />
 		<link rel="stylesheet" type="text/css" href="/css/jcarousel.basic.css" />
+		<link rel="stylesheet" type="text/css" href="/css/prettyPhoto.css" />
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
 		<script type="text/javascript" src="js/jquery.jcarousel.js"></script>
+		<script type="text/javascript" src="js/jquery.prettyPhoto.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>
 		<title><?=$router->title?></title>
 	</head>
@@ -47,7 +50,11 @@ $list = $album->getList();
 				<a href="/"><img src="/img/logo.png" alt="<?=$config['title']?>"></a>
 			</div>
 			<div id="container">
-				<h3><?=$title?></h3>
+				<h2 id="pageTitle">
+					<?=$title?>
+					<a href="/">Главная</a>
+					<a href="/">О нас</a>
+				</h2>
 				<div class="centered">
 					<?=$router->getBreadCrumbs()?>
 					<?php if (Album::TYPE_COVERS == $album->type) : ?>
@@ -70,7 +77,10 @@ $list = $album->getList();
 											$isFirst = true;
 											foreach ($list as $block) {
 												$image = new Image($block['url'], $block['name']);
-												echo '<li>'.$image->render().'</li>';
+												echo '<li>'.$image->render(array(
+													'withViewLink' => true,
+													'title' => $title
+												)).'</li>';
 												if ($isFirst) {
 													$activeDesc = $image->desc;
 													$isFirst = false;

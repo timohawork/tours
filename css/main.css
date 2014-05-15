@@ -1,3 +1,7 @@
+body {
+	font-family: Arial, Helvetica, Verdana, sans-serif;
+}
+
 #wrapper {
 	width: 100%;
 	height: 100%;
@@ -9,18 +13,34 @@
 	height: 223px;
 }
 
+#pageTitle {
+	margin: 40px 0;
+}
+
 #footer {
-	margin: 20px 0;
+	margin: 50px 0 10px 0;
 	font-size: 14px;
 }
 
 #bread-crumbs {
 	text-align: left;
-	margin: 10px 20px;
+	margin: 10px 25px;
 }
 
 #bread-crumbs.inalbum {
 	margin-left: 190px;
+}
+
+#bread-crumbs a {
+	color: #000000;
+}
+
+#bread-crumbs .fa-angle-right {
+	margin: 0 5px;
+}
+
+#bread-crumbs .fa-arrow-left {
+	margin: 0 20px 0 0;
 }
 
 #bread-crumbs span {
@@ -62,5 +82,5 @@
 #description {
 	text-align: left;
 	width: 620px;
-	margin: auto;
+	margin: 0 auto 80px;
 }

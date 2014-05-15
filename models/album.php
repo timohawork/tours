@@ -42,6 +42,7 @@ class Album
 				);
 			}
 			else if (self::TYPE_IMAGES == $this->type) {
+				$file = strtolower($file);
 				if (false === strpos($file, '.jpg') || strpos($file, Image::BIG_NAME_PART.".jpg")) {
 					continue;
 				}
