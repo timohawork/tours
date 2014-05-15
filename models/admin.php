@@ -1,17 +1,13 @@
 <?php
 
-include_once 'router.php';
-include_once 'models/image.php';
-include_once 'models/album.php';
-
 class Admin
 {
 	public $tours;
 	protected $password = 'admin';
 	
-	public function __construct()
+	public function __construct($config)
 	{
-		
+		$this->password = $config['adminPassword'];
 	}
 	
 	public function login()

@@ -24,7 +24,7 @@ class Image
 		return implode("/", $path);
 	}
 	
-	public function render($options)
+	public function render($options = array())
 	{
 		return '<img class="'.(!empty($options['class']) ? $options['class'] : '').'" src="'.$this->url.'" alt="'.$this->title.'" data-desc="'.$this->desc.'">';
 	}

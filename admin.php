@@ -1,8 +1,12 @@
 <?php
 
 session_start();
+include_once 'config.php';
+include_once 'router.php';
 include_once 'models/admin.php';
-$admin = new Admin();
+include_once 'models/image.php';
+include_once 'models/album.php';
+$admin = new Admin($config);
 
 if (isset($_POST['password'])) {
 	$isLogin = $admin->login();

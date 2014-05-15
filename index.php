@@ -1,7 +1,6 @@
 <?php 
 
-$siteName = 'Title';
-
+include_once 'config.php';
 include_once 'router.php';
 include_once 'models/image.php';
 include_once 'models/album.php';
@@ -40,12 +39,12 @@ $list = $album->getList();
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
 		<script type="text/javascript" src="js/jquery.jcarousel.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>
-		<title><?=$siteName?></title>
+		<title><?=$config['title']?></title>
 	</head>
 	<body>
 		<div id="wrapper">
 			<div id="header">
-				<a href="/"><img src="/img/logo.png" alt="<?=$siteName?>"></a>
+				<a href="/"><img src="/img/logo.png" alt="<?=$config['title']?>"></a>
 			</div>
 			<div id="container">
 				<h3><?=$title?></h3>
@@ -89,7 +88,7 @@ $list = $album->getList();
 					<?php endif; ?>
 				</div>
 			</div>
-			<div id="footer">&copy; <?=$siteName?>, 2014</div>
+			<div id="footer">&copy; <?=$config['title']?>, 2014</div>
 		</div>
 	</body>
 </html>
