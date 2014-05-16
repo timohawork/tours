@@ -50,6 +50,7 @@ $pages = StaticPages::getPages();
 		<link rel="stylesheet" type="text/css" href="/css/jcarousel.basic.css" />
 		<link rel="stylesheet" type="text/css" href="/css/prettyPhoto.css" />
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
+		<script type="text/javascript" src="js/imageload.js"></script>
 		<script type="text/javascript" src="js/jquery.jcarousel.js"></script>
 		<script type="text/javascript" src="js/jquery.prettyPhoto.js"></script>
 		<script type="text/javascript" src="js/index.js"></script>
