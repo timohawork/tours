@@ -69,6 +69,7 @@ $(document).ready(function() {
 			hasError = true;
 		}
 		if (!hasError) {
+			Loader.show();
 			$('#albumEdit form').submit();
 		}
 		return false;
@@ -94,7 +95,9 @@ $(document).ready(function() {
 			data = {deleteAlbum: tour.find('.title').eq(0).text()};
 		}
 		if (confirm(text)) {
+			Loader.show();
 			$.post('admin.php', data, function(response) {
+				Loader.hide();
 				if (response) {
 					window.location.reload();
 				}
@@ -118,6 +121,7 @@ $(document).ready(function() {
 			error.text('Не выбрано ни одно изоражение!');
 		}
 		else {
+			Loader.show();
 			$('#imageAdd form').submit();
 		}
 		return false;
@@ -131,6 +135,7 @@ $(document).ready(function() {
 	});
 	
 	$('#imageEdit .modal-footer .btn-primary').live('click', function() {
+		Loader.show();
 		$('#imageEdit form').submit();
 		return false;
 	});
@@ -161,7 +166,8 @@ $(document).ready(function() {
 	});
 });
 
-var Folding = function() {
+var Folding = function()
+{
 	var self = this;
 	
 	self.toursType = 'tours';
@@ -251,5 +257,24 @@ var Folding = function() {
 		if (undefined === set || set) {
 			self.set(type, name, closing);
 		}
+	}
+}
+
+var Loader = new function()
+{
+	this.show = function() {
+		if (!$('#loader-block').length) {
+			$('.modal.in').modal('hide');
+			var body = $('body');
+			body.prepend(
+				'<div id="loader-block" style="width: '+body.innerWidth()+'px; height: '+body.innerHeight()+'px;">'+
+					'<img class="img-circle" src="../img/prettyPhoto/loader.gif" alt="Загрузка" title="Загрузка" />'+
+				'</div>'
+			);
+		}
+	}
+	
+	this.hide = function() {
+		$('#loader-block').remove();
 	}
 }
