@@ -137,4 +137,16 @@ $(document).ready(function() {
 		}
 		return false;
 	});
+	
+	
+	tinymce.init({
+		selector: "#edit-page textarea",
+		width: 1000,
+		height: 400,
+		setup : function(ed) {
+			ed.on('init', function() {
+				this.getDoc().body.style.fontSize = '16px';
+			});
+		}
+	});
 });

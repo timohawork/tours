@@ -1,32 +1,43 @@
 <?php 
 
 include_once 'config.php';
-include_once 'router.php';
-include_once 'models/image.php';
-include_once 'models/album.php';
+include_once 'models/static.php';
 
-$router = new Router($config['title']);
-$title = '';
-$albumUrl = '';
+if (!isset($_GET['page'])) {
 
-switch ($router->type) {
-	case Router::TYPE_TOUR:
-		$title = $router->tour;
-		$albumUrl = $router->tour;
-	break;
+	include_once 'router.php';
+	include_once 'models/image.php';
+	include_once 'models/album.php';
 
-	case Router::TYPE_ALBUM:
-		$title = $router->album;
-		$albumUrl = $router->tour.'/'.$router->album.'/'.Album::IMAGES_DIR;
-	break;
+	$router = new Router($config['title']);
+	$title = '';
+	$albumUrl = '';
 
-	case null:
-		$title = 'Наши экскурсии';
-	break;
+	switch ($router->type) {
+		case Router::TYPE_TOUR:
+			$title = $router->tour;
+			$albumUrl = $router->tour;
+		break;
+
+		case Router::TYPE_ALBUM:
+			$title = $router->album;
+			$albumUrl = $router->tour.'/'.$router->album.'/'.Album::IMAGES_DIR;
+		break;
+
+		case null:
+			$title = 'Наши экскурсии';
+		break;
+	}
+
+	$album = new Album($albumUrl);
+	$list = $album->getList();
+}
+else {
+	!StaticPages::isPage($_GET['page']) && die();
+	$title = $_GET['page'];
 }
 
-$album = new Album($albumUrl);
-$list = $album->getList();
+$pages = StaticPages::getPages();
 
 ?>
 <!DOCTYPE html>
@@ -47,57 +58,67 @@ $list = $album->getList();
 	<body>
 		<div id="wrapper">
 			<div id="header">
-				<a href="/"><img src="/img/logo.png" alt="<?=$config['title']?>"></a>
+				<a href="/"><img src="/img/logo.png"></a>
 			</div>
 			<div id="container">
 				<h2 id="pageTitle">
 					<a href="/">Главная</a>
-					<a href="/">О нас</a>
+					<?php if (!empty($pages)) : ?>
+						<?php foreach($pages as $page) : ?>
+							<a href="/index.php?page=<?=$page?>"><?=$page?></a>
+						<?php endforeach; ?>
+					<?php endif; ?>
 					<br /><br />
 					<?=$title?>
 				</h2>
-				<div class="centered">
-					<?=$router->getBreadCrumbs()?>
-					<?php if (Album::TYPE_COVERS == $album->type) : ?>
-						<div id="albums-block">
-							<?php 
-							if (!empty($list)) {
-								foreach ($list as $block) {
-									Image::renderBlock($router, $block['url'], $block['name'], Album::TYPE_COVERS == $album->type);
+				<?php if (!isset($_GET['page'])) : ?>
+					<div class="centered">
+						<?=$router->getBreadCrumbs()?>
+						<?php if (Album::TYPE_COVERS == $album->type) : ?>
+							<div id="albums-block">
+								<?php 
+								if (!empty($list)) {
+									foreach ($list as $block) {
+										Image::renderBlock($router, $block['url'], $block['name'], Album::TYPE_COVERS == $album->type);
+									}
 								}
-							}
-							?>
-						</div>
-					<?php else : ?>
-						<?php if (!empty($list)) : ?>
-							<div class="jcarousel-wrapper">
-								<div class="jcarousel">
-									<ul>
-										<?php 
-											$activeDesc = '';
-											$isFirst = true;
-											foreach ($list as $block) {
-												$image = new Image($block['url'], $block['name']);
-												echo '<li>'.$image->render(array(
-													'withViewLink' => true,
-													'title' => $title
-												)).'</li>';
-												if ($isFirst) {
-													$activeDesc = $image->desc;
-													$isFirst = false;
-												}
-											}
-										?>
-									</ul>
-								</div>
-								<a href="#" class="jcarousel-control-prev">&lsaquo;</a>
-								<a href="#" class="jcarousel-control-next">&rsaquo;</a>
-								<p class="jcarousel-pagination"></p>
+								?>
 							</div>
-							<div id="description"><?=$activeDesc?></div>
+						<?php else : ?>
+							<?php if (!empty($list)) : ?>
+								<div class="jcarousel-wrapper">
+									<div class="jcarousel">
+										<ul>
+											<?php 
+												$activeDesc = '';
+												$isFirst = true;
+												foreach ($list as $block) {
+													$image = new Image($block['url'], $block['name']);
+													echo '<li>'.$image->render(array(
+														'withViewLink' => true,
+														'title' => $title
+													)).'</li>';
+													if ($isFirst) {
+														$activeDesc = $image->desc;
+														$isFirst = false;
+													}
+												}
+											?>
+										</ul>
+									</div>
+									<a href="#" class="jcarousel-control-prev">&lsaquo;</a>
+									<a href="#" class="jcarousel-control-next">&rsaquo;</a>
+									<p class="jcarousel-pagination"></p>
+								</div>
+								<div id="description"><?=$activeDesc?></div>
+							<?php endif; ?>
 						<?php endif; ?>
-					<?php endif; ?>
-				</div>
+					</div>
+				<?php else : ?>
+					<div class="page-container">
+						<?=StaticPages::getHtml($_GET['page'])?>
+					</div>
+				<?php endif; ?>
 			</div>
 			<div id="footer">&copy; <?=$config['title']?>, 2014</div>
 		</div>

@@ -22,6 +22,12 @@ body {
 	font-size: 14px;
 }
 
+.page-container {
+	margin: 0 auto;
+	width: 1000px;
+	text-align: left;
+}
+
 #bread-crumbs {
 	text-align: left;
 	margin: 10px 25px;

@@ -5,6 +5,7 @@ session_start();
 include_once 'config.php';
 include_once 'router.php';
 include_once 'models/admin.php';
+include_once 'models/static.php';
 include_once 'models/image.php';
 include_once 'models/album.php';
 
@@ -48,45 +49,6 @@ if (isset($_GET['logout'])) {
 	$admin->logout() && header('Location: admin.php');
 }
 
-$errors = '';
-$success = '';
-
-if (isset($_POST['albumOrigTitle']) && !empty($_FILES)) {
-	$editAlbum = Album::edit();
-	if (true !== $editAlbum) {
-		$errors = $editAlbum;
-	}
-	else {
-		$success = 'Данные успешно сохранены!';
-	}
-}
-else if (isset($_POST['albumTitle']) && !empty($_FILES)) {
-	$newAlbum = Album::add();
-	if (true !== $newAlbum) {
-		$errors = $newAlbum;
-	}
-	else {
-		$success = 'Данные успешно сохранены!';
-	}
-}
-else if (isset($_POST['deleteAlbum'])) {
-	echo (int)Album::delete($_POST['deleteAlbum']);
-	die();
-}
-else if (isset($_POST['deleteImage'])) {
-	echo (int)Image::delete($_POST['deleteImage']);
-	die();
-}
-else if (isset($_POST['imageDir'])) {
-	$imageError = !isset($_POST['isEditImage']) ? Image::add() : Image::edit();
-	if (true !== $imageError) {
-		$errors = $imageError;
-	}
-	else {
-		$success = 'Данные успешно сохранены!';
-	}
-}
-
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
@@ -111,11 +73,54 @@ else if (isset($_POST['imageDir'])) {
 					<ul>
 						<li><a href="/">На сайт</a></li>
 						<li><a href="/admin.php">Главная</a></li>
+						<li><a href="/admin.php?page=static">Страницы</a></li>
 						<li><a href="/admin.php?logout=1">Выход</a></li>
 					</ul>
 				</div>
 				<div id="container" class="span10">
-					
+<?php 
+
+if (!isset($_GET['page'])) {
+
+	$errors = '';
+	$success = '';
+
+	if (isset($_POST['albumOrigTitle']) && !empty($_FILES)) {
+		$editAlbum = Album::edit();
+		if (true !== $editAlbum) {
+			$errors = $editAlbum;
+		}
+		else {
+			$success = 'Данные успешно сохранены!';
+		}
+	}
+	else if (isset($_POST['albumTitle']) && !empty($_FILES)) {
+		$newAlbum = Album::add();
+		if (true !== $newAlbum) {
+			$errors = $newAlbum;
+		}
+		else {
+			$success = 'Данные успешно сохранены!';
+		}
+	}
+	else if (isset($_POST['deleteAlbum'])) {
+		echo (int)Album::delete($_POST['deleteAlbum']);
+		die();
+	}
+	else if (isset($_POST['deleteImage'])) {
+		echo (int)Image::delete($_POST['deleteImage']);
+		die();
+	}
+	else if (isset($_POST['imageDir'])) {
+		$imageError = !isset($_POST['isEditImage']) ? Image::add() : Image::edit();
+		if (true !== $imageError) {
+			$errors = $imageError;
+		}
+		else {
+			$success = 'Данные успешно сохранены!';
+		}
+	}
+?>
 					<?php if (!empty($errors)) : ?>
 						<div class="alert alert-block alert-error fade in">
 							<button type="button" class="close" data-dismiss="alert">×</button>
@@ -189,64 +194,131 @@ else if (isset($_POST['imageDir'])) {
 							</div>
 						<?php endforeach; ?>
 					</div>
+		
+					<div class="modal hide fade" id="albumEdit">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h3></h3>
+						</div>
+						<div class="modal-body">
+							<form enctype="multipart/form-data" class="form-horizontal" action="admin.php" method="POST">
+								<div class="control-group title-block">
+									<label class="control-label" for="albumTitle">Название</label>
+									<div class="controls">
+										<input class="span3" type="text" name="albumTitle" id="albumTitle" placeholder="Введите название..">
+										<p class="text-error"></p>
+									</div>
+								</div>
+								<div class="control-group file-block">
+									<label class="control-label" for="albumCover">Обложка</label>
+									<div class="controls">
+										<input type="file" name="albumCover" id="albumCover">
+										<div id="coverImg"></div>
+										<p class="text-error"></p>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<a href="#" class="btn btn-primary">Сохранить</a>
+						</div>
+					</div>
+
+					<div class="modal hide fade" id="imageEdit">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h3></h3>
+						</div>
+						<div class="modal-body">
+							<form enctype="multipart/form-data" class="form-horizontal" action="admin.php" method="POST">
+								<div class="control-group file-block">
+									<label class="control-label" for="image">Изображение</label>
+									<div class="controls">
+										<input type="file" name="image" id="image">
+										<p class="text-error"></p>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label" for="imageDesc">Описание</label>
+									<div class="controls">
+										<textarea class="span3" name="imageDesc" id="imageDesc"></textarea>
+									</div>
+								</div>
+								<input type="hidden" id="imageDir" name="imageDir" value="">
+							</form>
+						</div>
+						<div class="modal-footer">
+							<a href="#" class="btn btn-primary">Сохранить</a>
+						</div>
+					</div>
+<?php
+}
+else if ('static' === $_GET['page']) {
+	
+	$pages = StaticPages::getPages();
+	
+	if (!isset($_GET['do'])) {
+?>
+					<h2><a class="btn" href="admin.php?page=static&do=edit" title="Создать"><i class="fa fa-plus fa-lg"></i></a> Страницы:</h2>
+					<?php if (!empty($pages)) : ?>
+						<ul id="pages-block">
+							<?php foreach ($pages as $page) : ?>
+								<li class="page-block">
+									<h3><a class="title" href="admin.php?page=static&do=edit&name=<?=$page?>"><?=$page?></a></h3>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					<?php endif; ?>
+<?php 
+	}
+	else if ('edit' === $_GET['do']) {
+		
+		$errors = '';
+		$success = '';
+		if (!empty($_POST)) {
+			$editPage = StaticPages::edit($_POST);
+			if (true !== $editPage) {
+				$errors = $editPage;
+			}
+			else {
+				$success = 'Данные успешно сохранены!';
+			}
+		}
+?>
+					<?php if (!empty($errors)) : ?>
+						<div class="alert alert-block alert-error fade in">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<h4 class="alert-heading">Ошибка</h4>
+							<p><?=$errors?></p>
+						</div>
+					<?php endif; ?>
+					
+					<?php if (!empty($success)) : ?>
+						<div class="alert alert-block alert-success fade in">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+							<h4 class="alert-heading">Сообщение</h4>
+							<p><?=$success?></p>
+						</div>
+					<?php endif; ?>
+					
+					<h2><?=!isset($_GET['name']) ? 'Создание' : 'Редактирование'?> страницы</h2>
+					<form id="edit-page" class="form-horizontal" action="" method="POST">
+						<div class="control-group">
+							<label class="control-label" for="pageName">Название</label>
+							<div class="controls">
+								<input type="text" name="pageName" id="pageName" value="<?=isset($_POST['pageName']) ? $_POST['pageName'] : (isset($_GET['name']) ? $_GET['name'] : '')?>">
+								<p class="text-error"></p>
+							</div>
+						</div>
+						<textarea name="html" id="html"><?=isset($_POST['html']) ? $_POST['html'] : (isset($_GET['name']) ? StaticPages::getHtml($_GET['name']) : '')?></textarea>
+						<input type="hidden" name="origName" value="<?=!empty($success) ? $_POST['pageName'] : (isset($_GET['name']) ? $_GET['name'] : '')?>">
+						<input type="submit" class="btn btn-primary" value="Сохранить">
+					</form>
+<?php 
+	}
+}
+?>
 				</div>
-			</div>
-		</div>
-		
-		<div class="modal hide fade" id="albumEdit">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h3></h3>
-			</div>
-			<div class="modal-body">
-				<form enctype="multipart/form-data" class="form-horizontal" action="admin.php" method="POST">
-					<div class="control-group title-block">
-						<label class="control-label" for="albumTitle">Название</label>
-						<div class="controls">
-							<input class="span3" type="text" name="albumTitle" id="albumTitle" placeholder="Введите название..">
-							<p class="text-error"></p>
-						</div>
-					</div>
-					<div class="control-group file-block">
-						<label class="control-label" for="albumCover">Обложка</label>
-						<div class="controls">
-							<input type="file" name="albumCover" id="albumCover">
-							<div id="coverImg"></div>
-							<p class="text-error"></p>
-						</div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="btn btn-primary">Сохранить</a>
-			</div>
-		</div>
-		
-		<div class="modal hide fade" id="imageEdit">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h3></h3>
-			</div>
-			<div class="modal-body">
-				<form enctype="multipart/form-data" class="form-horizontal" action="admin.php" method="POST">
-					<div class="control-group file-block">
-						<label class="control-label" for="image">Изображение</label>
-						<div class="controls">
-							<input type="file" name="image" id="image">
-							<p class="text-error"></p>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="imageDesc">Описание</label>
-						<div class="controls">
-							<textarea class="span3" name="imageDesc" id="imageDesc"></textarea>
-						</div>
-					</div>
-					<input type="hidden" id="imageDir" name="imageDir" value="">
-				</form>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="btn btn-primary">Сохранить</a>
 			</div>
 		</div>
 	</body>

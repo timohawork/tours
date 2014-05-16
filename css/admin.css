@@ -140,3 +140,17 @@
 #imageEdit .form-horizontal .controls {
 	margin-left: 100px;
 }
+
+
+
+#edit-page .control-label {
+	width: 63px;
+}
+
+#edit-page .controls {
+	margin-left: 70px;
+}
+
+#edit-page .btn-primary {
+	margin: 20px 0;
+}
