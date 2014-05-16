@@ -83,15 +83,18 @@ class Image
 	public static function add()
 	{
 		if (empty($_POST['imageDir']) || empty($_FILES)) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения данных!');
 			return false;
 		}
 		$path = Router::DIR_NAME.'/'.$_POST['imageDir'];
 		if (!is_dir($path)) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения данных!');
 			return false;
 		}
 		foreach ($_FILES['image']['type'] as $i => $imageType) {
 			if (self::TYPE !== $imageType) {
-				return 'Неверный тип файла "'.$_FILES['image']['name'][$i].'". Можно загружать только jpg-файлы.';
+				Admin::setMessage(Admin::TYPE_ERROR, 'Неверный тип файла "'.$_FILES['image']['name'][$i].'". Можно загружать только jpg-файлы.');
+				return false;
 			}
 		}
 		foreach ($_FILES['image']['name'] as $i => $imageName) {
@@ -102,10 +105,11 @@ class Image
 			$bigImage->cropthumbnailimage(self::BIG_WIDTH, self::BIG_HEIGHT);
 			$fileName = strtolower(basename($imageName));
 			if (!self::save($imageTmpName, $path.'/'.Album::IMAGES_DIR.'/'.$fileName) || !self::save($imageTmpName, $path.'/'.Album::IMAGES_DIR.'/'.self::getBitTitle($fileName), true)) {
-				return 'Ошибка сохранения изображения "'.$imageName.'"!';
+				Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения изображения "'.$imageName.'"!');
+				return false;
 			}
 		}
-		return true;
+		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно сохранены!');
 	}
 	
 	protected static function save($file, $path, $isBig = false)
@@ -118,25 +122,34 @@ class Image
 	public static function edit()
 	{
 		if (empty($_POST['imageDir']) || !isset($_POST['imageDesc']) || !is_file(Router::DIR_NAME.'/'.$_POST['imageDir'])) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения данных!');
 			return false;
 		}
 		if (false === file_put_contents(self::getDescFile(Router::DIR_NAME.'/'.$_POST['imageDir']), $_POST['imageDesc'])) {
-			return 'Ошибка сохранения описания изображения!';
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения описания изображения!');
+			return false;
 		}
-		return true;
+		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно сохранены!');
 	}
 
 
 	public static function delete($path)
 	{
 		if (empty($path) || !is_file(Router::DIR_NAME.'/'.$path)) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка удаления данных!');
 			return false;
 		}
 		$descFilePath = self::getDescFile(Router::DIR_NAME.'/'.$path);
 		if (is_file($descFilePath) && !unlink($descFilePath)) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка удаления данных!');
 			return false;
 		}
-		return unlink(Router::DIR_NAME.'/'.$path) && unlink(Router::DIR_NAME.'/'.self::getBitTitle($path));
+		if (!unlink(Router::DIR_NAME.'/'.$path) || !unlink(Router::DIR_NAME.'/'.self::getBitTitle($path))) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка удаления данных!');
+			return false;
+		}
+		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно удалены!', false);
+		return true;
 	}
 }
 

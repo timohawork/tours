@@ -3,10 +3,6 @@
 class StaticPages
 {
 	const STATIC_DIR = 'static';
-	const HEADER_HTML = 'templates/header.html';
-	const FOOTER_HTML = 'templates/footer.html';
-	
-	const TITLE_CODE = '%%title%%';
 	
 	public static function getPages()
 	{
@@ -23,26 +19,33 @@ class StaticPages
 	public static function edit($data)
 	{
 		if (empty($data['pageName'])) {
-			return 'Необходимо ввести название страницы!';
+			Admin::setMessage(Admin::TYPE_ERROR, 'Необходимо ввести название страницы!');
+			return false;
 		}
-		if (!empty($data['origName']) && !self::isPage(self::STATIC_DIR.'/'.$data['origName'])) {
-			return 'Такой страницы не существует';
+		if (!empty($data['origName']) && !self::isPage($data['origName'])) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Такой страницы не существует');
+			return false;
 		}
 		if (false === file_put_contents(self::STATIC_DIR.'/'.$data['pageName'], $data['html'])) {
-			return 'Ошибка сохранения страницы!';
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения страницы!');
+			return false;
 		}
 		if (!empty($data['origName']) && $data['origName'] !== $data['pageName'] && !rename(self::STATIC_DIR.'/'.$data['origName'], self::STATIC_DIR.'/'.$data['pageName'])) {
-			return 'Не удалось переименовать страницу';
+			Admin::setMessage(Admin::TYPE_ERROR, 'Не удалось переименовать страницу');
+			return false;
 		}
+		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно сохранены!', true, "admin.php?page=static");
 		return true;
 	}
 	
 	public static function delete($name)
 	{
-		if (!is_file(self::STATIC_DIR.'/'.$name)) {
+		if (!is_file(self::STATIC_DIR.'/'.$name) || !unlink(self::STATIC_DIR.'/'.$name)) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка удаления данных!');
 			return false;
 		}
-		return unlink(self::STATIC_DIR.'/'.$name);
+		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно удалены!', false);
+		return true;
 	}
 	
 	public static function getHtml($name)

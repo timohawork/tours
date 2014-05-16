@@ -58,66 +58,82 @@ class Album
 	public static function add()
 	{
 		if (!isset($_POST['albumTitle']) || empty($_FILES) || (isset($_POST['newTour']) && empty($_POST['newTour']))) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения данных!');
 			return false;
 		}
 		if (1 > strlen($_POST['albumTitle'])) {
-			return 'Неверно введено название!';
+			Admin::setMessage(Admin::TYPE_ERROR, 'Неверно введено название!');
+			return false;
 		}
 		if (isset($_POST['newTour']) && !is_dir(Router::DIR_NAME.'/'.$_POST['newTour'])) {
-			return 'Альбома с названием "'.$_POST['newTour'].'" не существует!';
+			Admin::setMessage(Admin::TYPE_ERROR, 'Альбома с названием "'.$_POST['newTour'].'" не существует!');
+			return false;
 		}
 		$path = Router::DIR_NAME.'/'.(isset($_POST['newTour']) ? $_POST['newTour'].'/' : '').$_POST['albumTitle'];
 		if (is_dir($path)) {
-			return 'Альбом с названием "'.$_POST['albumTitle'].'" уже существует!';
+			Admin::setMessage(Admin::TYPE_ERROR, 'Альбом с названием "'.$_POST['albumTitle'].'" уже существует!');
+			return false;
 		}
 		if (self::COVER_TYPE !== $_FILES['albumCover']['type']) {
-			return 'Неверный тип файла. Можно загружать только jpg-файлы.';
+			Admin::setMessage(Admin::TYPE_ERROR, 'Неверный тип файла. Можно загружать только jpg-файлы.');
+			return false;
 		}
 		if (!mkdir($path) || !chmod($path, 0755)) {
-			return 'Ошибка создания директории!';
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка создания директории!');
+			return false;
 		}
 		if (isset($_POST['newTour']) && (!mkdir($path.'/'.Album::IMAGES_DIR) || !chmod($path.'/'.Album::IMAGES_DIR, 0755))) {
-			return 'Ошибка создания директории!';
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка создания директории!');
+			return false;
 		}
 		$cover = new Imagick($_FILES['albumCover']['tmp_name']);
 		$cover->cropthumbnailimage(self::COVER_WIDTH, self::COVER_HEIGHT);
 		if (true !== $cover->writeimage($path.'/'.self::COVER_NAME)) {
-			return 'Ошибка сохранения изображения!';
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения изображения!');
+			return false;
 		}
-		return true;
+		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно сохранены!');
 	}
 	
 	public static function edit()
 	{
 		$path = Router::DIR_NAME.'/'.(isset($_POST['tourTitle']) ? $_POST['tourTitle'].'/' : '').$_POST['albumOrigTitle'];
 		if (!isset($_POST['albumTitle']) || !isset($_POST['albumOrigTitle']) || !is_dir($path)) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения данных!');
 			return false;
 		}
 		if (1 > strlen($_POST['albumTitle'])) {
-			return 'Неверно введено название!';
+			Admin::setMessage(Admin::TYPE_ERROR, 'Неверно введено название!');
+			return false;
 		}
 		if (!empty($_FILES['albumCover']['name'])) {
 			if (self::COVER_TYPE !== $_FILES['albumCover']['type']) {
-				return 'Неверный тип файла. Можно загружать только jpg-файлы.';
+				Admin::setMessage(Admin::TYPE_ERROR, 'Неверный тип файла. Можно загружать только jpg-файлы.');
+				return false;
 			}
 			$cover = new Imagick($_FILES['albumCover']['tmp_name']);
 			$cover->cropthumbnailimage(self::COVER_WIDTH, self::COVER_HEIGHT);
 			if (true !== $cover->writeimage($path.'/'.self::COVER_NAME)) {
-				return 'Ошибка сохранения изображения!';
+				Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения изображения!');
+				return false;
 			}
 		}
 		if (!rename(dirname(__FILE__).'/../'.$path, dirname(__FILE__).'/../'.Router::DIR_NAME.'/'.(isset($_POST['tourTitle']) ? $_POST['tourTitle'].'/' : '').$_POST['albumTitle'])) {
-			return 'Ошибка переименования альбома!';
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка переименования альбома!');
+			return false;
 		}
+		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно сохранены!');
 		return true;
 	}
 	
 	public static function delete($dir)
 	{
-		if (empty($dir) || !is_dir(Router::DIR_NAME.'/'.$dir)) {
+		if (empty($dir) || !is_dir(Router::DIR_NAME.'/'.$dir) || !self::removeDir(Router::DIR_NAME.'/'.$dir)) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка удаления данных!');
 			return false;
 		}
-		return self::removeDir(Router::DIR_NAME.'/'.$dir);
+		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно удалены!', false);
+		return true;
 	}
 	
 	public static function removeDir($dir) {

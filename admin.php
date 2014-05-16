@@ -88,26 +88,11 @@ if (isset($_GET['page']) && isset($_GET['do']) && 'static' === $_GET['page'] && 
 
 if (!isset($_GET['page'])) {
 
-	$errors = '';
-	$success = '';
-
 	if (isset($_POST['albumOrigTitle']) && !empty($_FILES)) {
-		$editAlbum = Album::edit();
-		if (true !== $editAlbum) {
-			$errors = $editAlbum;
-		}
-		else {
-			$success = 'Данные успешно сохранены!';
-		}
+		Album::edit();
 	}
 	else if (isset($_POST['albumTitle']) && !empty($_FILES)) {
-		$newAlbum = Album::add();
-		if (true !== $newAlbum) {
-			$errors = $newAlbum;
-		}
-		else {
-			$success = 'Данные успешно сохранены!';
-		}
+		Album::add();
 	}
 	else if (isset($_POST['deleteAlbum'])) {
 		echo (int)Album::delete($_POST['deleteAlbum']);
@@ -118,30 +103,10 @@ if (!isset($_GET['page'])) {
 		die();
 	}
 	else if (isset($_POST['imageDir'])) {
-		$imageError = !empty($_FILES['image']) ? Image::add() : Image::edit();
-		if (true !== $imageError) {
-			$errors = $imageError;
-		}
-		else {
-			$success = 'Данные успешно сохранены!';
-		}
+		!empty($_FILES['image']) ? Image::add() : Image::edit();
 	}
 ?>
-					<?php if (!empty($errors)) : ?>
-						<div class="alert alert-block alert-error fade in">
-							<button type="button" class="close" data-dismiss="alert">×</button>
-							<h4 class="alert-heading">Ошибка</h4>
-							<p><?=$errors?></p>
-						</div>
-					<?php endif; ?>
-					
-					<?php if (!empty($success)) : ?>
-						<div class="alert alert-block alert-success fade in">
-							<button type="button" class="close" data-dismiss="alert">×</button>
-							<h4 class="alert-heading">Сообщение</h4>
-							<p><?=$success?></p>
-						</div>
-					<?php endif; ?>
+					<?=Admin::renderMessage()?>
 					
 					<h2><a class="btn edit newTour" href="#"><i class="fa fa-plus fa-lg"></i></a> Экскурсии:</h2>
 					<div id="tours-block">
@@ -280,6 +245,8 @@ else if ('static' === $_GET['page']) {
 	
 	if (!isset($_GET['do'])) {
 ?>
+					<?=Admin::renderMessage()?>
+
 					<h2><a class="btn" href="admin.php?page=static&do=edit" title="Создать"><i class="fa fa-plus fa-lg"></i></a> Страницы:</h2>
 					<?php if (!empty($pages)) : ?>
 						<ul id="pages-block">
@@ -294,33 +261,11 @@ else if ('static' === $_GET['page']) {
 	}
 	else if ('edit' === $_GET['do']) {
 		
-		$errors = '';
-		$success = '';
 		if (!empty($_POST)) {
-			$editPage = StaticPages::edit($_POST);
-			if (true !== $editPage) {
-				$errors = $editPage;
-			}
-			else {
-				$success = 'Данные успешно сохранены!';
-			}
+			StaticPages::edit($_POST);
 		}
 ?>
-					<?php if (!empty($errors)) : ?>
-						<div class="alert alert-block alert-error fade in">
-							<button type="button" class="close" data-dismiss="alert">×</button>
-							<h4 class="alert-heading">Ошибка</h4>
-							<p><?=$errors?></p>
-						</div>
-					<?php endif; ?>
-					
-					<?php if (!empty($success)) : ?>
-						<div class="alert alert-block alert-success fade in">
-							<button type="button" class="close" data-dismiss="alert">×</button>
-							<h4 class="alert-heading">Сообщение</h4>
-							<p><?=$success?></p>
-						</div>
-					<?php endif; ?>
+					<?=Admin::renderMessage()?>
 					
 					<h2><?=!isset($_GET['name']) ? 'Создание' : 'Редактирование'?> страницы</h2>
 					<form id="edit-page" class="form-horizontal" action="" method="POST">
