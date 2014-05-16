@@ -149,7 +149,7 @@ if (!isset($_GET['page'])) {
 								<i class="fa <?=!empty($albums) ? 'fa-caret-right folding-caret fa-2x' : 'empty'?>"></i>&nbsp;
 								<h4>
 									<a href="#" class="edit editTour"><img class="img-rounded" src="tours/<?=$tour?>/cover.jpg" alt="<?=$tour?>" title="Редактировать"></a>
-									<span class="title"><?=$tour?></span>
+									<span class="title" rel="<?=$tour?>"><?=$tour?></span>
 									<a class="btn edit newAlbum" href="#"><i class="fa fa-plus fa-lg"></i></a>
 									<i class="fa fa-times-circle-o fa-lg delete" title="Удалить"></i>
 								</h4>
@@ -161,7 +161,7 @@ if (!isset($_GET['page'])) {
 													<i class="fa <?=!empty($dir[Album::IMAGES_DIR]) ? 'fa-caret-right folding-caret fa-2x' : 'empty'?>"></i>&nbsp;
 													<h4>
 														<a href="#" class="edit editAlbum"><img class="img-rounded" src="tours/<?=$tour?>/<?=$album?>/cover.jpg" alt="<?=$album?>" title="Редактировать"></a>
-														<span class="title"><?=$album?></span>
+														<span class="title" rel="<?=$album?>"><?=$album?></span>
 														<a class="btn newImage" href="#"><i class="fa fa-plus fa-lg"></i></a>
 														<i class="fa fa-times-circle-o fa-lg delete" title="Удалить"></i>
 													</h4>

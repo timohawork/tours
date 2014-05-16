@@ -1,5 +1,16 @@
 $(document).ready(function() {
 	
+	var folding = new Folding();
+	folding.init();
+	
+	$('.folding-caret').live('click', function() {
+		folding.toggle($(this));
+	});
+	
+	
+	/* ------------------------------------------------------------------------------ */
+	
+	
 	tinymce.init({
 		selector: "#imageDesc",
 		height: 200,
@@ -8,18 +19,6 @@ $(document).ready(function() {
 				this.getDoc().body.style.fontSize = '16px';
 			});
 		}
-	});
-	
-	$('.folding-caret').live('click', function() {
-		if ($(this).hasClass('fa-caret-right')) {
-			$(this).removeClass('fa-caret-right');
-			$(this).addClass('fa-caret-down');
-		}
-		else {
-			$(this).addClass('fa-caret-right');
-			$(this).removeClass('fa-caret-down');
-		}
-		$(this).closest('.folding-block').find('.folding-toggle').eq(0).toggleClass('hide');
 	});
 	
 	$('.edit').live('click', function() {
@@ -139,6 +138,9 @@ $(document).ready(function() {
 	});
 	
 	
+	/* ------------------------------------------------------------------------------ */
+	
+	
 	tinymce.init({
 		selector: "#edit-page textarea",
 		width: 1000,
@@ -160,3 +162,97 @@ $(document).ready(function() {
 		}
 	});
 });
+
+var Folding = function() {
+	var self = this;
+	
+	self.toursType = 'tours';
+	self.albumsType = 'albums';
+	self.foldingValue = window.location.hash.replace('#', '');
+	self.obj = {
+		tours: [],
+		albums: []
+	};
+	
+	self.init = function() {
+		var hash = self.foldingValue.split('&');
+		$.each(hash, function(key, value) {
+			var valueArray = value.split('=');
+			if (self.toursType === valueArray[0]) {
+				self.obj.tours.push(valueArray[1]);
+				self.toggle(self.getCaret(self.toursType, valueArray[1]), false);
+			}
+			else if (self.albumsType === valueArray[0]) {
+				self.obj.albums.push(valueArray[1]);
+				self.toggle(self.getCaret(self.albumsType, valueArray[1]), false);
+			}
+		});
+	}
+	
+	self.getCaret = function(type, name) {
+		var blockClass;
+		if (type === self.toursType) {
+			blockClass = '.tour-block';
+		}
+		else if (type === self.albumsType) {
+			blockClass = '.album-block';
+		}
+		return $(blockClass+' .title[rel="'+name+'"]').closest('.folding-block').find('.folding-caret').eq(0);
+	}
+	
+	self.set = function(type, name, closing) {
+		var result = '';
+		if (!closing) {
+			if (type === self.toursType) {
+				self.obj.tours.push(name);
+			}
+			else if (type === self.albumsType) {
+				self.obj.albums.push(name);
+			}
+		}
+		else {
+			if (type === self.toursType) {
+				self.obj.tours.splice(self.obj.tours.indexOf(name), 1);
+			}
+			else if (type === self.albumsType) {
+				self.obj.albums.splice(self.obj.albums.indexOf(name), 1);
+			}
+		}
+		$.each(self.obj.tours, function(key, value) {
+			result += '&'+self.toursType+'='+value;
+		});
+		$.each(self.obj.albums, function(key, value) {
+			result += '&'+self.albumsType+'='+value;
+		});
+		result = result.substring(1);
+		window.location.hash = self.foldingValue = result;
+	}
+	
+	self.toggle = function(selector, set) {
+		var block = selector.closest('.folding-block'),
+			closing = selector.hasClass('fa-caret-down'),
+			name = block.find('.title').eq(0).text(),
+			type;
+
+		if (block.hasClass('tour-block')) {
+			type = self.toursType;
+		}
+		else if (block.hasClass('album-block')) {
+			type = self.albumsType;
+		}
+
+		if (!closing) {
+			selector.removeClass('fa-caret-right');
+			selector.addClass('fa-caret-down');
+		}
+		else {
+			selector.addClass('fa-caret-right');
+			selector.removeClass('fa-caret-down');
+		}
+		block.find('.folding-toggle').eq(0).toggleClass('hide');
+		
+		if (undefined === set || set) {
+			self.set(type, name, closing);
+		}
+	}
+}
