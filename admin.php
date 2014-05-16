@@ -49,6 +49,11 @@ if (isset($_GET['logout'])) {
 	$admin->logout() && header('Location: admin.php');
 }
 
+if (isset($_GET['page']) && isset($_GET['do']) && 'static' === $_GET['page'] && 'delete' === $_GET['do'] && isset($_POST['name'])) {
+	echo (int)StaticPages::delete($_POST['name']);
+	die();
+}
+
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
@@ -264,7 +269,7 @@ else if ('static' === $_GET['page']) {
 						<ul id="pages-block">
 							<?php foreach ($pages as $page) : ?>
 								<li class="page-block">
-									<h3><a class="title" href="admin.php?page=static&do=edit&name=<?=$page?>"><?=$page?></a></h3>
+									<h3><a class="title" href="admin.php?page=static&do=edit&name=<?=$page?>"><?=$page?></a> <i class="fa fa-times-circle-o fa-lg delete" title="Удалить"></i></h3>
 								</li>
 							<?php endforeach; ?>
 						</ul>

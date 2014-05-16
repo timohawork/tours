@@ -143,6 +143,10 @@
 
 
 
+.page-block .delete {
+	cursor: pointer;
+}
+
 #edit-page .control-label {
 	width: 63px;
 }

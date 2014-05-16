@@ -75,7 +75,7 @@ $(document).ready(function() {
 		return false;
 	});
 	
-	$('.delete').live('click', function() {
+	$('#tours-block .delete').live('click', function() {
 		var tour = $(this).parents('.tour-block'),
 			album = $(this).parents('.album-block'),
 			image = $(this).parents('.image-block'),
@@ -146,6 +146,16 @@ $(document).ready(function() {
 		setup : function(ed) {
 			ed.on('init', function() {
 				this.getDoc().body.style.fontSize = '16px';
+			});
+		}
+	});
+	
+	$('.page-block .delete').live('click', function() {
+		if (confirm('Вы уверены, что хотите удалить страницу?')) {
+			$.post('admin.php?page=static&do=delete', {name: $(this).prev('a').text()}, function(response) {
+				if (response) {
+					window.location.reload();
+				}
 			});
 		}
 	});

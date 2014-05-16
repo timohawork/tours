@@ -25,7 +25,7 @@ class StaticPages
 		if (empty($data['pageName'])) {
 			return 'Необходимо ввести название страницы!';
 		}
-		if (!empty($data['origName']) && !is_file(self::STATIC_DIR.'/'.$data['origName'])) {
+		if (!empty($data['origName']) && !self::isPage(self::STATIC_DIR.'/'.$data['origName'])) {
 			return 'Такой страницы не существует';
 		}
 		if (false === file_put_contents(self::STATIC_DIR.'/'.$data['pageName'], $data['html'])) {
@@ -35,6 +35,14 @@ class StaticPages
 			return 'Не удалось переименовать страницу';
 		}
 		return true;
+	}
+	
+	public static function delete($name)
+	{
+		if (!is_file(self::STATIC_DIR.'/'.$name)) {
+			return false;
+		}
+		return unlink(self::STATIC_DIR.'/'.$name);
 	}
 	
 	public static function getHtml($name)
