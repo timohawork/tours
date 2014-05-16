@@ -30,7 +30,7 @@ if (!isset($_SESSION['login'])) {
 			<div class="container-fluid">
 				<div class="row-fluid">
 					<div class="span6 offset3 text-center">
-						<form class="form-inline" action="admin.php" method="POST">
+						<form class="form-inline" action="" method="POST">
 							<h3>Администраторская панель</h3>
 							<input type="password" name="password" class="input-small" placeholder="Пароль">
 							<button type="submit" class="btn">Войти</button>
@@ -206,7 +206,7 @@ if (!isset($_GET['page'])) {
 							<h3></h3>
 						</div>
 						<div class="modal-body">
-							<form enctype="multipart/form-data" class="form-horizontal" action="admin.php" method="POST">
+							<form enctype="multipart/form-data" class="form-horizontal" action="" method="POST">
 								<div class="control-group title-block">
 									<label class="control-label" for="albumTitle">Название</label>
 									<div class="controls">
@@ -235,7 +235,7 @@ if (!isset($_GET['page'])) {
 							<h3></h3>
 						</div>
 						<div class="modal-body">
-							<form enctype="multipart/form-data" class="form-horizontal" action="admin.php" method="POST">
+							<form enctype="multipart/form-data" class="form-horizontal" action="" method="POST">
 								<div class="control-group file-block">
 									<label class="control-label" for="image">Изображение</label>
 									<div class="controls">
