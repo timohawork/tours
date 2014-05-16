@@ -1,5 +1,6 @@
 <?php
 
+set_time_limit(0);
 session_start();
 
 include_once 'config.php';
@@ -117,7 +118,7 @@ if (!isset($_GET['page'])) {
 		die();
 	}
 	else if (isset($_POST['imageDir'])) {
-		$imageError = !isset($_POST['isEditImage']) ? Image::add() : Image::edit();
+		$imageError = !empty($_FILES['image']) ? Image::add() : Image::edit();
 		if (true !== $imageError) {
 			$errors = $imageError;
 		}
@@ -228,28 +229,43 @@ if (!isset($_GET['page'])) {
 							<a href="#" class="btn btn-primary">Сохранить</a>
 						</div>
 					</div>
-
-					<div class="modal hide fade" id="imageEdit">
+					
+					<div class="modal hide fade" id="imageAdd">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h3></h3>
+							<h3>Загрузка изображений</h3>
 						</div>
 						<div class="modal-body">
 							<form enctype="multipart/form-data" class="form-horizontal" action="" method="POST">
 								<div class="control-group file-block">
-									<label class="control-label" for="image">Изображение</label>
+									<label class="control-label" for="image">Выберите изображение</label>
 									<div class="controls">
-										<input type="file" name="image" id="image">
+										<input type="file" name="image[]" multiple="true" id="image">
 										<p class="text-error"></p>
 									</div>
 								</div>
+								<input type="hidden" class="imageDir" name="imageDir" value="">
+							</form>
+						</div>
+						<div class="modal-footer">
+							<a href="#" class="btn btn-primary">Сохранить</a>
+						</div>
+					</div>
+
+					<div class="modal hide fade" id="imageEdit">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h3>Редактирование изображения</h3>
+						</div>
+						<div class="modal-body">
+							<form enctype="multipart/form-data" class="form-horizontal" action="" method="POST">
 								<div class="control-group">
 									<label class="control-label" for="imageDesc">Описание</label>
 									<div class="controls">
 										<textarea class="span3" name="imageDesc" id="imageDesc"></textarea>
 									</div>
 								</div>
-								<input type="hidden" id="imageDir" name="imageDir" value="">
+								<input type="hidden" class="imageDir" name="imageDir" value="">
 							</form>
 						</div>
 						<div class="modal-footer">

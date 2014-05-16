@@ -104,36 +104,34 @@ $(document).ready(function() {
 	});
 	
 	$('.newImage').live('click', function() {
-		$('#imageEdit .modal-header h3').text('Добавить изображение');
-		$('#imageEdit .file-block').removeClass('hide');
-		tinymce.activeEditor.setContent('');
-		$('#imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album-block').find('.title').eq(0).text());
-		$('#isEditImage').remove();
-		$('#imageEdit').modal('show');
+		$('#imageAdd .imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album-block').find('.title').eq(0).text());
+		$('#imageAdd').modal('show');
+		return false;
+	});
+	
+	$('#imageAdd .modal-footer .btn-primary').live('click', function() {
+		var error = $('#imageAdd .text-error');
+		
+		error.text('');
+		
+		if (!$('#image').val().length) {
+			error.text('Не выбрано ни одно изоражение!');
+		}
+		else {
+			$('#imageAdd form').submit();
+		}
 		return false;
 	});
 	
 	$('.editImage').live('click', function() {
-		$('#imageEdit .modal-header h3').text('Редактирование изображения');
-		$('#imageEdit .file-block').addClass('hide');
 		tinymce.activeEditor.setContent($(this).parents('.image-block').find('img').next('.desc').html());
-		$('#imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album-block').find('.title').eq(0).text()+'/images/'+$(this).find('img').attr('alt'));
-		$('#imageEdit form').append('<input type="hidden" id="isEditImage" name="isEditImage" value="1">');
+		$('#imageEdit .imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album-block').find('.title').eq(0).text()+'/images/'+$(this).find('img').attr('alt'));
 		$('#imageEdit').modal('show');
 		return false;
 	});
 	
 	$('#imageEdit .modal-footer .btn-primary').live('click', function() {
-		var error = $('#imageEdit .text-error');
-		
-		error.text('');
-		
-		if (!$('#isEditImage').length && !$('#image').val().length) {
-			error.text('Не выбрано изоражение!');
-		}
-		else {
-			$('#imageEdit form').submit();
-		}
+		$('#imageEdit form').submit();
 		return false;
 	});
 	

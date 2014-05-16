@@ -89,21 +89,20 @@ class Image
 		if (!is_dir($path)) {
 			return false;
 		}
-		if (self::TYPE !== $_FILES['image']['type']) {
-			return 'Неверный тип файла. Можно загружать только jpg-файлы.';
+		foreach ($_FILES['image']['type'] as $i => $imageType) {
+			if (self::TYPE !== $imageType) {
+				return 'Неверный тип файла "'.$_FILES['image']['name'][$i].'". Можно загружать только jpg-файлы.';
+			}
 		}
-		$image = new Imagick($_FILES['image']['tmp_name']);
-		$bigImage = clone $image;
-		$image->cropthumbnailimage(self::IMG_WIDTH, self::IMG_HEIGHT);
-		$bigImage->cropthumbnailimage(self::BIG_WIDTH, self::BIG_HEIGHT);
-		$fileName = strtolower(basename($_FILES['image']['name']));
-		if (!self::save($_FILES['image']['tmp_name'], $path.'/'.Album::IMAGES_DIR.'/'.$fileName) || !self::save($_FILES['image']['tmp_name'], $path.'/'.Album::IMAGES_DIR.'/'.self::getBitTitle($fileName), true)) {
-			return 'Ошибка сохранения изображения!';
-		}
-		if (isset($_POST['imageDesc'])) {
-			$name = str_replace(".jpg", "_desc.txt", strtolower($_FILES['image']['name']));
-			if (false === file_put_contents($path.'/'.Album::IMAGES_DIR.'/'.$name, $_POST['imageDesc'])) {
-				return 'Ошибка сохранения описания изображения!';
+		foreach ($_FILES['image']['name'] as $i => $imageName) {
+			$imageTmpName = $_FILES['image']['tmp_name'][$i];
+			$image = new Imagick($imageTmpName);
+			$bigImage = clone $image;
+			$image->cropthumbnailimage(self::IMG_WIDTH, self::IMG_HEIGHT);
+			$bigImage->cropthumbnailimage(self::BIG_WIDTH, self::BIG_HEIGHT);
+			$fileName = strtolower(basename($imageName));
+			if (!self::save($imageTmpName, $path.'/'.Album::IMAGES_DIR.'/'.$fileName) || !self::save($imageTmpName, $path.'/'.Album::IMAGES_DIR.'/'.self::getBitTitle($fileName), true)) {
+				return 'Ошибка сохранения изображения "'.$imageName.'"!';
 			}
 		}
 		return true;
