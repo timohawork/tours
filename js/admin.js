@@ -60,7 +60,7 @@ $(document).ready(function() {
 		titleError.text('');
 		fileError.text('');
 		
-		if (6 > $('#albumTitle').val().length) {
+		if (1 > $('#albumTitle').val().length) {
 			titleError.text('Неверно введено название!');
 			hasError = true;
 		}

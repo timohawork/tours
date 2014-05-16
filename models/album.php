@@ -60,7 +60,7 @@ class Album
 		if (!isset($_POST['albumTitle']) || empty($_FILES) || (isset($_POST['newTour']) && empty($_POST['newTour']))) {
 			return false;
 		}
-		if (6 > strlen($_POST['albumTitle'])) {
+		if (1 > strlen($_POST['albumTitle'])) {
 			return 'Неверно введено название!';
 		}
 		if (isset($_POST['newTour']) && !is_dir(Router::DIR_NAME.'/'.$_POST['newTour'])) {
@@ -93,7 +93,7 @@ class Album
 		if (!isset($_POST['albumTitle']) || !isset($_POST['albumOrigTitle']) || !is_dir($path)) {
 			return false;
 		}
-		if (6 > strlen($_POST['albumTitle'])) {
+		if (1 > strlen($_POST['albumTitle'])) {
 			return 'Неверно введено название!';
 		}
 		if (!empty($_FILES['albumCover']['name'])) {
