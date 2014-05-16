@@ -4,6 +4,7 @@ class Router
 {
 	const TYPE_TOUR = 'tour';
 	const TYPE_ALBUM = 'album';
+	const TYPE_STATIC = 'page';
 	
 	const DIR_NAME = 'tours';
 	
@@ -19,6 +20,11 @@ class Router
 			return;
 		}
 		$tour = explode("=", $query[0]);
+		if (self::TYPE_STATIC === $tour[0]) {
+			$this->type = self::TYPE_STATIC;
+			$this->title = urldecode($tour[1]).' - '.$title;
+			return;
+		}
 		if (self::TYPE_TOUR !== $tour[0] || empty($tour[1])) {
 			return;
 		}

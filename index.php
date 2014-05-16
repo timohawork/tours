@@ -2,14 +2,15 @@
 
 include_once 'config.php';
 include_once 'models/static.php';
+include_once 'router.php';
+
+$router = new Router($config['title']);
 
 if (!isset($_GET['page'])) {
 
-	include_once 'router.php';
 	include_once 'models/image.php';
 	include_once 'models/album.php';
 
-	$router = new Router($config['title']);
 	$title = '';
 	$albumUrl = '';
 

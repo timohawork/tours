@@ -1,6 +1,6 @@
 loadWait = 30000;
 loadCheck = 300;
-preloadObjects = "img";
+preloadObjects = ".centered img";
 notImagesLoaded = [];
 excludeImages = false;
  
@@ -54,7 +54,7 @@ function imagesPreloader() {
 };
  
 function loadImage(item) {
-	var pos = jQuery(item).position(),
+	var pos = $(item).position(),
 		ItemOffsetTop = "object" === typeof(pos) && "undefined" !== typeof(pos.top) ? pos.top : 0,
 		documentScrollTop = jQuery(window).scrollTop(),
 		scrHeight= getScreenHeight();
@@ -76,8 +76,8 @@ function loadImage(item) {
 			if (item.width && item.height && item.complete) {
 				clearInterval(item.storePeriod);
 				item.storePeriod = false;
-				jQuery(item.previousSibling).remove();
-				jQuery(item).css("visibility", "visible");
+				$(item.previousSibling).remove();
+				$(item).css("visibility", "visible");
 				if ("undefined" !== typeof(item.loadedCount) && notImagesLoaded[item.loadedCount]) {
 					notImagesLoaded[item.loadedCount] = false;
 				};
@@ -88,11 +88,11 @@ function loadImage(item) {
 				if ("undefined" !== typeof(item.loadedCount) && notImagesLoaded[item.loadedCount]) {
 					notImagesLoaded[item.loadedCount] = false;
 				};
-				jQuery(item).css({
+				$(item).css({
 					display: "none",
 					visibility: "hidden"
 				});
-				jQuery(item.previousSibling).remove();
+				$(item.previousSibling).remove();
 			};
 		}, loadCheck);
 	}

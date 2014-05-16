@@ -77,7 +77,7 @@ if (isset($_GET['page']) && isset($_GET['do']) && 'static' === $_GET['page'] && 
 				<div id="menu" class="span2">
 					<h2>Меню</h2>
 					<ul>
-						<li><a href="/">На сайт</a></li>
+						<li><a href="/" target="_blank">На сайт</a></li>
 						<li><a href="/admin.php">Главная</a></li>
 						<li><a href="/admin.php?page=static">Страницы</a></li>
 						<li><a href="/admin.php?logout=1">Выход</a></li>
@@ -252,7 +252,7 @@ else if ('static' === $_GET['page']) {
 						<ul id="pages-block">
 							<?php foreach ($pages as $page) : ?>
 								<li class="page-block">
-									<h3><a class="title" href="admin.php?page=static&do=edit&name=<?=$page?>"><?=$page?></a> <i class="fa fa-times-circle-o fa-lg delete" title="Удалить"></i></h3>
+									<h3><a class="title" href="admin.php?page=static&do=edit&name=<?=$page?>"><?=$page?></a> <a href="index.php?page=<?=$page?>" target="_blank"><i class="fa fa-arrow-right"></i></a> <i class="fa fa-times-circle-o fa-lg delete" title="Удалить"></i></h3>
 								</li>
 							<?php endforeach; ?>
 						</ul>
