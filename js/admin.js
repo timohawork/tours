@@ -202,28 +202,27 @@ var Folding = function() {
 	
 	self.set = function(type, name, closing) {
 		var result = '';
-		if (!closing) {
-			if (type === self.toursType) {
-				self.obj.tours.push(name);
-			}
-			else if (type === self.albumsType) {
-				self.obj.albums.push(name);
-			}
+		
+		if (!closing && type === self.toursType) {
+			self.obj.tours.push(name);
 		}
-		else {
-			if (type === self.toursType) {
-				self.obj.tours.splice(self.obj.tours.indexOf(name), 1);
-			}
-			else if (type === self.albumsType) {
-				self.obj.albums.splice(self.obj.albums.indexOf(name), 1);
-			}
+		else if (!closing && type === self.albumsType) {
+			self.obj.albums.push(name);
 		}
+		else if (closing && type === self.toursType) {
+			self.obj.tours.splice(self.obj.tours.indexOf(name), 1);
+		}
+		else if (closing && type === self.albumsType) {
+			self.obj.albums.splice(self.obj.albums.indexOf(name), 1);
+		}
+		
 		$.each(self.obj.tours, function(key, value) {
 			result += '&'+self.toursType+'='+value;
 		});
 		$.each(self.obj.albums, function(key, value) {
 			result += '&'+self.albumsType+'='+value;
 		});
+		
 		result = result.substring(1);
 		window.location.hash = self.foldingValue = result;
 	}
