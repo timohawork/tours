@@ -2,7 +2,11 @@
     $(function() {
         $('.jcarousel')
 			.on('jcarousel:scrollend', function() {
-				$('#description').html($('.jcarousel').jcarousel('visible').find('img').next('.desc').html());
+				var desc = $('#description');
+				desc.animate({opacity: 0}, 500, function(){
+					desc.html($('.jcarousel').jcarousel('visible').find('img').next('.desc').html());
+					desc.animate({opacity: 1}, 500);
+				});
 			})
 			.jcarousel();
 
