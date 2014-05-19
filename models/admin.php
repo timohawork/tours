@@ -93,6 +93,23 @@ class Admin
 			<p>'.$message['message'].'</p>
 		</div>';
 	}
+	
+	public static function getBlockHtml($title, $img, $path, $withAdd = true)
+	{
+		return array(
+			'header' => '<div class="album-block folding-block" rel="'.$path.'">
+				<i class="fa fa-caret-right folding-caret fa-2x"></i>&nbsp;
+				<h4>
+					<a href="#" class="edit album-edit"><img class="img-rounded" src="'.$img.'" alt="'.$title.'" title="Редактировать"></a>
+					<span class="title" rel="'.$title.'">'.$title.'</span>
+					'.($withAdd ? '<a class="btn edit album-add" href="#"><i class="fa fa-plus fa-lg"></i></a>' : '').'
+					<i class="fa fa-times-circle-o fa-lg delete" title="Удалить"></i>
+				</h4>
+				<div class="folding-toggle hide">',
+			'footer' => '</div>
+			</div>'
+		);
+	}
 }
 
 ?>

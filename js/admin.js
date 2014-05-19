@@ -7,6 +7,10 @@ $(document).ready(function() {
 		folding.toggle($(this));
 	});
 	
+	$('.folding-block h4').live('click', function() {
+		$(this).parent().find('.folding-caret').trigger('click');
+	});
+	
 	
 	/* ------------------------------------------------------------------------------ */
 	
@@ -22,32 +26,13 @@ $(document).ready(function() {
 	});
 	
 	$('.edit').live('click', function() {
-		var albumTitle = $('#albumTitle'),
-			tourTitle = $(this).closest('.tour-block').find('h4 .title').eq(0).text();
-		$('#newTour').remove();
-		$('#albumOrigTitle').remove();
-		albumTitle.val('');
+		var title = $(this).closest('.album-block').find('h4 .title').eq(0).text();
 		$('.title-block .text-error').text('');
 		$('.file-block .text-error').text('');
-		
-		if ($(this).hasClass('newTour')) {
-			$('#albumEdit .modal-header h3').text('Добавление экскурсии');
-		}
-		if ($(this).hasClass('newAlbum')) {
-			$('#albumEdit .modal-header h3').text('Добавление альбома');
-			$('#albumEdit form').append('<input type="hidden" id="newTour" name="newTour" value="'+tourTitle+'">');
-		}
-		if ($(this).hasClass('editTour')) {
-			$('#albumEdit .modal-header h3').text('Редактирование экскурсии');
-			albumTitle.val(tourTitle);
-			$('#albumEdit form').append('<input type="hidden" id="albumOrigTitle" name="albumOrigTitle" value="'+tourTitle+'">');
-		}
-		if ($(this).hasClass('editAlbum')) {
-			var albumOrigTitle = $(this).closest('.album-block').find('.title').eq(0).text();
-			$('#albumEdit .modal-header h3').text('Редактирование альбома');
-			albumTitle.val(albumOrigTitle);
-			$('#albumEdit form').append('<input type="hidden" id="albumOrigTitle" name="albumOrigTitle" value="'+albumOrigTitle+'"><input type="hidden" id="tourTitle" name="tourTitle" value="'+tourTitle+'">');
-		}
+		$('#albumTitle').val(!$(this).hasClass('album-edit') ? '' : title);
+		$('#albumPath').val($(this).closest('.album-block').attr('rel'));
+		$('#albumEdit .modal-header h3').text((!$(this).hasClass('album-edit') ? 'Добавление' : 'Редактирование')+' альбома');
+		$('#isEdit').val($(this).hasClass('album-edit') ? 1 : 0);
 		$('#albumEdit').modal('show');
 		return false;
 	});
@@ -64,7 +49,7 @@ $(document).ready(function() {
 			titleError.text('Неверно введено название!');
 			hasError = true;
 		}
-		if (!$('#albumOrigTitle').length && !$('#albumCover').val().length) {
+		if (0 == $('#isEdit').val() && !$('#albumCover').val().length) {
 			fileError.text('Не выбрано изоражение для обложки!');
 			hasError = true;
 		}
@@ -75,24 +60,16 @@ $(document).ready(function() {
 		return false;
 	});
 	
-	$('#tours-block .delete').live('click', function() {
-		var tour = $(this).parents('.tour-block'),
-			album = $(this).parents('.album-block'),
-			image = $(this).parents('.image-block'),
+	$('.delete').live('click', function() {
+		var image = $(this).parents('.image-block'),
 			data = {},
-			text = 'Вы уверены, что хотите удалить ';
+			text = 'Вы уверены, что хотите удалить '+(image.length ? 'изображение' : 'альбом')+'?';
 		
 		if (image.length) {
-			text += 'изображение?';
-			data = {deleteImage: tour.find('.title').eq(0).text()+'/'+album.find('h4 .title').eq(0).text()+'/images/'+$(this).attr('rel')};
+			data = {deleteImage: $(this).closest('.image-block').find('img').attr('src')};
 		}
-		else if (album.length) {
-			text += 'альбом?';
-			data = {deleteAlbum: tour.find('.title').eq(0).text()+'/'+album.find('h4 .title').eq(0).text()};
-		}
-		else if (tour.length) {
-			text += 'экскурсию?';
-			data = {deleteAlbum: tour.find('.title').eq(0).text()};
+		else {
+			data = {deleteAlbum: $(this).closest('.album-block').attr('rel')};
 		}
 		if (confirm(text)) {
 			Loader.show();
@@ -107,7 +84,7 @@ $(document).ready(function() {
 	});
 	
 	$('.newImage').live('click', function() {
-		$('#imageAdd .imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album-block').find('.title').eq(0).text());
+		$('#imageAdd .imageDir').val($(this).attr('rel'));
 		$('#imageAdd').modal('show');
 		return false;
 	});
@@ -129,7 +106,7 @@ $(document).ready(function() {
 	
 	$('.editImage').live('click', function() {
 		tinymce.activeEditor.setContent($(this).parents('.image-block').find('img').next('.desc').html());
-		$('#imageEdit .imageDir').val($(this).parents('.tour-block').find('.title').eq(0).text()+'/'+$(this).parents('.album-block').find('.title').eq(0).text()+'/images/'+$(this).find('img').attr('alt'));
+		$('#imageEdit .imageDir').val($(this).find('img').attr('src'));
 		$('#imageEdit').modal('show');
 		return false;
 	});

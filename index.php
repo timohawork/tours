@@ -14,20 +14,12 @@ if (!isset($_GET['page'])) {
 	$title = '';
 	$albumUrl = '';
 
-	switch ($router->type) {
-		case Router::TYPE_TOUR:
-			$title = $router->tour;
-			$albumUrl = $router->tour;
-		break;
-
-		case Router::TYPE_ALBUM:
-			$title = $router->album;
-			$albumUrl = $router->tour.'/'.$router->album.'/'.Album::IMAGES_DIR;
-		break;
-
-		case null:
-			$title = 'Наши экскурсии';
-		break;
+	if (null !== $router->type) {
+		$title = $router->album;
+		$albumUrl = $router->url;
+	}
+	else {
+		$title = 'Наши экскурсии';
 	}
 
 	$album = new Album($albumUrl);

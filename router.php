@@ -2,15 +2,15 @@
 
 class Router
 {
-	const TYPE_TOUR = 'tour';
 	const TYPE_ALBUM = 'album';
+	const TYPE_GALLERY = 'gallery';
 	const TYPE_STATIC = 'page';
 	
 	const DIR_NAME = 'tours';
 	
 	public $type;
-	public $tour;
 	public $album;
+	public $url;
 	public $title;
 	
 	public function __construct($title) {
@@ -19,42 +19,45 @@ class Router
 			$this->title = $title;
 			return;
 		}
-		$tour = explode("=", $query[0]);
-		if (self::TYPE_STATIC === $tour[0]) {
+		$param = explode("=", $query[0]);
+		if (self::TYPE_STATIC === $param[0]) {
 			$this->type = self::TYPE_STATIC;
-			$this->title = urldecode($tour[1]).' - '.$title;
+			$this->title = urldecode($param[1]).' - '.$title;
 			return;
 		}
-		if (self::TYPE_TOUR !== $tour[0] || empty($tour[1])) {
+		if (self::TYPE_ALBUM !== $param[0] || empty($param[1])) {
 			return;
 		}
-		$this->tour = urldecode($tour[1]);
-		if (!empty($query[1])) {
-			$album = explode("=", $query[1]);
-			if (self::TYPE_ALBUM !== $album[0] || empty($album[1])) {
-				return;
-			}
-			$this->type = self::TYPE_ALBUM;
-			$this->album = urldecode($album[1]);
+		$this->url = urldecode($param[1]);
+		$this->type = self::TYPE_ALBUM;
+		$albums = explode("/", $this->url);
+		$this->album = $albums[count($albums) - 1];
+		if (4 == count($albums)) {
+			$this->type = self::TYPE_GALLERY;
 			$this->title = $this->album.' - '.$title;
-		}
-		else {
-			$this->type = self::TYPE_TOUR;
-			$this->title = $this->tour.' - '.$title;
 		}
 	}
 	
 	public function getBreadCrumbs()
 	{
-		$links = $backUrl = '';
-		if (self::TYPE_TOUR === $this->type) {
-			$backUrl = '/';
+		if (null === $this->type) {
+			return '';
 		}
-		else if (self::TYPE_ALBUM === $this->type) {
-			$links = '<a href="index.php?tour='.$this->tour.'">'.$this->tour.'</a>';
-			$backUrl = 'index.php?tour='.$this->tour;
+		$links = '';
+		$backUrl = 'index.php';
+		if (!empty($this->url)) {
+			$url = explode("/", substr($this->url, 1));
+			array_pop($url);
+			if (!empty($url)) {
+				$linkUrl = '';
+				foreach ($url as $album) {
+					$linkUrl .= '/'.$album;
+					$links .= '<i class="fa fa-angle-right"></i><a href="index.php?album='.$linkUrl.'">'.$album.'</a>';
+				}
+				$backUrl .= '?album=/'.implode("/", $url);
+			}
 		}
-		$html = null !== $this->type ? '<div id="bread-crumbs"'.(self::TYPE_ALBUM === $this->type ? ' class="inalbum"' : '').'><a href="'.$backUrl.'" title="Назад"><i class="fa fa-arrow-left fa-lg"></i></a>'.$links.'</div>' : '';
+		$html = '<div id="bread-crumbs"'.(self::TYPE_GALLERY === $this->type ? ' class="inalbum"' : '').'><a href="'.$backUrl.'" title="Назад"><i class="fa fa-arrow-left fa-lg"></i></a>'.$links.'</div>';
 		return $html;
 	}
 }

@@ -49,25 +49,7 @@ class Image
 		if (empty($url)) {
 			return false;
 		}
-		if (empty($router)) {
-			$href = '';
-		}
-		else {
-			$href = 'index.php';
-			switch ($router->type) {
-				case Router::TYPE_TOUR:
-					$href .= '?tour='.$router->tour.'&album='.$title;
-				break;
-
-				case Router::TYPE_ALBUM:
-					$href .= '';
-				break;
-
-				case null:
-					$href .= '?tour='.$title;
-				break;
-			}
-		}
+		$href = empty($router) ? '' : 'index.php'.(Router::TYPE_GALLERY !== $router->type ? '?album='.$router->url.'/'.$title : '');
 		$html = '<div class="album-block">';
 		if (!empty($href)) {
 			$html .= '<a href="'.$href.'">';
@@ -82,13 +64,13 @@ class Image
 	
 	public static function add()
 	{
-		if (empty($_POST['imageDir']) || empty($_FILES)) {
+		if (empty($_POST['imageDir']) || empty($_FILES['image'])) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения данных!');
 			return false;
 		}
-		$path = Router::DIR_NAME.'/'.$_POST['imageDir'];
+		$path = Router::DIR_NAME.'/'.$_POST['imageDir'].'/'.Album::IMAGES_DIR;
 		if (!is_dir($path)) {
-			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения данных!');
+			Admin::setMessage(Admin::TYPE_ERROR, 'Неверный альбом!');
 			return false;
 		}
 		foreach ($_FILES['image']['type'] as $i => $imageType) {
@@ -104,7 +86,7 @@ class Image
 			$image->cropthumbnailimage(self::IMG_WIDTH, self::IMG_HEIGHT);
 			$bigImage->cropthumbnailimage(self::BIG_WIDTH, self::BIG_HEIGHT);
 			$fileName = strtolower(basename($imageName));
-			if (!self::save($imageTmpName, $path.'/'.Album::IMAGES_DIR.'/'.$fileName) || !self::save($imageTmpName, $path.'/'.Album::IMAGES_DIR.'/'.self::getBitTitle($fileName), true)) {
+			if (!self::save($imageTmpName, $path.'/'.$fileName) || !self::save($imageTmpName, $path.'/'.self::getBitTitle($fileName), true)) {
 				Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения изображения "'.$imageName.'"!');
 				return false;
 			}
@@ -121,11 +103,11 @@ class Image
 
 	public static function edit()
 	{
-		if (empty($_POST['imageDir']) || !isset($_POST['imageDesc']) || !is_file(Router::DIR_NAME.'/'.$_POST['imageDir'])) {
+		if (empty($_POST['imageDir']) || !isset($_POST['imageDesc']) || !is_file($_POST['imageDir'])) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения данных!');
 			return false;
 		}
-		if (false === file_put_contents(self::getDescFile(Router::DIR_NAME.'/'.$_POST['imageDir']), $_POST['imageDesc'])) {
+		if (false === file_put_contents(self::getDescFile($_POST['imageDir']), $_POST['imageDesc'])) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения описания изображения!');
 			return false;
 		}
@@ -135,16 +117,16 @@ class Image
 
 	public static function delete($path)
 	{
-		if (empty($path) || !is_file(Router::DIR_NAME.'/'.$path)) {
+		if (empty($path) || !is_file($path)) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка удаления данных!');
 			return false;
 		}
-		$descFilePath = self::getDescFile(Router::DIR_NAME.'/'.$path);
+		$descFilePath = self::getDescFile($path);
 		if (is_file($descFilePath) && !unlink($descFilePath)) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка удаления данных!');
 			return false;
 		}
-		if (!unlink(Router::DIR_NAME.'/'.$path) || !unlink(Router::DIR_NAME.'/'.self::getBitTitle($path))) {
+		if (!unlink($path) || !unlink(self::getBitTitle($path))) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка удаления данных!');
 			return false;
 		}

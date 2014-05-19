@@ -87,12 +87,8 @@ if (isset($_GET['page']) && isset($_GET['do']) && 'static' === $_GET['page'] && 
 <?php 
 
 if (!isset($_GET['page'])) {
-
-	if (isset($_POST['albumOrigTitle']) && !empty($_FILES)) {
-		Album::edit();
-	}
-	else if (isset($_POST['albumTitle']) && !empty($_FILES)) {
-		Album::add();
+	if (isset($_POST['albumTitle'])) {
+		$_POST['isEdit'] ? Album::edit() : Album::add();
 	}
 	else if (isset($_POST['deleteAlbum'])) {
 		echo (int)Album::delete($_POST['deleteAlbum']);
@@ -109,60 +105,55 @@ if (!isset($_GET['page'])) {
 					<?=Admin::renderMessage()?>
 					
 					<h2><a class="btn edit newTour" href="#"><i class="fa fa-plus fa-lg"></i></a> Экскурсии:</h2>
-					<div id="tours-block">
-						<?php foreach ($admin->getTours() as $tour => $albums) : ?>
-							<div class="tour-block folding-block">
-								<i class="fa <?=!empty($albums) ? 'fa-caret-right folding-caret fa-2x' : 'empty'?>"></i>&nbsp;
-								<h4>
-									<a href="#" class="edit editTour"><img class="img-rounded" src="tours/<?=$tour?>/cover.jpg" alt="<?=$tour?>" title="Редактировать"></a>
-									<span class="title" rel="<?=$tour?>"><?=$tour?></span>
-									<a class="btn edit newAlbum" href="#"><i class="fa fa-plus fa-lg"></i></a>
-									<i class="fa fa-times-circle-o fa-lg delete" title="Удалить"></i>
-								</h4>
-								<div class="folding-toggle hide">
-									<?php if (!empty($albums)) : ?>
-										<div class="albums-block">
-											<?php foreach ($albums as $album => $dir) : ?>
-												<div class="album-block folding-block">
-													<i class="fa <?=!empty($dir[Album::IMAGES_DIR]) ? 'fa-caret-right folding-caret fa-2x' : 'empty'?>"></i>&nbsp;
-													<h4>
-														<a href="#" class="edit editAlbum"><img class="img-rounded" src="tours/<?=$tour?>/<?=$album?>/cover.jpg" alt="<?=$album?>" title="Редактировать"></a>
-														<span class="title" rel="<?=$album?>"><?=$album?></span>
-														<a class="btn newImage" href="#"><i class="fa fa-plus fa-lg"></i></a>
-														<i class="fa fa-times-circle-o fa-lg delete" title="Удалить"></i>
-													</h4>
-													<div class="folding-toggle hide">
-														<?php if (!empty($dir[Album::IMAGES_DIR])) : ?>
-															<div class="images-block">
-																<?php foreach ($dir[Album::IMAGES_DIR] as $imageName) : ?>
-																	<div class="image-block">
-																		<?php $image = new Image(Router::DIR_NAME.'/'.$tour.'/'.$album.'/'.Album::IMAGES_DIR.'/'.$imageName, $imageName); ?>
-																		<a href="#" class="editImage">
-																			<?=$image->render(array('class' => 'img-rounded'))?>
-																			<i class="fa fa-times-circle-o fa-lg delete" title="Удалить" rel="<?=$imageName?>"></i>
-																		</a>
-																		<div class="imageDesc">
-																			<?php
-																				if (!empty($image->desc)) {
-																					$imageDesc = strip_tags($image->desc);
-																					echo 100 < strlen($imageDesc) ? substr($imageDesc, 0, 100).'...' : $imageDesc;
-																				}
-																				else {
-																					echo 'Нет описания';
-																				}
-																			?>
-																		</div>
-																	</div>
-																<?php endforeach; ?>
+					<div class="albums-block">
+						<?php foreach ($admin->getTours() as $album1 => $albums1) : ?>
+							<?php $album1Html = Admin::getBlockHtml($album1, 'tours/'.$album1.'/cover.jpg', $album1); ?>
+							<?=$album1Html['header']?>
+							<?php if (!empty($albums1)) : ?>
+								<div class="albums-block">
+									<?php foreach ($albums1 as $album2 => $albums2) : ?>
+										<?php $album2Html = Admin::getBlockHtml($album2, 'tours/'.$album1.'/'.$album2.'/cover.jpg', $album1.'/'.$album2); ?>
+										<?=$album2Html['header']?>
+										<?php if (!empty($albums2)) : ?>
+											<div class="albums-block">
+												<?php foreach ($albums2 as $album3 => $images) : ?>
+													<?php $album3Html = Admin::getBlockHtml($album3, 'tours/'.$album1.'/'.$album2.'/'.$album3.'/cover.jpg', $album1.'/'.$album2.'/'.$album3, false); ?>
+													<?=$album3Html['header']?>
+													<div class="images-block">
+														<?php foreach ($images[Album::IMAGES_DIR] as $imageName) : ?>
+															<div class="image-block">
+																<?php $image = new Image(Router::DIR_NAME.'/'.$album1.'/'.$album2.'/'.$album3.'/'.Album::IMAGES_DIR.'/'.$imageName, $imageName); ?>
+																<a href="#" class="editImage">
+																	<?=$image->render(array('class' => 'img-rounded'))?>
+																	<i class="fa fa-times-circle-o fa-lg delete" title="Удалить" rel="<?=$imageName?>"></i>
+																</a>
+																<div class="imageDesc">
+																	<?php
+																		if (!empty($image->desc)) {
+																			$imageDesc = strip_tags($image->desc);
+																			echo 100 < strlen($imageDesc) ? substr($imageDesc, 0, 100).'...' : $imageDesc;
+																		}
+																		else {
+																			echo 'Нет описания';
+																		}
+																	?>
+																</div>
 															</div>
-														<?php endif; ?>
+														<?php endforeach; ?>
+														<div class="image-block newImage" title="Добавить изображение" rel="<?=$album1.'/'.$album2.'/'.$album3?>">
+															<div class="new-image-block">
+																<i class="fa fa-plus fa-4x"></i>
+															</div>
+														</div>
 													</div>
-												</div>
-											<?php endforeach; ?>
-										</div>
-									<?php endif; ?>
+													<?=$album3Html['footer']?>
+												<?php endforeach; ?>
+										<?php endif; ?>
+										<?=$album2Html['footer']?>
+									<?php endforeach; ?>
 								</div>
-							</div>
+							<?php endif; ?>
+							<?=$album1Html['footer']?>
 						<?php endforeach; ?>
 					</div>
 		
@@ -188,6 +179,8 @@ if (!isset($_GET['page'])) {
 										<p class="text-error"></p>
 									</div>
 								</div>
+								<input type="hidden" id="albumPath" name="albumPath" value="">
+									<input type="hidden" id="isEdit" name="isEdit" value="0">
 							</form>
 						</div>
 						<div class="modal-footer">

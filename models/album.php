@@ -17,12 +17,12 @@ class Album
 	
 	public function __construct($dir)
 	{
-		$dir = Router::DIR_NAME.(empty($dir) ? '' : '/'.urldecode($dir));
+		$dir = Router::DIR_NAME.(empty($dir) ? '' : '/'.substr(urldecode($dir), 1));
 		if (!is_dir($dir)) {
 			return;
 		}
 		$this->dir = $dir;
-		$this->type = false === strpos($this->dir, self::IMAGES_DIR) ? self::TYPE_COVERS : self::TYPE_IMAGES;
+		$this->type = 4 == count(explode("/", $this->dir)) ? self::TYPE_IMAGES : self::TYPE_COVERS;
 	}
 	
 	public function getList()
@@ -30,8 +30,9 @@ class Album
 		if (empty($this->dir) || empty($this->type)) {
 			return false;
 		}
+		$dir = $this->dir.(self::TYPE_IMAGES == $this->type ? '/'.self::IMAGES_DIR : '');
 		$list = array();
-		foreach (scandir($this->dir) as $file) {
+		foreach (scandir($dir) as $file) {
 			if ("." === $file || ".." === $file) {
 				continue;
 			}
@@ -48,7 +49,7 @@ class Album
 				}
 				$list[] = array(
 					'name' => $file,
-					'url' => $this->dir.'/'.$file
+					'url' => $dir.'/'.$file
 				);
 			}
 		}
@@ -57,7 +58,7 @@ class Album
 	
 	public static function add()
 	{
-		if (!isset($_POST['albumTitle']) || empty($_FILES) || (isset($_POST['newTour']) && empty($_POST['newTour']))) {
+		if (!isset($_POST['albumTitle']) || empty($_FILES['albumCover']['name'])) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения данных!');
 			return false;
 		}
@@ -65,11 +66,7 @@ class Album
 			Admin::setMessage(Admin::TYPE_ERROR, 'Неверно введено название!');
 			return false;
 		}
-		if (isset($_POST['newTour']) && !is_dir(Router::DIR_NAME.'/'.$_POST['newTour'])) {
-			Admin::setMessage(Admin::TYPE_ERROR, 'Альбома с названием "'.$_POST['newTour'].'" не существует!');
-			return false;
-		}
-		$path = Router::DIR_NAME.'/'.(isset($_POST['newTour']) ? $_POST['newTour'].'/' : '').$_POST['albumTitle'];
+		$path = Router::DIR_NAME.'/'.$_POST['albumPath'].'/'.$_POST['albumTitle'];
 		if (is_dir($path)) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Альбом с названием "'.$_POST['albumTitle'].'" уже существует!');
 			return false;
@@ -82,7 +79,7 @@ class Album
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка создания директории!');
 			return false;
 		}
-		if (isset($_POST['newTour']) && (!mkdir($path.'/'.Album::IMAGES_DIR) || !chmod($path.'/'.Album::IMAGES_DIR, 0755))) {
+		if (2 == count(explode("/", $_POST['albumPath'])) && (!mkdir($path.'/'.Album::IMAGES_DIR) || !chmod($path.'/'.Album::IMAGES_DIR, 0755))) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка создания директории!');
 			return false;
 		}
@@ -97,8 +94,15 @@ class Album
 	
 	public static function edit()
 	{
-		$path = Router::DIR_NAME.'/'.(isset($_POST['tourTitle']) ? $_POST['tourTitle'].'/' : '').$_POST['albumOrigTitle'];
-		if (!isset($_POST['albumTitle']) || !isset($_POST['albumOrigTitle']) || !is_dir($path)) {
+		if (empty($_POST['albumTitle'])) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения данных!');
+			return false;
+		}
+		$origPath = Router::DIR_NAME.'/'.$_POST['albumPath'];
+		$path = explode("/", $origPath);
+		$path[count($path) - 1] = $_POST['albumTitle'];
+		$path = implode("/", $path);
+		if (!is_dir($origPath)) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения данных!');
 			return false;
 		}
@@ -113,12 +117,12 @@ class Album
 			}
 			$cover = new Imagick($_FILES['albumCover']['tmp_name']);
 			$cover->cropthumbnailimage(self::COVER_WIDTH, self::COVER_HEIGHT);
-			if (true !== $cover->writeimage($path.'/'.self::COVER_NAME)) {
+			if (true !== $cover->writeimage($origPath.'/'.self::COVER_NAME)) {
 				Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения изображения!');
 				return false;
 			}
 		}
-		if (!rename(dirname(__FILE__).'/../'.$path, dirname(__FILE__).'/../'.Router::DIR_NAME.'/'.(isset($_POST['tourTitle']) ? $_POST['tourTitle'].'/' : '').$_POST['albumTitle'])) {
+		if (!rename(dirname(__FILE__).'/../'.$origPath, dirname(__FILE__).'/../'.$path)) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка переименования альбома!');
 			return false;
 		}
