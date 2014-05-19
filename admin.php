@@ -245,7 +245,7 @@ else if ('static' === $_GET['page']) {
 						<ul id="pages-block">
 							<?php foreach ($pages as $page) : ?>
 								<li class="page-block">
-									<h3><a class="title" href="admin.php?page=static&do=edit&name=<?=$page?>"><?=$page?></a> <a href="index.php?page=<?=$page?>" target="_blank"><i class="fa fa-arrow-right"></i></a> <i class="fa fa-times-circle-o fa-lg delete" title="Удалить"></i></h3>
+									<h3><a class="title" href="admin.php?page=static&do=edit&name=<?=$page?>"><?=$page?></a> <a href="index.php?page=<?=$page?>" target="_blank"><i class="fa fa-arrow-right"></i></a> <i class="fa fa-times-circle-o fa-lg deletePage" title="Удалить"></i></h3>
 								</li>
 							<?php endforeach; ?>
 						</ul>

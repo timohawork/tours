@@ -132,9 +132,9 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('.page-block .delete').live('click', function() {
+	$('.deletePage').live('click', function() {
 		if (confirm('Вы уверены, что хотите удалить страницу?')) {
-			$.post('admin.php?page=static&do=delete', {name: $(this).prev('a').text()}, function(response) {
+			$.post('admin.php?page=static&do=delete', {name: $(this).parent().find('.title').text()}, function(response) {
 				if (response) {
 					window.location.reload();
 				}

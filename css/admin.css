@@ -163,7 +163,8 @@
 
 
 
-.page-block .delete {
+.deletePage {
+	color: #F00;
 	cursor: pointer;
 }
 
