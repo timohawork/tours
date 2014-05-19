@@ -107,17 +107,17 @@ if (!isset($_GET['page'])) {
 					<h2><a class="btn edit newTour" href="#"><i class="fa fa-plus fa-lg"></i></a> Экскурсии:</h2>
 					<div class="albums-block">
 						<?php foreach ($admin->getTours() as $album1 => $albums1) : ?>
-							<?php $album1Html = Admin::getBlockHtml($album1, 'tours/'.$album1.'/cover.jpg', $album1); ?>
+							<?php $album1Html = Admin::getBlockHtml($album1, 'tours/'.$album1.'/cover.jpg', $album1, empty($albums1)); ?>
 							<?=$album1Html['header']?>
 							<?php if (!empty($albums1)) : ?>
 								<div class="albums-block">
 									<?php foreach ($albums1 as $album2 => $albums2) : ?>
-										<?php $album2Html = Admin::getBlockHtml($album2, 'tours/'.$album1.'/'.$album2.'/cover.jpg', $album1.'/'.$album2); ?>
+										<?php $album2Html = Admin::getBlockHtml($album2, 'tours/'.$album1.'/'.$album2.'/cover.jpg', $album1.'/'.$album2, empty($albums2)); ?>
 										<?=$album2Html['header']?>
 										<?php if (!empty($albums2)) : ?>
 											<div class="albums-block">
 												<?php foreach ($albums2 as $album3 => $images) : ?>
-													<?php $album3Html = Admin::getBlockHtml($album3, 'tours/'.$album1.'/'.$album2.'/'.$album3.'/cover.jpg', $album1.'/'.$album2.'/'.$album3, false); ?>
+													<?php $album3Html = Admin::getBlockHtml($album3, 'tours/'.$album1.'/'.$album2.'/'.$album3.'/cover.jpg', $album1.'/'.$album2.'/'.$album3, false, false); ?>
 													<?=$album3Html['header']?>
 													<div class="images-block">
 														<?php foreach ($images[Album::IMAGES_DIR] as $imageName) : ?>

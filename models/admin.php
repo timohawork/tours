@@ -94,11 +94,11 @@ class Admin
 		</div>';
 	}
 	
-	public static function getBlockHtml($title, $img, $path, $withAdd = true)
+	public static function getBlockHtml($title, $img, $path, $isEmpty = true, $withAdd = true)
 	{
 		return array(
 			'header' => '<div class="album-block folding-block" rel="'.$path.'">
-				<i class="fa fa-caret-right folding-caret fa-2x"></i>&nbsp;
+				<i class="fa '.($isEmpty ? 'empty' : 'fa-caret-right folding-caret fa-2x').'"></i>&nbsp;
 				<h4>
 					<a href="#" class="edit album-edit"><img class="img-rounded" src="'.$img.'" alt="'.$title.'" title="Редактировать"></a>
 					<span class="title" rel="'.$title.'">'.$title.'</span>
