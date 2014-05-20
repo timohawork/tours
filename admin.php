@@ -54,6 +54,24 @@ if (isset($_GET['page']) && isset($_GET['do']) && 'static' === $_GET['page'] && 
 	echo (int)StaticPages::delete($_POST['name']);
 	die();
 }
+if (!isset($_GET['page'])) {
+	if (isset($_POST['albumTitle'])) {
+		echo (int)$_POST['isEdit'] ? Album::edit() : Album::add();
+		die();
+	}
+	else if (isset($_POST['deleteAlbum'])) {
+		echo (int)Album::delete($_POST['deleteAlbum']);
+		die();
+	}
+	else if (isset($_POST['deleteImage'])) {
+		echo (int)Image::delete($_POST['deleteImage']);
+		die();
+	}
+	else if (isset($_POST['imageDir'])) {
+		echo (int)!empty($_FILES['image']) ? Image::add() : Image::edit();
+		die();
+	}
+}
 
 ?>
 <!DOCTYPE html>
@@ -66,6 +84,7 @@ if (isset($_GET['page']) && isset($_GET['do']) && 'static' === $_GET['page'] && 
 		<link rel="stylesheet" type="text/css" href="/css/bootstrap-responsive.css" />
 		<link rel="stylesheet" type="text/css" href="/css/admin.css" />
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
+		<script type="text/javascript" src="/js/jquery.form.js"></script>
 		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="/tinymce/tinymce.min.js"></script>
 		<script type="text/javascript" src="/js/admin.js"></script>
@@ -87,20 +106,7 @@ if (isset($_GET['page']) && isset($_GET['do']) && 'static' === $_GET['page'] && 
 <?php 
 
 if (!isset($_GET['page'])) {
-	if (isset($_POST['albumTitle'])) {
-		$_POST['isEdit'] ? Album::edit() : Album::add();
-	}
-	else if (isset($_POST['deleteAlbum'])) {
-		echo (int)Album::delete($_POST['deleteAlbum']);
-		die();
-	}
-	else if (isset($_POST['deleteImage'])) {
-		echo (int)Image::delete($_POST['deleteImage']);
-		die();
-	}
-	else if (isset($_POST['imageDir'])) {
-		!empty($_FILES['image']) ? Image::add() : Image::edit();
-	}
+	
 ?>
 					<?=Admin::renderMessage()?>
 					

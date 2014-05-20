@@ -66,8 +66,7 @@ $(document).ready(function() {
 			hasError = true;
 		}
 		if (!hasError) {
-			Loader.show();
-			$('#albumEdit form').submit();
+			Progress.show('#albumEdit form');
 		}
 		return false;
 	});
@@ -84,9 +83,7 @@ $(document).ready(function() {
 			data = {deleteAlbum: $(this).closest('.album-block').attr('rel')};
 		}
 		if (confirm(text)) {
-			Loader.show();
 			$.post('admin.php', data, function(response) {
-				Loader.hide();
 				if (response) {
 					window.location.reload();
 				}
@@ -103,16 +100,8 @@ $(document).ready(function() {
 	
 	$('#imageAdd .modal-footer .btn-primary').live('click', function() {
 		var error = $('#imageAdd .text-error');
-		
 		error.text('');
-		
-		if (!$('#image').val().length) {
-			error.text('Не выбрано ни одно изоражение!');
-		}
-		else {
-			Loader.show();
-			$('#imageAdd form').submit();
-		}
+		!$('#image').val().length ? error.text('Не выбрано ни одно изоражение!') : Progress.show('#imageAdd form');
 		return false;
 	});
 	
@@ -124,8 +113,7 @@ $(document).ready(function() {
 	});
 	
 	$('#imageEdit .modal-footer .btn-primary').live('click', function() {
-		Loader.show();
-		$('#imageEdit form').submit();
+		Progress.show('#imageEdit form');
 		return false;
 	});
 	
@@ -252,21 +240,29 @@ var Folding = function()
 	}
 }
 
-var Loader = new function()
+var Progress = new function()
 {
-	this.show = function() {
-		if (!$('#loader-block').length) {
-			$('.modal.in').modal('hide');
-			var body = $('body');
-			body.prepend(
-				'<div id="loader-block" style="width: '+body.innerWidth()+'px; height: '+body.innerHeight()+'px;">'+
-					'<img class="img-circle" src="../img/prettyPhoto/loader.gif" alt="Загрузка" title="Загрузка" />'+
-				'</div>'
-			);
-		}
+	this.show = function(form) {
+		$(form).ajaxForm({
+			beforeSend: function() {
+			$(form).append('<div class="progress progress-striped active">'+
+				'<div class="bar"></div>'+
+			'</div>');
+				$(form+' .bar').width('0%');
+			},
+			uploadProgress: function(event, position, total, percentComplete) {
+				$(form+' .bar').width(percentComplete+'%');
+			},
+			success: function() {
+				$(form+' .bar').width('100%');
+			},
+			complete: function(xhr) {
+				window.location.reload();
+			}
+		}).submit();
 	}
 	
 	this.hide = function() {
-		$('#loader-block').remove();
+		$('.progress').remove();
 	}
 }

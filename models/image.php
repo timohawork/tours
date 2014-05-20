@@ -91,7 +91,7 @@ class Image
 				return false;
 			}
 		}
-		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно сохранены!');
+		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно сохранены!', false);
 	}
 	
 	protected static function save($file, $path, $isBig = false)
@@ -111,7 +111,7 @@ class Image
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения описания изображения!');
 			return false;
 		}
-		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно сохранены!');
+		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно сохранены!', false);
 	}
 
 

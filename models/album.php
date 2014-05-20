@@ -104,7 +104,7 @@ class Album
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения изображения!');
 			return false;
 		}
-		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно сохранены!');
+		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно сохранены!', false);
 	}
 	
 	public static function edit()
@@ -145,7 +145,7 @@ class Album
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка переименования альбома!');
 			return false;
 		}
-		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно сохранены!');
+		Admin::setMessage(Admin::TYPE_SUCCESS, 'Данные успешно сохранены!', false);
 		return true;
 	}
 	
