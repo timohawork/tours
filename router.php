@@ -45,7 +45,7 @@ class Router
 			return '';
 		}
 		$links = '';
-		$backUrl = 'index.php';
+		$backUrl = '/';
 		if (!empty($this->url)) {
 			$url = explode("/", substr($this->url, 1));
 			array_pop($url);
@@ -53,9 +53,9 @@ class Router
 				$linkUrl = '';
 				foreach ($url as $album) {
 					$linkUrl .= '/'.$album;
-					$links .= '<i class="fa fa-angle-right"></i><a href="index.php?album='.$linkUrl.'">'.$album.'</a>';
+					$links .= '<i class="fa fa-angle-right"></i><a href="/album'.$linkUrl.'">'.$album.'</a>';
 				}
-				$backUrl .= '?album=/'.implode("/", $url);
+				$backUrl = '/album/'.implode("/", $url);
 			}
 		}
 		$html = '<div id="bread-crumbs"'.(self::TYPE_GALLERY === $this->type ? ' class="inalbum"' : '').'><a href="'.$backUrl.'" title="Назад"><i class="fa fa-arrow-left fa-lg"></i></a>'.$links.'</div>';

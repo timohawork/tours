@@ -43,10 +43,10 @@ $pages = StaticPages::getPages();
 		<link rel="stylesheet" type="text/css" href="/css/jcarousel.basic.css" />
 		<link rel="stylesheet" type="text/css" href="/css/prettyPhoto.css" />
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
-		<script type="text/javascript" src="js/imageload.js"></script>
-		<script type="text/javascript" src="js/jquery.jcarousel.js"></script>
-		<script type="text/javascript" src="js/jquery.prettyPhoto.js"></script>
-		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="/js/imageload.js"></script>
+		<script type="text/javascript" src="/js/jquery.jcarousel.js"></script>
+		<script type="text/javascript" src="/js/jquery.prettyPhoto.js"></script>
+		<script type="text/javascript" src="/js/index.js"></script>
 		<title><?=$router->title?></title>
 	</head>
 	<body>
@@ -58,7 +58,7 @@ $pages = StaticPages::getPages();
 				<h2 id="pageTitle">
 					<?php if (!empty($pages)) : ?>
 						<?php foreach($pages as $page) : ?>
-							<a href="/index.php?page=<?=$page?>"><?=$page?></a>
+							<a href="/page/<?=$page?>"><?=$page?></a>
 						<?php endforeach; ?>
 					<?php endif; ?>
 					<br /><br />
@@ -72,7 +72,7 @@ $pages = StaticPages::getPages();
 								<?php 
 								if (!empty($list)) {
 									foreach ($list as $block) {
-										Image::renderBlock($router, $block['url'], $block['name'], Album::TYPE_COVERS == $album->type);
+										Image::renderBlock($router, '/'.$block['url'], $block['name'], Album::TYPE_COVERS == $album->type);
 									}
 								}
 								?>

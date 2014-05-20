@@ -1,2 +1,6 @@
 RewriteEngine On
-RewriteRule ^/(.*)$ /index.php?album=$1 [L,QSA]
+RewriteBase /
+
+RewriteRule ^album/(.*)$ index.php?album=/$1 [L,QSA]
+
+RewriteRule ^page/(.*)$ index.php?page=$1 [L,QSA]

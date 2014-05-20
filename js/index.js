@@ -1,14 +1,6 @@
 (function($) {
     $(function() {
-        $('.jcarousel')
-			/*.on('jcarousel:scrollend', function() {
-				var desc = $('#description');
-				desc.animate({opacity: 0}, 500, function(){
-					desc.html($('.jcarousel').jcarousel('visible').find('img').next('.desc').html());
-					desc.animate({opacity: 1}, 500);
-				});
-			})*/
-			.jcarousel();
+        $('.jcarousel').jcarousel();
 
         $('.jcarousel-control-prev')
             .on('jcarouselcontrol:active', function() {

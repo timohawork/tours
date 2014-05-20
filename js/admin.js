@@ -28,10 +28,6 @@ $(document).ready(function() {
 	$('.edit').live('click', function() {
 		var title = $(this).closest('.album-block').find('h4 .title').eq(0).text(),
 			path = $(this).closest('.album-block').attr('rel');
-		$('.title-block .text-error').text('');
-		$('.file-block .text-error').text('');
-		$('#albumTitle').val(!$(this).hasClass('album-edit') ? '' : title);
-		$('#albumPath').val(path);
 		if (!$(this).hasClass('album-edit')) {
 			$('#albumEdit .modal-header h3').text('Добавление альбома');
 			$('#albumEdit form')[0].reset();
@@ -39,6 +35,10 @@ $(document).ready(function() {
 		else {
 			$('#albumEdit .modal-header h3').text('Редактирование альбома');
 		}
+		$('.title-block .text-error').text('');
+		$('.file-block .text-error').text('');
+		$('#albumTitle').val(!$(this).hasClass('album-edit') ? '' : title);
+		$('#albumPath').val(path);
 		$('#isEdit').val($(this).hasClass('album-edit') ? 1 : 0);
 		tinymce.activeEditor.setContent('');
 		$('#albumEdit .album-desc').addClass('hide');
@@ -97,8 +97,8 @@ $(document).ready(function() {
 	});
 	
 	$('.new-image-block').live('click', function() {
-		$('#imageAdd .imageDir').val($(this).attr('rel'));
 		$('#imageAdd form')[0].reset();
+		$('#imageAdd .imageDir').val($(this).parent().attr('rel'));
 		$('#imageAdd').modal('show');
 		return false;
 	});
@@ -265,7 +265,7 @@ var Progress = new function()
 				$(form+' .bar').width('100%');
 			},
 			complete: function(xhr) {
-				window.location.reload();
+				//window.location.reload();
 			}
 		}).submit();
 	}
