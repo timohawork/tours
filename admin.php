@@ -177,8 +177,14 @@ if (!isset($_GET['page'])) {
 										<p class="text-error"></p>
 									</div>
 								</div>
+								<div class="control-group album-desc">
+									<label class="control-label" for="albumDesc">Описание</label>
+									<div class="controls">
+										<textarea class="span3" name="albumDesc" id="albumDesc"></textarea>
+									</div>
+								</div>
 								<input type="hidden" id="albumPath" name="albumPath" value="">
-									<input type="hidden" id="isEdit" name="isEdit" value="0">
+								<input type="hidden" id="isEdit" name="isEdit" value="0">
 							</form>
 						</div>
 						<div class="modal-footer">

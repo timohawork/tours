@@ -58,7 +58,7 @@ class Album
 				);
 			}
 			else if (self::TYPE_IMAGES == $this->type) {
-				$file = strtolower($file);
+				$file = mb_convert_case($file, MB_CASE_LOWER, "UTF-8");
 				if (false === strpos($file, '.jpg') || strpos($file, Image::BIG_NAME_PART.".jpg")) {
 					continue;
 				}

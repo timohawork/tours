@@ -27,13 +27,13 @@ class Image
 	
 	protected static function getBitTitle($title)
 	{
-		return str_replace(".jpg", self::BIG_NAME_PART.".jpg", strtolower($title));
+		return str_replace(".jpg", self::BIG_NAME_PART.".jpg", mb_convert_case($title, MB_CASE_LOWER, "UTF-8"));
 	}
 
 	public static function getDescFile($imageUrl)
 	{
 		$path = explode("/", $imageUrl);
-		$descFile = str_replace(".jpg", "_desc.txt", strtolower(array_pop($path)));
+		$descFile = str_replace(".jpg", "_desc.txt", mb_convert_case(array_pop($path), MB_CASE_LOWER, "UTF-8"));
 		$path[] = $descFile;
 		return implode("/", $path);
 	}
@@ -85,7 +85,7 @@ class Image
 			$bigImage = clone $image;
 			$image->cropthumbnailimage(self::IMG_WIDTH, self::IMG_HEIGHT);
 			$bigImage->cropthumbnailimage(self::BIG_WIDTH, self::BIG_HEIGHT);
-			$fileName = strtolower(basename($imageName));
+			$fileName = mb_convert_case($imageName, MB_CASE_LOWER, "UTF-8");
 			if (!self::save($imageTmpName, $path.'/'.$fileName) || !self::save($imageTmpName, $path.'/'.self::getBitTitle($fileName), true)) {
 				Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения изображения "'.$imageName.'"!');
 				return false;

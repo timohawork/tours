@@ -14,6 +14,16 @@ $(document).ready(function() {
 	
 	/* ------------------------------------------------------------------------------ */
 	
+	tinymce.init({
+		selector: "#albumDesc",
+		height: 200,
+		setup : function(ed) {
+			ed.on('init', function() {
+				this.getDoc().body.style.fontSize = '16px';
+			});
+		}
+	});
+	
 	
 	$('.edit').live('click', function() {
 		var title = $(this).closest('.album-block').find('h4 .title').eq(0).text(),
@@ -24,25 +34,13 @@ $(document).ready(function() {
 		$('#albumPath').val(path);
 		$('#albumEdit .modal-header h3').text((!$(this).hasClass('album-edit') ? 'Добавление' : 'Редактирование')+' альбома');
 		$('#isEdit').val($(this).hasClass('album-edit') ? 1 : 0);
-		$('#albumEdit .album-desc').remove();
+		tinymce.activeEditor.setContent('');
+		$('#albumEdit .album-desc').addClass('hide');
 		path = undefined === path ? [] : path.split('/');
 		$('#albumEdit').removeClass('wide');
 		if (2 == path.length) {
-			$('#albumEdit form').append('<div class="control-group album-desc">'+
-				'<label class="control-label" for="albumDesc">Описание</label>'+
-				'<div class="controls">'+
-					'<textarea class="span3" name="albumDesc" id="albumDesc">'+($(this).closest('.album-block').find('.description').eq(0).text())+'</textarea>'+
-				'</div>'+
-			'</div>');
-			tinymce.init({
-				selector: "#albumDesc",
-				height: 200,
-				setup : function(ed) {
-					ed.on('init', function() {
-						this.getDoc().body.style.fontSize = '16px';
-					});
-				}
-			});
+			tinymce.activeEditor.setContent($(this).closest('.album-block').find('.description').html());
+			$('#albumEdit .album-desc').removeClass('hide');
 			$('#albumEdit').addClass('wide');
 		}
 		$('#albumEdit').modal('show');
@@ -243,11 +241,13 @@ var Folding = function()
 var Progress = new function()
 {
 	this.show = function(form) {
+		tinymce.triggerSave();
 		$(form).ajaxForm({
 			beforeSend: function() {
-			$(form).append('<div class="progress progress-striped active">'+
-				'<div class="bar"></div>'+
-			'</div>');
+				$(form).append('<div class="progress progress-striped active">'+
+					'<div class="bar"></div>'+
+				'</div>');
+				$(form+' input, '+form+' textarea').prop('disabled', true);
 				$(form+' .bar').width('0%');
 			},
 			uploadProgress: function(event, position, total, percentComplete) {
