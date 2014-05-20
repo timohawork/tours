@@ -110,7 +110,7 @@ if (!isset($_GET['page'])) {
 ?>
 					<?=Admin::renderMessage()?>
 					
-					<h2><a class="btn edit newTour" href="#"><i class="fa fa-plus fa-lg"></i></a> Экскурсии:</h2>
+					<h2><a class="btn edit newTour" href="#"><i class="fa fa-plus fa-lg"></i></a> Добавить новый раздел</h2>
 					<div class="albums-block">
 						<?php foreach ($admin->getTours() as $album1 => $albums1) : ?>
 							<?php $album1Html = Admin::getBlockHtml($album1, 'tours/'.$album1.'/cover.jpg', $album1); ?>

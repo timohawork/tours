@@ -32,7 +32,13 @@ $(document).ready(function() {
 		$('.file-block .text-error').text('');
 		$('#albumTitle').val(!$(this).hasClass('album-edit') ? '' : title);
 		$('#albumPath').val(path);
-		$('#albumEdit .modal-header h3').text((!$(this).hasClass('album-edit') ? 'Добавление' : 'Редактирование')+' альбома');
+		if (!$(this).hasClass('album-edit')) {
+			$('#albumEdit .modal-header h3').text('Добавление альбома');
+			$('#albumEdit form')[0].reset();
+		}
+		else {
+			$('#albumEdit .modal-header h3').text('Редактирование альбома');
+		}
 		$('#isEdit').val($(this).hasClass('album-edit') ? 1 : 0);
 		tinymce.activeEditor.setContent('');
 		$('#albumEdit .album-desc').addClass('hide');
@@ -47,7 +53,7 @@ $(document).ready(function() {
 		return false;
 	});
 	
-	$('#albumEdit .modal-footer .btn-primary').live('click', function() {
+	$('#albumEdit .modal-footer .btn-primary:not(.disabled)').live('click', function() {
 		var titleError = $('.title-block .text-error'),
 			fileError = $('.file-block .text-error'),
 			hasError = false;
@@ -92,6 +98,7 @@ $(document).ready(function() {
 	
 	$('.newImage').live('click', function() {
 		$('#imageAdd .imageDir').val($(this).attr('rel'));
+		$('#imageAdd form')[0].reset();
 		$('#imageAdd').modal('show');
 		return false;
 	});
@@ -248,6 +255,7 @@ var Progress = new function()
 					'<div class="bar"></div>'+
 				'</div>');
 				$(form+' input, '+form+' textarea').prop('disabled', true);
+				$(form).closest('.modal').find('.btn.btn-primary').addClass('disabled');
 				$(form+' .bar').width('0%');
 			},
 			uploadProgress: function(event, position, total, percentComplete) {

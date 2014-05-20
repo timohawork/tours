@@ -56,7 +56,6 @@ $pages = StaticPages::getPages();
 			</div>
 			<div id="container">
 				<h2 id="pageTitle">
-					<a href="/">Главная</a>
 					<?php if (!empty($pages)) : ?>
 						<?php foreach($pages as $page) : ?>
 							<a href="/index.php?page=<?=$page?>"><?=$page?></a>
