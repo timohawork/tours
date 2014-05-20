@@ -132,7 +132,7 @@ if (!isset($_GET['page'])) {
 														<?php
 															if (!empty($image->desc)) {
 																$imageDesc = strip_tags($image->desc);
-																echo 100 < strlen($imageDesc) ? substr($imageDesc, 0, 100).'...' : $imageDesc;
+																echo 20 < strlen($imageDesc) ? substr($imageDesc, 0, 20).'...' : $imageDesc;
 															}
 															else {
 																echo 'Без описания';

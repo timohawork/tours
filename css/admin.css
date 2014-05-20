@@ -77,12 +77,16 @@
 	cursor: pointer;
 }
 
-.image-block {
+.images-block {
 	overflow: hidden;
+	max-width: 726px;
+}
+
+.image-block {
 	float: left;
 	padding: 10px;
 	max-width: 200px;
-	height: 240px;
+	height: 200px;
 }
 
 .image-block.newImage {
@@ -133,9 +137,6 @@
 .image-block .imageDesc {
 	margin: 5px;
 }
-
-
-
 
 .modal {
 	left: 54%;
