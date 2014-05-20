@@ -111,44 +111,36 @@ if (!isset($_GET['page'])) {
 							<?=$album1Html['header']?>
 							<?php if (!empty($albums1)) : ?>
 								<div class="albums-block">
-									<?php foreach ($albums1 as $album2 => $albums2) : ?>
-										<?php $album2Html = Admin::getBlockHtml($album2, 'tours/'.$album1.'/'.$album2.'/cover.jpg', $album1.'/'.$album2, empty($albums2)); ?>
+									<?php foreach ($albums1 as $album2 => $images) : ?>
+										<?php $album2Html = Admin::getBlockHtml($album2, 'tours/'.$album1.'/'.$album2.'/cover.jpg', $album1.'/'.$album2, false, false); ?>
 										<?=$album2Html['header']?>
-										<?php if (!empty($albums2)) : ?>
-											<div class="albums-block">
-												<?php foreach ($albums2 as $album3 => $images) : ?>
-													<?php $album3Html = Admin::getBlockHtml($album3, 'tours/'.$album1.'/'.$album2.'/'.$album3.'/cover.jpg', $album1.'/'.$album2.'/'.$album3, false, false); ?>
-													<?=$album3Html['header']?>
-													<div class="images-block">
-														<?php foreach ($images[Album::IMAGES_DIR] as $imageName) : ?>
-															<div class="image-block">
-																<?php $image = new Image(Router::DIR_NAME.'/'.$album1.'/'.$album2.'/'.$album3.'/'.Album::IMAGES_DIR.'/'.$imageName, $imageName); ?>
-																<a href="#" class="editImage">
-																	<?=$image->render(array('class' => 'img-rounded'))?>
-																	<i class="fa fa-times-circle-o fa-lg delete" title="Удалить" rel="<?=$imageName?>"></i>
-																</a>
-																<div class="imageDesc">
-																	<?php
-																		if (!empty($image->desc)) {
-																			$imageDesc = strip_tags($image->desc);
-																			echo 100 < strlen($imageDesc) ? substr($imageDesc, 0, 100).'...' : $imageDesc;
-																		}
-																		else {
-																			echo 'Нет описания';
-																		}
-																	?>
-																</div>
-															</div>
-														<?php endforeach; ?>
-														<div class="image-block newImage" title="Добавить изображение" rel="<?=$album1.'/'.$album2.'/'.$album3?>">
-															<div class="new-image-block">
-																<i class="fa fa-plus fa-4x"></i>
-															</div>
-														</div>
+										<div class="images-block">
+											<?php foreach ($images[Album::IMAGES_DIR] as $imageName) : ?>
+												<div class="image-block">
+													<?php $image = new Image(Router::DIR_NAME.'/'.$album1.'/'.$album2.'/'.Album::IMAGES_DIR.'/'.$imageName, $imageName); ?>
+													<a href="#" class="editImage">
+														<?=$image->render(array('class' => 'img-rounded'))?>
+														<i class="fa fa-times-circle-o fa-lg delete" title="Удалить" rel="<?=$imageName?>"></i>
+													</a>
+													<div class="imageDesc">
+														<?php
+															if (!empty($image->desc)) {
+																$imageDesc = strip_tags($image->desc);
+																echo 100 < strlen($imageDesc) ? substr($imageDesc, 0, 100).'...' : $imageDesc;
+															}
+															else {
+																echo 'Нет описания';
+															}
+														?>
 													</div>
-													<?=$album3Html['footer']?>
-												<?php endforeach; ?>
-										<?php endif; ?>
+												</div>
+											<?php endforeach; ?>
+											<div class="image-block newImage" title="Добавить изображение" rel="<?=$album1.'/'.$album2?>">
+												<div class="new-image-block">
+													<i class="fa fa-plus fa-4x"></i>
+												</div>
+											</div>
+										</div>
 										<?=$album2Html['footer']?>
 									<?php endforeach; ?>
 								</div>

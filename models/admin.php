@@ -98,13 +98,16 @@ class Admin
 	{
 		return array(
 			'header' => '<div class="album-block folding-block" rel="'.$path.'">
-				<i class="fa '.($isEmpty ? 'empty' : 'fa-caret-right folding-caret fa-2x').'"></i>&nbsp;
+				<i class="fa fa-caret-right folding-caret fa-2x"></i>&nbsp;
 				<h4>
-					<a href="#" class="edit album-edit"><img class="img-rounded" src="'.$img.'" alt="'.$title.'" title="Редактировать"></a>
+					<img class="img-rounded" src="'.$img.'" alt="'.$title.'" title="Редактировать">
 					<span class="title" rel="'.$title.'">'.$title.'</span>
-					'.($withAdd ? '<a class="btn edit album-add" href="#"><i class="fa fa-plus fa-lg"></i></a>' : '').'
-					<i class="fa fa-times-circle-o fa-lg delete" title="Удалить"></i>
 				</h4>
+				<div class="album-buttons hide">
+					<a href="#" class="edit album-edit" title="Редактировать"><i class="fa fa-pencil fa-lg"></i></a>
+					<i class="fa fa-times-circle-o fa-lg delete" title="Удалить"></i>
+					'.($withAdd ? '<a class="btn edit album-add" href="#"><i class="fa fa-plus fa-lg"></i></a>' : '').'
+				</div>
 				<div class="folding-toggle hide">',
 			'footer' => '</div>
 			</div>'

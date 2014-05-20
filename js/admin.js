@@ -8,7 +8,7 @@ $(document).ready(function() {
 	});
 	
 	$('.folding-block h4').live('click', function() {
-		$(this).parent().find('.folding-caret').trigger('click');
+		$(this).parent().find('.folding-caret').eq(0).trigger('click');
 	});
 	
 	
@@ -211,6 +211,7 @@ var Folding = function()
 	self.toggle = function(selector, set) {
 		var block = selector.closest('.folding-block'),
 			closing = selector.hasClass('fa-caret-down'),
+			buttons = block.find('.album-buttons').eq(0),
 			name = block.find('.title').eq(0).text(),
 			type;
 
@@ -224,10 +225,12 @@ var Folding = function()
 		if (!closing) {
 			selector.removeClass('fa-caret-right');
 			selector.addClass('fa-caret-down');
+			buttons.removeClass('hide');
 		}
 		else {
 			selector.addClass('fa-caret-right');
 			selector.removeClass('fa-caret-down');
+			buttons.addClass('hide');
 		}
 		block.find('.folding-toggle').eq(0).toggleClass('hide');
 		

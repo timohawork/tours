@@ -22,7 +22,7 @@ class Album
 			return;
 		}
 		$this->dir = $dir;
-		$this->type = 4 == count(explode("/", $this->dir)) ? self::TYPE_IMAGES : self::TYPE_COVERS;
+		$this->type = 3 == count(explode("/", $this->dir)) ? self::TYPE_IMAGES : self::TYPE_COVERS;
 	}
 	
 	public function getList()
@@ -79,7 +79,7 @@ class Album
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка создания директории!');
 			return false;
 		}
-		if (2 == count(explode("/", $_POST['albumPath'])) && (!mkdir($path.'/'.Album::IMAGES_DIR) || !chmod($path.'/'.Album::IMAGES_DIR, 0755))) {
+		if (!empty($_POST['albumPath']) && 1 == count(explode("/", $_POST['albumPath'])) && (!mkdir($path.'/'.Album::IMAGES_DIR) || !chmod($path.'/'.Album::IMAGES_DIR, 0755))) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка создания директории!');
 			return false;
 		}

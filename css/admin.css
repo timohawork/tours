@@ -2,11 +2,6 @@
 	margin-top: 20px;
 }
 
-.buttons {
-	display: inline-block;
-	margin: 5px;
-}
-
 .folding-caret {
 	width: 14px;
 	cursor: pointer;
@@ -39,7 +34,7 @@
 .album-block .folding-caret,
 .album-block .fa.empty {
 	position: absolute;
-	top: 40px;
+	top: 35px;
 	left: 1px;
 }
 
@@ -53,30 +48,20 @@
 	cursor: pointer;
 }
 
-.album-block .edit {
-	display: inline-block;
-}
-
-.album-block .edit img {
+.album-block img {
 	width: 100px;
 }
 
-.album-block h4 .delete {
-	position: absolute;
-	top: 5px;
-	right: 3px;
-	opacity: .8;
-	cursor: pointer;
-	display: none;
-}
-
-.album-block h4:hover .delete {
-	display: block;
+.album-block .album-buttons:not(.hide) {
+	display: inline-block;
 }
 
 .album-block .album-add {
-	display: block;
-	margin-top: 10px;
+	margin: 0 10px;
+}
+
+.album-block .delete {
+	cursor: pointer;
 }
 
 .images-block {
