@@ -32,9 +32,10 @@ class Router
 		$this->type = self::TYPE_ALBUM;
 		$albums = explode("/", $this->url);
 		$this->album = $albums[count($albums) - 1];
-		if (4 == count($albums)) {
+		$this->title = $this->album.' - '.$title;
+		if (3 == count($albums)) {
 			$this->type = self::TYPE_GALLERY;
-			$this->title = $this->album.' - '.$title;
+
 		}
 	}
 	
