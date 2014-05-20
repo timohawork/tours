@@ -96,14 +96,14 @@ $(document).ready(function() {
 		return false;
 	});
 	
-	$('.newImage').live('click', function() {
+	$('.new-image-block').live('click', function() {
 		$('#imageAdd .imageDir').val($(this).attr('rel'));
 		$('#imageAdd form')[0].reset();
 		$('#imageAdd').modal('show');
 		return false;
 	});
 	
-	$('#imageAdd .modal-footer .btn-primary').live('click', function() {
+	$('#imageAdd .modal-footer .btn-primary:not(.disabled)').live('click', function() {
 		var error = $('#imageAdd .text-error');
 		error.text('');
 		!$('#image').val().length ? error.text('Не выбрано ни одно изоражение!') : Progress.show('#imageAdd form');

@@ -94,12 +94,12 @@ class Admin
 		</div>';
 	}
 	
-	public static function getBlockHtml($title, $img, $path, $desc = null, $withAdd = true)
+	public static function getBlockHtml($title, $img, $path, $isSmall = false, $desc = null, $withAdd = true)
 	{
 		return array(
 			'header' => '<div class="album-block folding-block" rel="'.$path.'">
 				<i class="fa fa-caret-right folding-caret fa-2x"></i>&nbsp;
-				<h4>
+				<h4'.($isSmall ? ' class="small"' : '').'>
 					<img class="img-rounded" src="'.$img.'" alt="'.$title.'" title="Редактировать">
 					<span class="title" rel="'.$title.'">'.$title.'</span>
 					'.(null !== $desc ? '<div class="description hide">'.$desc.'</div>' : '').'

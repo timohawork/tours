@@ -1,3 +1,7 @@
+#container {
+	width: 1030px;
+}
+
 .alert {
 	margin-top: 20px;
 }
@@ -19,6 +23,10 @@
 .album-block h4 {
 	display: inline-block;
 	margin: 0;
+}
+
+.album-block h4 .title {
+	margin-left: 10px;
 }
 
 .albums-block, .images-block {
@@ -46,6 +54,11 @@
 	border: 1px solid #F0F0EE;
 	border-radius: 5px;
 	cursor: pointer;
+	width: 800px;
+}
+
+.album-block h4.small {
+	width: 740px;
 }
 
 .album-block img {
@@ -64,26 +77,17 @@
 	cursor: pointer;
 }
 
-.images-block {
-	overflow: hidden;
-	max-width: 726px;
-}
-
 .image-block {
+	overflow: hidden;
 	float: left;
 	padding: 10px;
-	margin: 10px;
 	max-width: 200px;
-	height: 250px;
-	border: 1px solid #CCCCCC;
-	border-radius: 5px;
+	height: 240px;
 }
 
 .image-block.newImage {
 	width: 198px;
 	text-align: center;
-	cursor: pointer;
-	border: 2px dotted #D4D4D4;
 	color: #008000;
 }
 
@@ -93,14 +97,11 @@
 	line-height: 178px;
 	border: 2px dotted #008000;
 	border-radius: 5px;
-}
-
-.image-block.newImage:hover {
-	background-color: #D4D4D4;
-	border: 2px solid #CCCCCC;
+	cursor: pointer;
 }
 
 .image-block.newImage:hover .new-image-block {
+	background-color: #D4D4D4;
 	border: 2px solid #008000;
 }
 
@@ -114,7 +115,7 @@
 
 .image-block .editImage {
 	position: relative;
-	display: inline-block;
+	display: block;
 }
 
 .image-block .editImage .delete {
@@ -132,6 +133,9 @@
 .image-block .imageDesc {
 	margin: 5px;
 }
+
+
+
 
 .modal {
 	left: 54%;

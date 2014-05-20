@@ -118,7 +118,7 @@ if (!isset($_GET['page'])) {
 							<?php if (!empty($albums1)) : ?>
 								<div class="albums-block">
 									<?php foreach ($albums1 as $album2 => $images) : ?>
-										<?php $album2Html = Admin::getBlockHtml($album2, 'tours/'.$album1.'/'.$album2.'/cover.jpg', $album1.'/'.$album2, Album::getDescFile('tours/'.$album1.'/'.$album2), false); ?>
+										<?php $album2Html = Admin::getBlockHtml($album2, 'tours/'.$album1.'/'.$album2.'/cover.jpg', $album1.'/'.$album2, true, Album::getDescFile('tours/'.$album1.'/'.$album2), false); ?>
 										<?=$album2Html['header']?>
 										<div class="images-block">
 											<?php foreach ($images[Album::IMAGES_DIR] as $imageName) : ?>
@@ -135,7 +135,7 @@ if (!isset($_GET['page'])) {
 																echo 100 < strlen($imageDesc) ? substr($imageDesc, 0, 100).'...' : $imageDesc;
 															}
 															else {
-																echo 'Нет описания';
+																echo 'Без описания';
 															}
 														?>
 													</div>
