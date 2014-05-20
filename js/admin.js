@@ -15,24 +15,36 @@ $(document).ready(function() {
 	/* ------------------------------------------------------------------------------ */
 	
 	
-	tinymce.init({
-		selector: "#imageDesc",
-		height: 200,
-		setup : function(ed) {
-			ed.on('init', function() {
-				this.getDoc().body.style.fontSize = '16px';
-			});
-		}
-	});
-	
 	$('.edit').live('click', function() {
-		var title = $(this).closest('.album-block').find('h4 .title').eq(0).text();
+		var title = $(this).closest('.album-block').find('h4 .title').eq(0).text(),
+			path = $(this).closest('.album-block').attr('rel');
 		$('.title-block .text-error').text('');
 		$('.file-block .text-error').text('');
 		$('#albumTitle').val(!$(this).hasClass('album-edit') ? '' : title);
-		$('#albumPath').val($(this).closest('.album-block').attr('rel'));
+		$('#albumPath').val(path);
 		$('#albumEdit .modal-header h3').text((!$(this).hasClass('album-edit') ? 'Добавление' : 'Редактирование')+' альбома');
 		$('#isEdit').val($(this).hasClass('album-edit') ? 1 : 0);
+		$('#albumEdit .album-desc').remove();
+		path = undefined === path ? [] : path.split('/');
+		$('#albumEdit').removeClass('wide');
+		if (2 == path.length) {
+			$('#albumEdit form').append('<div class="control-group album-desc">'+
+				'<label class="control-label" for="albumDesc">Описание</label>'+
+				'<div class="controls">'+
+					'<textarea class="span3" name="albumDesc" id="albumDesc">'+($(this).closest('.album-block').find('.description').eq(0).text())+'</textarea>'+
+				'</div>'+
+			'</div>');
+			tinymce.init({
+				selector: "#albumDesc",
+				height: 200,
+				setup : function(ed) {
+					ed.on('init', function() {
+						this.getDoc().body.style.fontSize = '16px';
+					});
+				}
+			});
+			$('#albumEdit').addClass('wide');
+		}
 		$('#albumEdit').modal('show');
 		return false;
 	});
@@ -105,7 +117,7 @@ $(document).ready(function() {
 	});
 	
 	$('.editImage').live('click', function() {
-		tinymce.activeEditor.setContent($(this).parents('.image-block').find('img').next('.desc').html());
+		$('#imageDesc').val($(this).parents('.image-block').find('img').next('.desc').html());
 		$('#imageEdit .imageDir').val($(this).find('img').attr('src'));
 		$('#imageEdit').modal('show');
 		return false;

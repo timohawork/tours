@@ -4,6 +4,7 @@ class Album
 {
 	const COVER_TYPE = 'image/jpeg';
 	const COVER_NAME = 'cover.jpg';
+	const DESC_FILE = 'desc.txt';
 	const IMAGES_DIR = 'images';
 	
 	const TYPE_COVERS = 1;
@@ -14,6 +15,7 @@ class Album
 	
 	public $dir;
 	public $type;
+	public $desc;
 	
 	public function __construct($dir)
 	{
@@ -22,7 +24,20 @@ class Album
 			return;
 		}
 		$this->dir = $dir;
-		$this->type = 3 == count(explode("/", $this->dir)) ? self::TYPE_IMAGES : self::TYPE_COVERS;
+		$dir = explode("/", $dir);
+		if (3 == count($dir)) {
+			$this->desc = self::getDescFile($this->dir);
+			$this->type = self::TYPE_IMAGES;
+		}
+		else {
+			$this->type = self::TYPE_COVERS;
+		}
+	}
+	
+	public static function getDescFile($path)
+	{
+		$path .= '/'.self::DESC_FILE;
+		return is_file($path) ? file_get_contents($path) : '';
 	}
 	
 	public function getList()
@@ -121,6 +136,10 @@ class Album
 				Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения изображения!');
 				return false;
 			}
+		}
+		if (isset($_POST['albumDesc']) && false === file_put_contents($origPath.'/'.self::DESC_FILE, $_POST['albumDesc'])) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения описания!');
+			return false;
 		}
 		if (!rename(dirname(__FILE__).'/../'.$origPath, dirname(__FILE__).'/../'.$path)) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка переименования альбома!');

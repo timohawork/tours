@@ -90,7 +90,7 @@ $pages = StaticPages::getPages();
 													$image = new Image($block['url'], $block['name']);
 													echo '<li>'.$image->render(array(
 														'withViewLink' => true,
-														'title' => $title
+														'title' => $image->desc
 													)).'</li>';
 													if ($isFirst) {
 														$activeDesc = $image->desc;
@@ -104,7 +104,7 @@ $pages = StaticPages::getPages();
 									<a href="#" class="jcarousel-control-next">&rsaquo;</a>
 									<p class="jcarousel-pagination"></p>
 								</div>
-								<div id="description"><?=$activeDesc?></div>
+								<div id="description"><?=$album->desc?></div>
 							<?php endif; ?>
 						<?php endif; ?>
 					</div>

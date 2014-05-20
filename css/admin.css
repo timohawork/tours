@@ -108,6 +108,10 @@
 	width: 200px;
 }
 
+.image-block .desc {
+	display: none;
+}
+
 .image-block .editImage {
 	position: relative;
 	display: inline-block;
@@ -129,20 +133,39 @@
 	margin: 5px;
 }
 
-.modal input[type="text"] {
-	width: 200px;
+.modal {
+	left: 54%;
+	width: 425px;
 }
 
-#imageEdit {
+.modal.wide {
 	left: 44%;
 	width: 700px;
 }
 
-#imageEdit .form-horizontal .control-label {
+.modal.wide .modal-body {
+	max-height: 450px;
+}
+
+.modal.fade.in {
+	top: 30%;
+}
+
+.modal.fade.in.wide {
+	top: 7%;
+}
+
+
+.modal input[type="text"] {
+	width: 200px;
+}
+
+
+.modal .form-horizontal .control-label {
 	width: 90px;
 }
 
-#imageEdit .form-horizontal .controls {
+.modal .form-horizontal .controls {
 	margin-left: 100px;
 }
 

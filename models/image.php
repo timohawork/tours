@@ -40,7 +40,7 @@ class Image
 	
 	public function render($options = array())
 	{
-		$html = '<img class="'.(!empty($options['class']) ? $options['class'] : '').'" src="'.$this->url.'" alt="'.(!empty($options['title']) ? $options['title'] : $this->title).'"><div class="desc hidden" class="hidden">'.$this->desc.'</div>';
+		$html = '<img class="'.(!empty($options['class']) ? $options['class'] : '').'" src="'.$this->url.'" alt="'.(!empty($options['title']) ? $options['title'] : $this->title).'">'.(!empty($this->desc) ? '<div class="desc">'.$this->desc.'</div>' : '');
 		return !empty($options['withViewLink']) ? '<a href="'.str_replace($this->title, $this->bigTitle, $this->url).'" rel="prettyPhoto" title="'.(!empty($options['title']) ? $options['title'] : '').'">'.$html.'</a>' : $html;
 	}
 	
