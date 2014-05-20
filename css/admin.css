@@ -29,14 +29,13 @@
 	margin-left: 10px;
 }
 
-.albums-block, .images-block {
+.albums-block {
 	margin-left: 50px;
 	padding: 10px;
 }
 
 .album-block {
 	position: relative;
-	margin-bottom: 20px;
 }
 
 .album-block .folding-caret,
@@ -80,13 +79,15 @@
 .images-block {
 	overflow: hidden;
 	max-width: 726px;
+	margin-left: 64px;
 }
 
 .image-block {
 	float: left;
 	padding: 10px;
 	max-width: 200px;
-	height: 200px;
+	height: 180px;
+	margin-left: 20px;
 }
 
 .image-block.newImage {

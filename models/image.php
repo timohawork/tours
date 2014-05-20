@@ -27,7 +27,7 @@ class Image
 	
 	protected static function getBitTitle($title)
 	{
-		return str_replace(".jpg", self::BIG_NAME_PART.".jpg", mb_convert_case($title, MB_CASE_LOWER, "UTF-8"));
+		return str_replace(".jpg", self::BIG_NAME_PART.".jpg", $title);
 	}
 
 	public static function getDescFile($imageUrl)
