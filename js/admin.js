@@ -217,6 +217,7 @@ var Folding = function()
 		var block = selector.closest('.folding-block'),
 			closing = selector.hasClass('fa-caret-down'),
 			buttons = block.find('.album-buttons').eq(0),
+			addButton = block.find('.album-add').eq(0),
 			name = block.find('.title').eq(0).text(),
 			type;
 
@@ -231,11 +232,13 @@ var Folding = function()
 			selector.removeClass('fa-caret-right');
 			selector.addClass('fa-caret-down');
 			buttons.removeClass('hide');
+			addButton.removeClass('hide');
 		}
 		else {
 			selector.addClass('fa-caret-right');
 			selector.removeClass('fa-caret-down');
 			buttons.addClass('hide');
+			addButton.addClass('hide');
 		}
 		block.find('.folding-toggle').eq(0).toggleClass('hide');
 		
@@ -265,7 +268,7 @@ var Progress = new function()
 				$(form+' .bar').width('100%');
 			},
 			complete: function(xhr) {
-				//window.location.reload();
+				window.location.reload();
 			}
 		}).submit();
 	}

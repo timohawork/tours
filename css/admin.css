@@ -22,7 +22,7 @@
 
 .album-block h4 {
 	display: inline-block;
-	margin: 0;
+	margin: 0 0 20px 0;
 }
 
 .album-block h4 .title {
@@ -49,31 +49,38 @@
 	position: relative;
 	margin: 10px 15px;
 	padding: 5px;
-	background-color: #E0E0DD;
+	background-color: #EEEEEE;
 	border: 1px solid #F0F0EE;
 	border-radius: 5px;
 	cursor: pointer;
-	width: 800px;
+	width: 860px;
 }
 
 .album-block h4.small {
-	width: 740px;
+	width: 800px;
 }
 
 .album-block img {
 	width: 100px;
 }
 
-.album-block .album-buttons:not(.hide) {
+.album-block h4 .album-buttons:not(.hide) {
+	position: absolute;
+	top: 22px;
+	right: 22px;
 	display: inline-block;
 }
 
-.album-block .album-add {
-	margin: 0 10px;
+.album-block h4 .album-buttons .btn {
+	margin-left: 5px;
 }
 
-.album-block .delete {
-	cursor: pointer;
+.album-block h4 .album-buttons .btn.album-edit {
+	color: #003bb3;
+}
+
+.album-block h4 .album-buttons .btn.delete {
+	color: #F00;
 }
 
 .images-block {

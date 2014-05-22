@@ -41,7 +41,7 @@ class Image
 	public function render($options = array())
 	{
 		$html = '<img class="'.(!empty($options['class']) ? $options['class'] : '').'" src="/'.$this->url.'" alt="'.(!empty($options['title']) ? $options['title'] : $this->title).'">'.(!empty($this->desc) ? '<div class="desc">'.$this->desc.'</div>' : '');
-		return !empty($options['withViewLink']) ? '<a href="'.str_replace($this->title, $this->bigTitle, $this->url).'" rel="prettyPhoto" title="'.(!empty($options['title']) ? $options['title'] : '').'">'.$html.'</a>' : $html;
+		return !empty($options['withViewLink']) ? '<a href="/'.str_replace($this->title, $this->bigTitle, $this->url).'" rel="prettyPhoto" title="'.(!empty($options['title']) ? $options['title'] : '').'">'.$html.'</a>' : $html;
 	}
 	
 	public static function renderBlock($router, $url, $title, $withTitle = true, $isPreview = false)
@@ -103,11 +103,12 @@ class Image
 
 	public static function edit()
 	{
-		if (empty($_POST['imageDir']) || !isset($_POST['imageDesc']) || !is_file($_POST['imageDir'])) {
+		$path = dirname(__FILE__).'/..'.$_POST['imageDir'];
+		if (empty($_POST['imageDir']) || !isset($_POST['imageDesc']) || !file_exists($path)) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения данных!');
 			return false;
 		}
-		if (false === file_put_contents(self::getDescFile($_POST['imageDir']), $_POST['imageDesc'])) {
+		if (false === file_put_contents(self::getDescFile($path), $_POST['imageDesc'])) {
 			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка сохранения описания изображения!');
 			return false;
 		}
@@ -117,13 +118,14 @@ class Image
 
 	public static function delete($path)
 	{
-		if (empty($path) || !is_file($path)) {
-			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка удаления данных!');
+		$path = dirname(__FILE__).'/../'.$path;
+		if (empty($path) || !file_exists($path)) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Неверный запрос!');
 			return false;
 		}
 		$descFilePath = self::getDescFile($path);
-		if (is_file($descFilePath) && !unlink($descFilePath)) {
-			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка удаления данных!');
+		if (file_exists($descFilePath) && !unlink($descFilePath)) {
+			Admin::setMessage(Admin::TYPE_ERROR, 'Ошибка удаления описания изображения!');
 			return false;
 		}
 		if (!unlink($path) || !unlink(self::getBitTitle($path))) {

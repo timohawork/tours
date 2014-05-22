@@ -71,8 +71,16 @@ $pages = StaticPages::getPages();
 							<div id="albums-block">
 								<?php 
 								if (!empty($list)) {
+									$i = 0;
 									foreach ($list as $block) {
 										Image::renderBlock($router, '/'.$block['url'], $block['name'], Album::TYPE_COVERS == $album->type);
+										if (3 == $i) {
+											$i = 0;
+											echo '</div><div id="albums-block">';
+										}
+										else {
+											$i++;
+										}
 									}
 								}
 								?>

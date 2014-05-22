@@ -17,6 +17,18 @@ body {
 	margin: 40px 0;
 }
 
+#pageTitle a {
+	margin: 0 10px;
+	font-size: 19px;
+	text-decoration: none;
+	color: #CECECE;
+}
+
+#pageTitle a:hover {
+	text-decoration: underline;
+	color: #000000;
+}
+
 #footer {
 	margin: 50px 0 10px 0;
 	font-size: 14px;
@@ -24,7 +36,7 @@ body {
 
 .page-container {
 	margin: 0 auto;
-	width: 1000px;
+	width: 604px;
 	text-align: left;
 }
 
@@ -60,6 +72,8 @@ body {
 #albums-block img {
 	width: 200px;
 	height: 130px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
 }
 
 .album-block {

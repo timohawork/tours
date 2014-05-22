@@ -53,7 +53,7 @@ class Router
 				$linkUrl = '';
 				foreach ($url as $album) {
 					$linkUrl .= '/'.$album;
-					$links .= '<i class="fa fa-angle-right"></i><a href="/album'.$linkUrl.'">'.$album.'</a>';
+					$links .= '<a href="/album'.$linkUrl.'">'.$album.'</a>';
 				}
 				$backUrl = '/album/'.implode("/", $url);
 			}

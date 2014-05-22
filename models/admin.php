@@ -103,12 +103,12 @@ class Admin
 					<img class="img-rounded" src="'.$img.'" alt="'.$title.'" title="Редактировать">
 					<span class="title" rel="'.$title.'">'.$title.'</span>
 					'.(null !== $desc ? '<div class="description hide">'.$desc.'</div>' : '').'
+					<div class="album-buttons hide">
+						<a href="#" class="btn edit album-edit" title="Редактировать"><i class="fa fa-pencil fa-lg"></i></a>
+						<a href="#" class="btn delete" title="Удалить"><i class="fa fa-times-circle-o fa-lg"></i></a>
+					</div>
 				</h4>
-				<div class="album-buttons hide">
-					<a href="#" class="edit album-edit" title="Редактировать"><i class="fa fa-pencil fa-lg"></i></a>
-					<i class="fa fa-times-circle-o fa-lg delete" title="Удалить"></i>
-					'.($withAdd ? '<a class="btn edit album-add" href="#"><i class="fa fa-plus fa-lg"></i></a>' : '').'
-				</div>
+				'.($withAdd ? '<a class="btn edit album-add hide" href="#"><i class="fa fa-plus fa-lg"></i></a>' : '').'
 				<div class="folding-toggle hide">',
 			'footer' => '</div>
 			</div>'
