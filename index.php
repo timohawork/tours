@@ -51,6 +51,15 @@ $pages = StaticPages::getPages();
 	</head>
 	<body>
 		<div id="wrapper">
+			<div id="info-flags">
+				<div class="flag red">
+					<p>Наши телефоны:</p>
+					<?php foreach ($config['contactPhones'] as $phone) : ?>
+						<p><?=$phone?></p>
+					<?php endforeach; ?>
+				</div>
+				<div class="flag green"><a href="mailto:admin@example.com">Написать нам</a></div>
+			</div>
 			<div id="header">
 				<a href="/"><img src="/img/logo.png"></a>
 			</div>
@@ -120,6 +129,12 @@ $pages = StaticPages::getPages();
 						<?=StaticPages::getHtml($_GET['page'])?>
 					</div>
 				<?php endif; ?>
+			</div>
+			<div id="contacts">
+				<p><?=$config['contactInfo']?></p>
+				<a href="<?=$config['socials']['vk']?>"><i class="fa fa-vk fa-2x"></i></a>
+				<a href="<?=$config['socials']['twitter']?>"><i class="fa fa-twitter fa-2x"></i></a>
+				<a href="<?=$config['socials']['facebook']?>"><i class="fa fa-facebook-square fa-2x"></i></a>
 			</div>
 			<div id="footer">&copy; <?=$config['title']?>, 2014</div>
 		</div>
